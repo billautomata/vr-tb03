@@ -4,7 +4,8 @@
       <a-entity :position='[index*1.1, 0, 0].join(" ")'>
         <a-box :id='indicator-note' height='0.5' width='1' depth='0.33' :position='[0, 1 + scale(step.note), 0].join(" ")' color='#00F'></a-box>
         <a-box :height='10' width='0.1' depth='0.1' position='0 5.1 0' color='#ccc'></a-box>
-        <a-box :id='indicator-light' position='0 0 0' :color='step.active ? "#0F0" : "#F00"'></a-box>
+        <a-sphere :id='indicator-light' position='0 0 0' :color='step.active ? "#0F0" : "#F00"' radius='0.5'></a-sphere>
+        <a-box :id='rest-light' position='0 -0.8 0' height='0.33' :color='step.rest ? "#40F" : "#0FF"'></a-box>
       </a-entity>
 
     </a-entity>
@@ -24,7 +25,7 @@ export default {
       current_step: 0,
       n_steps: 16,
       steps: [],
-      scale: d3.scaleLinear().domain([ 200, 500 ]).range([ 0, 10 ])
+      scale: d3.scaleLinear().domain([ 20, 64 ]).range([ 0, 9 ])
     }
   },
   updated () {
@@ -35,12 +36,12 @@ export default {
     var self = this
     for(var i = 0; i < self.n_steps; i++){
       self.steps.push({
-        note: Math.floor(Math.random() * 200.0) + 200.0,
+        note: Math.floor(Math.random() * 44.0) + 20.0,
         velocity: 0,
         slide: 0,
         accent: 0,
         active: false,
-        rest: Math.random() > 0.5 ? true: false
+        rest: Math.random() < 0.25 ? true : false
       })
     }
     Tone.Transport.scheduleRepeat(function(time){
@@ -55,11 +56,10 @@ export default {
           s.active = false
         }
       })
-      self.steps[self.current_step].active = true
       //play a middle 'C' for the duration of an 8th note
       if(self.steps[self.current_step].rest === false){
-        synth.triggerAttackRelease(self.steps[self.current_step].note, "16n", time);
-      }    
+        synth.triggerAttackRelease(Tone.Frequency(self.steps[self.current_step].note, 'midi'), "16n", time);
+      }
     }, "16n");
     console.log('Sequencer Mounted')
   }

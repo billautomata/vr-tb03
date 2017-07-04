@@ -5,8 +5,10 @@
         <!-- <a-asset-item id='pin-obj' src='./models/pin.obj'></a-asset-item> -->
         <!-- <a-asset-item id='floor-obj' src='./models/floor.obj'></a-asset-item> -->
       </a-assets>
-      <a-camera position='8 0 10' look-controls></a-camera>
+      <a-camera position='8 0 10' look-controls> </a-camera>
+      <a-entity laser-controls="hand: left"></a-entity>
       <sequencer></sequencer>
+
     </a-scene>
   </div>
 </template>
@@ -38,7 +40,9 @@ export default {
   mounted () {
     var self = this
     //repeated event every 8th note
-    Tone.Transport.start()
+    setTimeout(function() {
+      Tone.Transport.start()
+    }, 300)
   }
 }
 </script>
