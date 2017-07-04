@@ -2,10 +2,8 @@
   <div id="app">
     <a-scene physics="debug: true;" shadows>
       <a-assets>
-        <!-- <a-asset-item id='pin-obj' src='./models/pin.obj'></a-asset-item> -->
-        <!-- <a-asset-item id='floor-obj' src='./models/floor.obj'></a-asset-item> -->
       </a-assets>
-      <a-entity position="0 0 1">
+      <a-entity position="1 0 1">
          <a-entity camera look-controls mouse-cursor wasd-controls>
          </a-entity>
        </a-entity>
