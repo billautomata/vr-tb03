@@ -1,11 +1,23 @@
 <template>
-  <a-entity id='Sequencer'>
+  <a-entity id='Sequencer' rotation='90 0 0'>
     <a-entity v-for="(step, index) in steps">
-      <a-entity :position='[index*1.1, 0, 0].join(" ")'>
-        <a-box :id='indicator-note' height='0.5' width='1' depth='0.33' :position='[0, 1 + scale(step.note), 0].join(" ")' color='#00F'></a-box>
+      <a-entity :position='[index*0.16  , 0, 0].join(" ")'>
+        <!-- Adds UI button widget -->
+        <a-entity :ui-toggle="'value: '+(step.rest === true ? 0 : 1)+';'" v-on:change="change" :id="'toggle' + index">
+        </a-entity>
+        <a-entity position='0 0 -0.4'>
+          <a-entity :ui-slider="'min: 20; max: 64; value: '+(step.note)+';'" rotation='0 90 0'></a-entity>
+        </a-entity>
+
+        <!-- <a-box id='indicator-note'
+          height='0.5' width='1' depth='0.33'
+          :position='[0, 1 + scale(step.note), 0].join(" ")'
+          color='#00F'
+          v-on:mouseenter="change" v-on:click="clicked">
+        </a-box>
         <a-box :height='10' width='0.1' depth='0.1' position='0 5.1 0' color='#ccc'></a-box>
         <a-sphere :id='indicator-light' position='0 0 0' :color='step.active ? "#0F0" : "#F00"' radius='0.5'></a-sphere>
-        <a-box :id='rest-light' position='0 -0.8 0' height='0.33' :color='step.rest ? "#40F" : "#0FF"'></a-box>
+        <a-box :id='rest-light' position='0 -0.8 0' height='0.33' :color='step.rest ? "#40F" : "#0FF"'></a-box> -->
       </a-entity>
 
     </a-entity>
@@ -29,7 +41,18 @@ export default {
     }
   },
   updated () {
-    console.log('updated')
+    console.log('updated 2')
+  },
+  methods: {
+    change: function (evt) {
+      console.log('hover!')
+      console.log(this)
+      console.log(evt)
+      // console.log(this.el.components.seq_id)
+    },
+    clicked: function () {
+      console.log('clicked')
+    }
   },
   mounted () {
     console.log('sequencer mounted')

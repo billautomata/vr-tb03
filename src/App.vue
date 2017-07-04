@@ -5,8 +5,11 @@
         <!-- <a-asset-item id='pin-obj' src='./models/pin.obj'></a-asset-item> -->
         <!-- <a-asset-item id='floor-obj' src='./models/floor.obj'></a-asset-item> -->
       </a-assets>
-      <a-camera position='8 0 10' look-controls> </a-camera>
-      <a-entity laser-controls="hand: left"></a-entity>
+      <a-entity position="0 0 1">
+         <a-entity camera look-controls mouse-cursor wasd-controls>
+         </a-entity>
+       </a-entity>
+      <!-- <a-entity laser-controls="hand: left"></a-entity> -->
       <sequencer></sequencer>
 
     </a-scene>
