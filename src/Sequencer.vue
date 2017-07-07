@@ -8,8 +8,7 @@
         </a-entity>
         <a-entity position='0 0 -0.2' rotation='0 0 0' scale='0.5 0.5 0.5'>
           <a-entity geometry='primitive: box; width: 0.05; height: 0.03; depth: 0.6;' material="color: #ccc;" position='0 -0.014 -0.05'></a-entity>
-          <a-sphere :id="'note-slider_'+index" click-drag slider-handle
-            :position="['0', '0', scale(step.note)].join(' ')"
+          <a-sphere :id="'note-slider_'+index" click-drag :slider-handle="'initialValue: '+scale.invert(step.note)+';'"
             v-on:changed="setNoteSlider"
             radius="0.05" color="#EF2D5E"></a-sphere>
           <a-box color='#AAA' position='0 -0.01 -0.4' scale='0.13 0.01 0.13'></a-box>
@@ -32,7 +31,7 @@ export default {
       current_step: 0,
       n_steps: 16,
       steps: [],
-      scale: d3.scaleLinear().domain([ 20, 64 ]).range([ 0.2, -0.3 ])
+      scale: d3.scaleLinear().domain([ 0.0, 1.0 ]).range([ 34, 60 ])
     }
   },
   updated () {
@@ -42,7 +41,7 @@ export default {
     change: function (evt) {
       console.log('hover!')
       console.log(this)
-
+// :position="['0', '0', scale(step.note)].join(' ')"
       // console.log(this.el.components.seq_id)
     },
     clicked: function () {
@@ -50,23 +49,19 @@ export default {
     },
     setNoteSlider: function (evt) {
       // console.log('food')
-      var object3D = evt.detail
-      this.steps[object3D.userData.step_index].note = Math.floor(this.scale.invert(object3D.position.z))
+      var o = evt.detail
+      console.log('set note slider', evt)
+      this.steps[o.step_index].note = Math.floor(this.scale(o.value))
     }
   },
   mounted () {
     console.log('sequencer mounted')
     var self = this
 
-    window.update_note = function () {
-      // console.log(self.steps)
-
-    }
-
     window.r = self.scale
     for(var i = 0; i < self.n_steps; i++){
       self.steps.push({
-        note: Math.floor(Math.random() * 44.0) + 20.0,
+        note: Math.floor(Math.random() * 16.0) + 34.0,
         velocity: 0,
         slide: 0,
         accent: 0,
