@@ -1,5 +1,5 @@
 <template>
-  <a-entity id='synth'>
+  <a-entity id='fm-synth'>
     <a-box width='1' height='1' depth='0.1' color='#333' position='0.5 -0.5 0'></a-box>
     <a-box v-on:click='clicked' width='0.1' height='0.1' depth='0.1' color='teal' position='0.1 -0.1 0.05'></a-box>
     <a-text :value='["osc:", oscillator.type].join(" ")' rotation='0 0 0' color='#F0F' position='0.15 -0.1 0.05' scale='0.4 0.4 0.4' align='left'></a-text>
@@ -15,13 +15,12 @@
     <a-entity position='0.55 -0.3 0.1' scale='0.5 0.3 0.5'>
       <a-entity :slider="'initialValue: '+envelope.release+';'" v-on:changed="change_envelope('release', $event)"></a-entity>
     </a-entity>
-
   </a-entity>
 
 </template>
 
 <script>
-var synth = new Tone.Synth().toMaster();
+var synth = new Tone.FMSynth().toMaster();
 
 var validOSCTypes = [ 'triangle', 'sine', 'square', 'sawtooth' ]
 var currentOSCTypeIndex = 0
@@ -29,7 +28,7 @@ var currentOSCTypeIndex = 0
 import { EventBus } from './event-bus.js'
 
 export default {
-  name: 'synth',
+  name: 'fm-synth',
   data () {
     return {
       oscillator: synth.oscillator,
@@ -39,6 +38,7 @@ export default {
   mounted () {
     console.log('synth mounted')
     window.k = synth
+    window.kk = this.$el
 
     EventBus.$on('play-note', function (evt) {
       // console.log(evt)

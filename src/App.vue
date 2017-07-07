@@ -11,7 +11,8 @@
 
       <sequencer></sequencer>
       <a-entity position='0 -0.3 0'>
-        <synth></synth>
+        <!-- <synth></synth> -->
+        <fm-synth channel='one'></fm-synth>
       </a-entity>
 
       <!-- <a-entity slider='initialValue: 0.0;' v-on:changed='indicate_change'></a-entity> -->
@@ -24,6 +25,7 @@
 <script>
 import sequencer from './Sequencer.vue'
 import synth from './synth.vue'
+import FMsynth from './FM-synth.vue'
 console.warn = function(){}
 
 require('./slider-handle.js')
@@ -33,7 +35,8 @@ export default {
   name: 'app',
   components: {
     'sequencer': sequencer,
-    'synth': synth
+    'synth': synth,
+    'fm-synth': FMsynth
   },
   data () {
     return {

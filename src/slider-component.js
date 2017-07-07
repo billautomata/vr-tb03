@@ -44,13 +44,11 @@ window.AFRAME.registerComponent('slider', {
       console.log('new position.y', self.sphere.object3D.position.y)
       // self.el.object3D.userData.pos = self.sphere.object3D.position.y
     })
-
-
     return
   },
   tick: function () {
     var self = this
-    if(self.setup === false){
+    if (self.setup === false) {
       self.setup = true
       self.el.emit('override', { value: self.data.initialValue })
     }
@@ -68,7 +66,6 @@ window.AFRAME.registerComponent('slider', {
 
     // console.log(self.scale.invert(self.el.object3D.position.z))
     if (self.el.object3D.userData.pos !== self.sphere.object3D.position.y) {
-
       console.log('discrepancy between (position.y, userData.pos)', self.sphere.object3D.position.y, self.el.object3D.userData.pos)
       // override the saved value with the space value
       self.el.object3D.userData.pos = self.sphere.object3D.position.y
