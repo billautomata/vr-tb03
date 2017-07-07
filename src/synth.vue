@@ -33,14 +33,18 @@ export default {
   data () {
     return {
       oscillator: synth.oscillator,
-      envelope: synth.envelope
+      envelope: synth.envelope,
+      midi_input_channel: 1
     }
   },
   mounted () {
     console.log('synth mounted')
     window.k = synth
+    var self = this
+    self.midi_input_channel = this.$el.getAttribute('channel')
+    console.log('synth channel', self.midi_input_channel)
 
-    EventBus.$on('play-note', function (evt) {
+    EventBus.$on(['channel-',self.midi_input_channel].join(''), function (evt) {
       // console.log(evt)
       synth.triggerAttackRelease(Tone.Frequency(evt.note, 'midi'), "16n", evt.time);
     })

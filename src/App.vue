@@ -11,8 +11,8 @@
 
       <sequencer></sequencer>
       <a-entity position='0 -0.3 0'>
-        <!-- <synth></synth> -->
-        <fm-synth channel='one'></fm-synth>
+        <synth channel='1'></synth>
+        <!-- <fm-synth channel='1'></fm-synth> -->
       </a-entity>
 
       <!-- <a-entity slider='initialValue: 0.0;' v-on:changed='indicate_change'></a-entity> -->

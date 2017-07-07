@@ -28,24 +28,15 @@ export default {
       current_step: 0,
       n_steps: 16,
       steps: [],
-      scale: d3.scaleLinear().domain([ 0.0, 1.0 ]).range([ 34, 60 ])
+      scale: d3.scaleLinear().domain([ 0.0, 1.0 ]).range([ 34, 60 ]),
+      output_channel: 1
     }
   },
   updated () {
     // console.log('updated 2')
   },
   methods: {
-    change: function (evt) {
-      console.log('hover!')
-      console.log(this)
-// :position="['0', '0', scale(step.note)].join(' ')"
-      // console.log(this.el.components.seq_id)
-    },
-    clicked: function () {
-      console.log('clicked')
-    },
     setNoteSlider: function (index, evt) {
-      // console.log('food')
       var o = evt.detail
       console.log('set note slider', evt)
       this.steps[index].note = Math.floor(this.scale(o.value))
@@ -58,12 +49,12 @@ export default {
     window.r = self.scale
     for(var i = 0; i < self.n_steps; i++){
       self.steps.push({
-        note: Math.floor(Math.random() * 16.0) + 35.0,
+        note: Math.floor(Math.random() * 20.0) + 35.0,
         velocity: 0,
         slide: 0,
         accent: 0,
         active: false,
-        rest: Math.random() < 0.25 ? true : false
+        rest: Math.random() < 0.5 ? true : false
       })
     }
     Tone.Transport.scheduleRepeat(function(time){
@@ -80,7 +71,7 @@ export default {
       })
       //play a middle 'C' for the duration of an 8th note
       if(self.steps[self.current_step].rest === false){
-        EventBus.$emit('play-note', { note: self.steps[self.current_step].note, time: time })
+        EventBus.$emit(['channel-',self.output_channel].join(''), { note: self.steps[self.current_step].note, time: time })
       }
     }, "16n");
     console.log('Sequencer Mounted')
