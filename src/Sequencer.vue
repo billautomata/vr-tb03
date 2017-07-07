@@ -10,9 +10,10 @@
           <a-entity geometry='primitive: box; width: 0.05; height: 0.03; depth: 0.6;' material="color: #ccc;" position='0 -0.014 -0.05'></a-entity>
           <a-sphere :id="'note-slider_'+index" click-drag slider-handle
             :position="['0', '0', scale(step.note)].join(' ')"
-            v-on:foo="food"
-          radius="0.05" color="#EF2D5E"></a-sphere>
-          <a-text :value='step.note' rotation='-90 0 0' color='#F0F' position='0 0.01 -0.4' scale='0.5 0.5 0.5' align='center'></a-text>
+            v-on:changed="setNoteSlider"
+            radius="0.05" color="#EF2D5E"></a-sphere>
+          <a-box color='#AAA' position='0 -0.01 -0.4' scale='0.13 0.01 0.13'></a-box>
+          <a-text :value='step.note' rotation='-90 0 0' color='#F0F' position='0 0.01 -0.4' scale='0.4 0.4 0.4' align='center'></a-text>
         </a-entity>
         <a-sphere :id='indicator-light' position='0 -0.02 0.12' scale='0.05 0.05 0.05' :color='step.active ? "#0F0" : "#F00"' radius='0.5'></a-sphere>
       </a-entity>
@@ -23,49 +24,6 @@
 <script>
 var d3 = require('d3')
 import { EventBus } from './event-bus.js';
-
-window.AFRAME.registerComponent('slider-handle', {
-  init: function () {
-    var self = this
-    console.log('loaded lock-position')
-    console.log(self.el.id)
-    self.el.object3D.userData.dimension = 'z'
-    self.el.object3D.userData.z_min = -0.3
-    self.el.object3D.userData.z_max = 0.2
-    self.el.object3D.userData.step_index = Number(self.el.id.split('_')[1])
-    console.log(self.el.object3D.userData.step_index)
-    self.el.object3D.userData.zpos = self.el.object3D.position.z
-
-    self.el.addEventListener('override', function (evt) {
-      console.log('evt', evt)
-      // self.el.object3D.userData.zpos = self.scale()
-    })
-    // self.el.object3D.userData.dim_value = self.el.object3D.children
-    return
-  },
-  tick: function () {
-    var self = this
-    window.z = self.el
-    self.el.object3D.position.x = 0
-    self.el.object3D.position.y = 0
-
-    // console.log(self.scale.invert(self.el.object3D.position.z))
-    if(self.el.object3D.userData.zpos != self.el.object3D.position.z){
-      window.update_note(self.el.object3D)
-      self.el.emit('foo')
-      self.el.object3D.userData.zpos = self.el.object3D.position.z
-    }
-
-    // clamp the z
-    self.el.object3D.position.z = Math.max(self.el.object3D.position.z, -0.3)
-    self.el.object3D.position.z = Math.min(self.el.object3D.position.z, 0.2)
-    return
-  },
-  update: function (old) {
-    console.log(old)
-  }
-})
-
 
 export default {
   name: 'Sequencer',
@@ -90,23 +48,19 @@ export default {
     clicked: function () {
       console.log('clicked')
     },
-    increaseNote: function (evt) {
-      console.log('increase')
-      console.log(evt)
-      this.steps[evt.srcElement.id.split('_')[1]].note += 10
-      this.$el.querySelector('#note-slider_'+evt.srcElement.id.split('_')[1]).components["ui-slider"].attrValue.value = this.steps[evt.srcElement.id.split('_')[1]].note
-    },
-    food: function () {
+    setNoteSlider: function (evt) {
       // console.log('food')
+      var object3D = evt.detail
+      this.steps[object3D.userData.step_index].note = Math.floor(this.scale.invert(object3D.position.z))
     }
   },
   mounted () {
     console.log('sequencer mounted')
     var self = this
 
-    window.update_note = function (object3D) {
+    window.update_note = function () {
       // console.log(self.steps)
-      self.steps[object3D.userData.step_index].note = Math.floor(self.scale.invert(object3D.position.z))
+
     }
 
     window.r = self.scale

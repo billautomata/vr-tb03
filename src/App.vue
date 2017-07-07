@@ -23,6 +23,8 @@ import sequencer from './Sequencer.vue'
 import synth from './synth.vue'
 console.warn = function(){}
 
+require('./slider-handle.js')
+
 export default {
   name: 'app',
   components: {

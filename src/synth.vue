@@ -2,7 +2,9 @@
   <a-entity id='synth'>
     <a-box width='1' height='1' depth='0.1' color='#333' position='0.5 -0.5 0'></a-box>
     <a-box v-on:click='clicked' width='0.1' height='0.1' depth='0.1' color='teal' position='0.1 -0.1 0.05'></a-box>
+    <a-text :value='["osc:", oscillator.type].join(" ")' rotation='0 0 0' color='#F0F' position='0.15 -0.1 0.05' scale='0.4 0.4 0.4' align='left'></a-text>    
   </a-entity>
+
 </template>
 
 <script>
@@ -16,7 +18,9 @@ import { EventBus } from './event-bus.js'
 export default {
   name: 'synth',
   data () {
-    return {}
+    return {
+      oscillator: synth.oscillator
+    }
   },
   mounted () {
     console.log('synth mounted')
@@ -32,7 +36,7 @@ export default {
       console.log('clicked synth')
       currentOSCTypeIndex += 1
       currentOSCTypeIndex %= validOSCTypes.length
-      synth.oscillator.type = validOSCTypes[currentOSCTypeIndex]
+      this.oscillator.type = validOSCTypes[currentOSCTypeIndex]
     }
   }
 }
