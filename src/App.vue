@@ -4,12 +4,14 @@
       <a-assets>
       </a-assets>
       <a-entity position="1 0 1">
-         <a-entity camera look-controls-enabled='false' mouse-cursor wasd-controls></a-entity>
+         <a-entity camera look-controls-enabled='false' look-controls mouse-cursor wasd-controls></a-entity>
          <!-- <a-entity camera wasd-controls mouse-cursor></a-entity> -->
        </a-entity>
       <!-- <a-entity laser-controls="hand: left"></a-entity> -->
       <sequencer></sequencer>
-      <synth></synth>
+      <a-entity position='0 -0.3 0'>
+        <synth></synth>
+      </a-entity>
 
     </a-scene>
   </div>

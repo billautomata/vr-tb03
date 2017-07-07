@@ -1,17 +1,20 @@
 <template>
   <a-entity id='Sequencer' rotation='90 0 0'>
+    <a-entity geometry='primitive: box; width: 1.6; height: 0.1; depth: 0.6;' material="color: #00F;" position='0.75 -0.07 -0.13'></a-entity>
     <a-entity v-for="(step, index) in steps">
       <a-entity :position='[index*0.1  , 0, 0].join(" ")'>
         <a-entity scale='0.5 0.1 0.5'>
           <a-entity :ui-toggle="'value: '+(step.rest === true ? 0 : 1)+';'" v-on:change="step.rest = !step.rest" :id="'toggle' + index"></a-entity>
         </a-entity>
-        <a-entity position='0 0 -0.2' scale='0.5 0.5 0.5'>
-          <a-sphere :id="'note-slider_'+index" click-drag lock-position v-on:click="clicked"
+        <a-entity position='0 0 -0.2' rotation='0 0 0' scale='0.5 0.5 0.5'>
+          <a-entity geometry='primitive: box; width: 0.05; height: 0.03; depth: 0.6;' material="color: #ccc;" position='0 -0.014 -0.05'></a-entity>
+          <a-sphere :id="'note-slider_'+index" click-drag slider-handle
             :position="['0', '0', scale(step.note)].join(' ')"
             v-on:foo="food"
           radius="0.05" color="#EF2D5E"></a-sphere>
+          <a-text :value='step.note' rotation='-90 0 0' color='#F0F' position='0 0.01 -0.4' scale='0.5 0.5 0.5' align='center'></a-text>
         </a-entity>
-        <a-sphere :id='indicator-light' position='0 0 0.1' scale='0.05 0.05 0.05' :color='step.active ? "#0F0" : "#F00"' radius='0.5'></a-sphere>
+        <a-sphere :id='indicator-light' position='0 -0.02 0.12' scale='0.05 0.05 0.05' :color='step.active ? "#0F0" : "#F00"' radius='0.5'></a-sphere>
       </a-entity>
     </a-entity>
   </a-entity>
@@ -21,7 +24,7 @@
 var d3 = require('d3')
 import { EventBus } from './event-bus.js';
 
-window.AFRAME.registerComponent('lock-position', {
+window.AFRAME.registerComponent('slider-handle', {
   init: function () {
     var self = this
     console.log('loaded lock-position')
@@ -32,6 +35,11 @@ window.AFRAME.registerComponent('lock-position', {
     self.el.object3D.userData.step_index = Number(self.el.id.split('_')[1])
     console.log(self.el.object3D.userData.step_index)
     self.el.object3D.userData.zpos = self.el.object3D.position.z
+
+    self.el.addEventListener('override', function (evt) {
+      console.log('evt', evt)
+      // self.el.object3D.userData.zpos = self.scale()
+    })
     // self.el.object3D.userData.dim_value = self.el.object3D.children
     return
   },
