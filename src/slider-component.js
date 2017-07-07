@@ -18,7 +18,7 @@ window.AFRAME.registerComponent('slider', {
 
     var box = document.createElement('a-box')
     box.setAttribute('depth', 0.05)
-    box.setAttribute('width', 0.1)
+    box.setAttribute('width', 0.05)
     box.setAttribute('height', 1.0)
     box.setAttribute('color', '#ccc')
 
@@ -27,9 +27,10 @@ window.AFRAME.registerComponent('slider', {
 
     self.sphere = handleEl
 
+    // set the initial condition of the
     self.el.object3D.userData.pos = self.sphere.object3D.position.y
 
-    self.scale = d3.scaleLinear().domain([ 0.0, 1.0 ]).range([ -0.5, 0.5 ])
+    self.scale = d3.scaleLinear().domain([ -0.5, 0.5 ]).range([ 0, 1 ])
 
     self.el.addEventListener('override', function (evt) {
       // console.log('evt', evt)
@@ -41,25 +42,20 @@ window.AFRAME.registerComponent('slider', {
   },
   tick: function () {
     var self = this
+
+    // clamp the x and z to zero
     self.sphere.object3D.position.x = 0
     self.sphere.object3D.position.z = 0
 
-    // clamp the z
+    // clamp the y to the min/max
     self.sphere.object3D.position.y = Math.max(self.sphere.object3D.position.y, -0.5)
     self.sphere.object3D.position.y = Math.min(self.sphere.object3D.position.y, 0.5)
 
     // console.log(self.scale.invert(self.el.object3D.position.z))
     if (self.el.object3D.userData.pos !== self.sphere.object3D.position.y) {
-      self.el.emit('changed', self.scale(self.el.object3D.userData.pos))
       self.el.object3D.userData.pos = self.sphere.object3D.position.y
+      self.el.emit('changed', { value: self.scale(self.el.object3D.userData.pos) })
     }
-    //   // window.update_note(self.el.object3D)
-    //   self.el.object3D.userData.value = self.scale(self.el.object3D.position.z)
-    //   self.el.emit('changed', self.el.object3D.userData)
-    //   self.el.object3D.userData.zpos = self.el.object3D.position.z
-    //   console.log(self.el.object3D.userData.zpos, self.el.object3D.position.z - self.el.object3D.userData.zpos)
-    // }
-
     return
   },
   update: function (old) {

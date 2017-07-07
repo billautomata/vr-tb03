@@ -8,11 +8,11 @@
          <!-- <a-entity camera wasd-controls mouse-cursor></a-entity> -->
        </a-entity>
       <!-- <a-entity laser-controls="hand: left"></a-entity> -->
-      <!-- <sequencer></sequencer>
+      <sequencer></sequencer>
       <a-entity position='0 -0.3 0'>
         <synth></synth>
-      </a-entity> -->
-      <a-entity slider='initialValue: 0.1;' v-on:changed='indicate_change'></a-entity>
+      </a-entity>
+      <!-- <a-entity slider='initialValue: 0.1;' v-on:changed='indicate_change'></a-entity> -->
 
 
     </a-scene>
@@ -20,7 +20,6 @@
 </template>
 
 <script>
-require('./pin-component.js')
 import sequencer from './Sequencer.vue'
 import synth from './synth.vue'
 console.warn = function(){}
