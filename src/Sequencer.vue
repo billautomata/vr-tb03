@@ -61,7 +61,7 @@ export default {
     window.r = self.scale
     for(var i = 0; i < self.n_steps; i++){
       self.steps.push({
-        note: Math.floor(Math.random() * 16.0) + 34.0,
+        note: Math.floor(Math.random() * 16.0) + 35.0,
         velocity: 0,
         slide: 0,
         accent: 0,
