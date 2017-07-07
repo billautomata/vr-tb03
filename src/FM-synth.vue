@@ -16,7 +16,6 @@
       <a-entity :slider="'initialValue: '+envelope.release+';'" v-on:changed="change_envelope('release', $event)"></a-entity>
     </a-entity>
   </a-entity>
-
 </template>
 
 <script>
@@ -39,7 +38,6 @@ export default {
     console.log('synth mounted')
     window.k = synth
     window.kk = this.$el
-
     EventBus.$on('play-note', function (evt) {
       // console.log(evt)
       synth.triggerAttackRelease(Tone.Frequency(evt.note, 'midi'), "16n", evt.time);

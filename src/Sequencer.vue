@@ -8,10 +8,6 @@
         </a-entity>
         <a-entity position='0 0 -0.2' rotation='0 0 0' scale='0.5 0.5 0.5'>
           <a-entity rotation='90 180 0' scale='0.5 0.5 0.5' :slider="'initialValue: '+scale.invert(step.note)+';'" v-on:changed="setNoteSlider(index, $event)"></a-entity>
-          <!-- <a-entity geometry='primitive: box; width: 0.05; height: 0.03; depth: 0.6;' material="color: #ccc;" position='0 -0.014 -0.05'></a-entity>
-          <a-sphere :id="'note-slider_'+index" click-drag :slider-handle="'initialValue: '+scale.invert(step.note)+';'"
-            v-on:changed="setNoteSlider"
-            radius="0.05" color="#EF2D5E"></a-sphere> -->
           <a-box color='#AAA' position='0 -0.01 -0.4' scale='0.13 0.01 0.13'></a-box>
           <a-text :value='step.note' rotation='-90 0 0' color='#F0F' position='0 0.01 -0.4' scale='0.4 0.4 0.4' align='center'></a-text>
         </a-entity>
