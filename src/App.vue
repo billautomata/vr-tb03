@@ -17,15 +17,18 @@
         <synth channel='1'></synth>
       </a-entity>
 
-      <!-- <a-entity position='3 0 0'>
+
+      <sampler channel='2' note='34' sample='./audio/Clap 003.wav'></sampler>
+      <sampler channel='2' note='35' sample='./audio/808 Bass A.WAV'></sampler>
+      <a-entity position='3 0 0'>
         <a-entity rotation='90 0 0'>
           <sequencer channel='2'></sequencer>
         </a-entity>
 
-        <a-entity position='0 -0.3 0'>
+        <!-- <a-entity position='0 -0.3 0'>
           <synth channel='2'></synth>
-        </a-entity>
-      </a-entity> -->
+        </a-entity> -->
+      </a-entity>
 
 
       <!-- <a-entity position='0 0 0' butan='initialValue: 1;'></a-entity> -->
@@ -39,6 +42,7 @@
 import sequencer from './Sequencer.vue'
 import synth from './synth.vue'
 import FMsynth from './FM-synth.vue'
+import Sampler from './Sampler.vue'
 console.warn = function(){}
 
 require('./slider-handle.js')
@@ -50,7 +54,8 @@ export default {
   components: {
     'sequencer': sequencer,
     'synth': synth,
-    'fm-synth': FMsynth
+    'fm-synth': FMsynth,
+    'sampler': Sampler
   },
   data () {
     return {
