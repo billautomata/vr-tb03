@@ -17,7 +17,7 @@
         <synth channel='1'></synth>
       </a-entity>
 
-      <a-entity position='3 0 0'>
+      <!-- <a-entity position='3 0 0'>
         <a-entity rotation='90 0 0'>
           <sequencer channel='2'></sequencer>
         </a-entity>
@@ -25,7 +25,7 @@
         <a-entity position='0 -0.3 0'>
           <synth channel='2'></synth>
         </a-entity>
-      </a-entity>
+      </a-entity> -->
 
 
       <!-- <a-entity position='0 0 0' butan='initialValue: 1;'></a-entity> -->
