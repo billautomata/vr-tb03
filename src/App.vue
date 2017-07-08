@@ -3,19 +3,32 @@
     <a-scene physics="debug: true;" shadows>
       <a-assets>
       </a-assets>
-      <a-entity position="1 0 1">
+      <a-entity position="1 0 2">
          <a-entity camera look-controls-enabled='false' look-controls mouse-cursor wasd-controls></a-entity>
          <!-- <a-entity camera wasd-controls mouse-cursor></a-entity> -->
        </a-entity>
       <!-- <a-entity laser-controls="hand: left"></a-entity> -->
 
-      <sequencer></sequencer>
-      <a-entity position='0 -0.3 0'>
-        <synth channel='1'></synth>
-        <!-- <fm-synth channel='1'></fm-synth> -->
+      <a-entity rotation='90 0 0'>
+        <sequencer channel='1'></sequencer>
       </a-entity>
 
-      <!-- <a-entity slider='initialValue: 0.0;' v-on:changed='indicate_change'></a-entity> -->
+      <a-entity position='0 -0.3 0'>
+        <synth channel='1'></synth>
+      </a-entity>
+
+      <a-entity position='3 0 0'>
+        <a-entity rotation='90 0 0'>
+          <sequencer channel='2'></sequencer>
+        </a-entity>
+
+        <a-entity position='0 -0.3 0'>
+          <synth channel='2'></synth>
+        </a-entity>
+      </a-entity>
+
+
+      <!-- <a-entity position='0 0 0' butan='initialValue: 1;'></a-entity> -->
 
 
     </a-scene>
@@ -30,6 +43,7 @@ console.warn = function(){}
 
 require('./slider-handle.js')
 require('./slider-component.js')
+require('./toggle-button-component.js')
 
 export default {
   name: 'app',

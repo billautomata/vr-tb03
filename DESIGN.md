@@ -2,13 +2,14 @@
 
 * [x] note - slider
 * [x] rest - toggle
-* [ ] transpose slider
+* [x] transpose slider
+* [x] randomize patterns
 * [ ] start / stop toggle
 * [ ] output channel select
 * [ ] pattern begin step
 * [ ] pattern end step
 
-# slider
+# slider / butan
 > A visual element that is locked on 2 dimensions and limited in the remaining
 
 * user set properties: min, max, value, scale?
