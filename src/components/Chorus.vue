@@ -22,12 +22,12 @@ export default {
     var self = this
     this.synth = new Tone.Chorus(4, 2.5, 0.5)
     // self.synth = new Tone.Distortion(40.0)
-    window.rrr = self.synth
-    self.synth.channel_name = 'chorus0'
+    window.rrr = self
+    self.synth.channel_name = self.$el.getAttribute('inputChannelName')
     // window.synth = self.synth
     self.$nextTick(function () {
       self.$el.object3D.userData.synth = self.synth
-      self.synth.receive('chorus0')
+      self.synth.receive(self.synth.channel_name)
       EventBus.$emit('new-audio-channel', self.synth)
     })
   },

@@ -1,4 +1,4 @@
-// component that allows for configuring
+// component that allows for configuring audio output channel by index number or name
 AFRAME.registerComponent('audio-output-channel-selector', {
   schema: {
     channel: {
@@ -60,21 +60,24 @@ AFRAME.registerComponent('audio-output-channel-selector', {
     })
 
     function auto_connect (channel) {
-      if(channel === undefined){
-        window.channels.forEach(function (c,idx){
-          if(c.used === undefined && self.connected === false){
-            console.log('connecting', self.el.object3D.userData.synth, 'to', c.channel_name)
-            c.used =  true
-            self.connected = true
-            self.el.object3D.userData.synth.send(c.channel_name)
-          }
-        })
+      if (Number.isNaN(Number(channel))) {
+        self.el.object3D.userData.synth.send(channel)
       } else {
-        window.channels[Number(channel)].used = true
-        console.log('connecting', self.el.object3D.userData.synth, 'to', Number(channel), window.channels[Number(channel)].channel_name)
-        console.log(self.el.object3D.userData.synth.output)
-        window.rr = self.el.object3D.userData.synth.output
-        self.el.object3D.userData.synth.send(window.channels[Number(channel)].channel_name)
+        if(channel === undefined){
+          window.channels.forEach(function (c,idx){
+            if(c.used === undefined && self.connected === false){
+              console.log('connecting', self.el.object3D.userData.synth, 'to', c.channel_name)
+              c.used =  true
+              self.connected = true
+              self.el.object3D.userData.synth.send(c.channel_name)
+            }
+          })
+        } else {
+          console.log('connecting', self.el.object3D.userData.synth, 'to', Number(channel), window.channels[Number(channel)].channel_name)
+          window.channels[Number(channel)].used = true
+          self.connected = true
+          self.el.object3D.userData.synth.send(window.channels[Number(channel)].channel_name)
+        }
       }
     }
 
