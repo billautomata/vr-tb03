@@ -23,6 +23,9 @@
 
 
 # sampler
+* [x]
+
 # mixer
 # effects
-# routing matrix 
+# routing matrix
+# drum machine

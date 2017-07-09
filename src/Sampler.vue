@@ -15,6 +15,9 @@ export default {
   },
   mounted () {
     var self = this
+    if(window.sampler === undefined){
+      window.sampler = this
+    }
     this.synth = new Tone.Sampler(this.$el.getAttribute('sample'), function(){}).toMaster();
     console.log('sampler mounted')
     this.midi_input_channel = this.$el.getAttribute('channel')
