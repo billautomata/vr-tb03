@@ -12,10 +12,20 @@
 # slider / butan
 > A visual element that is locked on 2 dimensions and limited in the remaining
 
-* user set properties: min, max, value, scale?
+* user set properties: initialValue
 * events: changed (value was changed), override (set value [0,1])
 
 # synth
 * [x] oscillator select
 * [x] ADSR
+* [ ] volume knob
 * [ ] input channel select
+
+
+# sampler
+* [x]
+
+# mixer
+# effects
+# routing matrix
+# drum machine
