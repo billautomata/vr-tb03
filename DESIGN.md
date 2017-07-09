@@ -18,16 +18,20 @@
 # synth
 * [x] oscillator select
 * [x] ADSR
-* [ ] volume knob
-* [ ] input channel select
-
 
 # sampler
-* [x]
+* [x] basic
 
 # mixer
+* [x] basic mixer
+* [x] level meters
+* [ ] more extensible
+
 # effects
+* [x] inputs registering as outputs
+
 # routing matrix
+
 # drum machine
 
 

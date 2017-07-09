@@ -22,9 +22,8 @@
 </template>
 
 <script>
-var validOSCTypes = [ 'triangle', 'sine', 'square', 'sawtooth' ]
-
 import { EventBus } from '../event-bus.js'
+var validOSCTypes = [ 'triangle', 'sine', 'square', 'sawtooth' ]
 
 export default {
   name: 'synth',
@@ -41,21 +40,17 @@ export default {
           release: 0
         }
       },
-      midi_input_channel: 1,
       currentOSCTypeIndex: 0,
     }
   },
   mounted () {
     console.log('synth mounted')
-    this.synth = new Tone.Synth()
     var self = this
-    self.midi_input_channel = self.$el.getAttribute('channel')
+    this.synth = new Tone.Synth()
+    // assign the synth to the aframe object3d userdata so it can be used in components
     self.$nextTick(function () {
+      console.log('assinging synth in next tick')
       self.$el.object3D.userData.synth = self.synth
-    })
-    console.log('synth midi channel', self.midi_input_channel)
-    EventBus.$on(['channel-',self.midi_input_channel].join(''), function (evt) {
-      self.synth.triggerAttackRelease(Tone.Frequency(evt.note, 'midi'), "16n", evt.time);
     })
   },
   methods: {

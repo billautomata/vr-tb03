@@ -46,7 +46,7 @@ export default {
       box_meter.object3D.userData.indicator = meter
       self.$el.querySelector('a-entity.channel'+idx).appendChild(box_meter)
     })
-    // publish the outputs
+    // publish the inputs
     this.eqs.forEach(function (m,idx) {
       console.log(m.channel_name)
       EventBus.$emit('new-audio-channel', m)

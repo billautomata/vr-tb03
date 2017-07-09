@@ -15,7 +15,7 @@
           <sequencer channel='1'></sequencer>
         </a-entity>
         <a-entity position='0 -0.3 0'>
-          <synth audio-output-channel-selector="channel: 1" channel='1'></synth>
+          <synth midi-input-channel-selector="channel: 1;" audio-output-channel-selector="channel: 0;"></synth>
         </a-entity>
       </a-entity>
 
@@ -24,12 +24,16 @@
           <sequencer channel='2'></sequencer>
         </a-entity>
         <a-entity position='0 -0.3 0'>
-          <synth channel='2' audio-output-channel-selector></synth>
+          <synth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: 4;"></synth>
         </a-entity>
       </a-entity>
 
       <a-entity position='-2 0 0'>
         <mixer></mixer>
+      </a-entity>
+
+      <a-entity position='1.5 -0.5 0'>
+        <chorus audio-output-channel-selector="channel: 1;"></chorus>
       </a-entity>
 
       <!-- <sampler channel='2' note='34' sample='./audio/Clap 003.wav'></sampler>
@@ -45,6 +49,7 @@ import synth from './components/Synth.vue'
 import FMsynth from './components/FM-synth.vue'
 import Sampler from './components/Sampler.vue'
 import Mixer from './components/Mixer.vue'
+import Chorus from './components/Chorus.vue'
 
 console.warn = function(){}
 
@@ -53,6 +58,7 @@ require('./slider-component.js')
 require('./button-component.js')
 require('./level-indicator-component.js')
 require('./audio-output-channel-selector.js')
+require('./midi-input-channel-selector.js')
 
 export default {
   name: 'app',
@@ -61,7 +67,8 @@ export default {
     'synth': synth,
     'fm-synth': FMsynth,
     'sampler': Sampler,
-    'mixer': Mixer
+    'mixer': Mixer,
+    'chorus': Chorus
   },
   data () {
     return {

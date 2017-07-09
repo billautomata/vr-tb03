@@ -27,7 +27,7 @@ AFRAME.registerComponent('audio-output-channel-selector', {
     this.connected = false
     this.clickedOpen = false
 
-    if(this.data.channel === 'auto'){
+    if (this.data.channel === 'auto') {
       auto_connect()
     } else {
       auto_connect(this.data.channel)
@@ -63,7 +63,7 @@ AFRAME.registerComponent('audio-output-channel-selector', {
       if(channel === undefined){
         window.channels.forEach(function (c,idx){
           if(c.used === undefined && self.connected === false){
-            console.log('connecting')
+            console.log('connecting', self.el.object3D.userData.synth, 'to', c.channel_name)
             c.used =  true
             self.connected = true
             self.el.object3D.userData.synth.send(c.channel_name)
@@ -71,6 +71,9 @@ AFRAME.registerComponent('audio-output-channel-selector', {
         })
       } else {
         window.channels[Number(channel)].used = true
+        console.log('connecting', self.el.object3D.userData.synth, 'to', Number(channel), window.channels[Number(channel)].channel_name)
+        console.log(self.el.object3D.userData.synth.output)
+        window.rr = self.el.object3D.userData.synth.output
         self.el.object3D.userData.synth.send(window.channels[Number(channel)].channel_name)
       }
     }
@@ -82,17 +85,17 @@ AFRAME.registerComponent('audio-output-channel-selector', {
     return
   },
   update: function () {
-    console.log('audio output channel selector update')
-    console.log(this.el.object3D.userData.synth)
+    // console.log('audio output channel selector update')
+    // console.log(this.el.object3D.userData.synth)
   }
 })
 
-import Vue from 'vue'
-Vue.directive('audio-output-channel-selector', {
-  inserted: function (el, bindings, vnode) {
-    // console.log(vnode)
-    // var synth = vnode.$data
-    // console.log('VUE audio output channel selector inserted')
-    // console.log(synth)
-  }
-})
+// import Vue from 'vue'
+// Vue.directive('audio-output-channel-selector', {
+//   inserted: function (el, bindings, vnode) {
+//     // console.log(vnode)
+//     // var synth = vnode.$data
+//     // console.log('VUE audio output channel selector inserted')
+//     // console.log(synth)
+//   }
+// })
