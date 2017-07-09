@@ -46,9 +46,10 @@ import Mixer from './components/Mixer.vue'
 
 console.warn = function(){}
 
-require('./slider-handle.js')
+// require('./slider-handle.js')
 require('./slider-component.js')
 require('./toggle-button-component.js')
+require('./level-indicator-component.js')
 
 export default {
   name: 'app',

@@ -2,10 +2,10 @@
   <a-entity id='mixer'>
     <a-box depth='0.1' width='2' height='2' color="#cad"></a-box>
     <a-text value='MIXER' position='0 0.7 0.1' rotation='0 0 0' align='center'></a-text>
-    <a-entity id='0' v-on:changed="setLevel" slider='initialValue: 0.5;' position='-0.75 0 0.1'></a-entity>
-    <a-entity id='1' v-on:changed="setLevel" slider='initialValue: 0.2;' position='-0.25 0 0.1'></a-entity>
-    <a-entity id='2' v-on:changed="setLevel" slider='initialValue: 0.3;' position='0.25 0 0.1'></a-entity>
-    <a-entity id='3' v-on:changed="setLevel" slider='initialValue: 0.4;' position='0.75 0 0.1'></a-entity>
+    <a-entity class='channel0' id='0' v-on:changed="setLevel" slider='initialValue: 0.5;' position='-0.75 0 0.1'></a-entity>
+    <a-entity class='channel1' id='1' v-on:changed="setLevel" slider='initialValue: 0.2;' position='-0.25 0 0.1'></a-entity>
+    <a-entity class='channel2' id='2' v-on:changed="setLevel" slider='initialValue: 0.3;' position='0.25 0 0.1'></a-entity>
+    <a-entity class='channel3' id='3' v-on:changed="setLevel" slider='initialValue: 0.4;' position='0.75 0 0.1'></a-entity>
   </a-entity>
 </template>
 
@@ -14,14 +14,45 @@ export default {
   name: 'mixer',
   data () {
     return {
-      eqs: []
+      eqs: [],
+      meters: []
     }
   },
   mounted () {
+    var self = this
+    window.smixer = self
     this.eqs.push(new Tone.EQ3().receive('channel_0').toMaster())
     this.eqs.push(new Tone.EQ3().receive('channel_1').toMaster())
     this.eqs.push(new Tone.EQ3().receive('channel_2').toMaster())
     this.eqs.push(new Tone.EQ3().receive('channel_3').toMaster())
+    this.meters.push(new Tone.Meter('level'))
+    this.meters.push(new Tone.Meter('level'))
+    this.meters.push(new Tone.Meter('level'))
+    this.meters.push(new Tone.Meter('level'))
+    this.eqs.forEach(function(eq,idx){
+      eq.connect(self.meters[idx])
+    })
+    window.meters = this.meters
+    this.meters.forEach(function(meter,idx){
+      // var z = self.$el.querySelector('a-entity.channel'+idx)
+      // console.log('parent', z, z.components['position'])
+      // var position = self.$el.querySelector('a-entity.channel'+idx).components['position'].data
+      // console.log(position)
+      var box_meter = document.createElement('a-box')
+      box_meter.setAttribute('position', '0 0.7 0')
+      box_meter.setAttribute('scale', '1 1 1')
+      box_meter.setAttribute('width', 0.1)
+      box_meter.setAttribute('depth', 0.1)
+      box_meter.setAttribute('height', 1)
+      box_meter.setAttribute('color', 'red')
+      box_meter.setAttribute('level-indicator', true)
+
+      box_meter.object3D.userData.indicator = meter
+      console.log('idx', idx)
+      self.$el.querySelector('a-entity.channel'+idx).appendChild(box_meter)
+      console.log(box_meter)
+    })
+
   },
   methods: {
     setLevel: function (event) {
