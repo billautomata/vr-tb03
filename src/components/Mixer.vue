@@ -10,6 +10,8 @@
 </template>
 
 <script>
+var d3 = require('d3')
+import {EventBus} from '../event-bus.js'
 export default {
   name: 'mixer',
   data () {
@@ -21,17 +23,17 @@ export default {
   mounted () {
     var self = this
     window.smixer = self
-    this.eqs.push(new Tone.EQ3().receive('channel_0').toMaster())
-    this.eqs.push(new Tone.EQ3().receive('channel_1').toMaster())
-    this.eqs.push(new Tone.EQ3().receive('channel_2').toMaster())
-    this.eqs.push(new Tone.EQ3().receive('channel_3').toMaster())
-    this.meters.push(new Tone.Meter('level'))
-    this.meters.push(new Tone.Meter('level'))
-    this.meters.push(new Tone.Meter('level'))
-    this.meters.push(new Tone.Meter('level'))
-    this.eqs.forEach(function(eq,idx){
-      eq.connect(self.meters[idx])
+    d3.range(0,4).forEach(function(i){
+      console.log('i', i)
+      var eq = new Tone.EQ3()
+      eq.receive('channel_'+i).toMaster()
+      eq.channel_name = 'channel_'+i
+      self.eqs.push(eq)
+      var meter = new Tone.Meter('level')
+      self.meters.push(meter)
+      eq.connect(meter)
     })
+    // add the indicator geometry to the meters
     this.meters.forEach(function(meter,idx){
       var box_meter = document.createElement('a-box')
       box_meter.setAttribute('position', '0 0.6 0')
@@ -43,6 +45,11 @@ export default {
       box_meter.setAttribute('level-indicator', true)
       box_meter.object3D.userData.indicator = meter
       self.$el.querySelector('a-entity.channel'+idx).appendChild(box_meter)
+    })
+    // publish the outputs
+    this.eqs.forEach(function (m,idx) {
+      console.log(m.channel_name)
+      EventBus.$emit('new-audio-channel', m)
     })
   },
   methods: {

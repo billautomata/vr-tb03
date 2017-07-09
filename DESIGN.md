@@ -29,3 +29,8 @@
 # effects
 # routing matrix
 # drum machine
+
+
+```html
+<a-entity audioInputName='filter1' audio-output-channel-selector='auto'></a-entity>
+```

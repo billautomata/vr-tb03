@@ -3,41 +3,43 @@
     <a-scene physics="debug: true;">
       <a-assets>
       </a-assets>
+
+      <a-light color="white" type='point' position="0 4 2" intensity='2' distance='10'></a-light>
+
       <a-entity position="1 0 2">
          <a-entity camera look-controls-enabled='false' look-controls mouse-cursor wasd-controls></a-entity>
-         <!-- <a-entity camera wasd-controls mouse-cursor></a-entity> -->
        </a-entity>
-      <!-- <a-entity laser-controls="hand: left"></a-entity> -->
 
-      <a-entity rotation='90 0 0'>
-        <sequencer channel='1' ></sequencer>
+      <a-entity position='0 0 0'>
+        <a-entity rotation='90 0 0'>
+          <sequencer channel='1'></sequencer>
+        </a-entity>
+        <a-entity position='0 -0.3 0'>
+          <synth audio-output-channel-selector="channel: 3" channel='1'></synth>
+        </a-entity>
       </a-entity>
 
-      <a-entity position='0 -0.3 0'>
-        <synth channel='1' audioChannel='channel_0'></synth>
-      </a-entity>
-
-      <!-- <sampler channel='2' note='34' sample='./audio/Clap 003.wav'></sampler>
-      <sampler channel='2' note='35' sample='./audio/808 Bass A.WAV'></sampler> -->
       <a-entity position='3 0 0'>
         <a-entity rotation='90 0 0'>
           <sequencer channel='2'></sequencer>
         </a-entity>
         <a-entity position='0 -0.3 0'>
-          <synth channel='2' audioChannel="channel_1"></synth>
+          <synth channel='2' audio-output-channel-selector></synth>
         </a-entity>
       </a-entity>
-      <a-light color="white" type='point' position="0 4 2" intensity='2' distance='10'></a-light>
+
       <a-entity position='-2 0 0'>
         <mixer></mixer>
       </a-entity>
 
-
+      <!-- <sampler channel='2' note='34' sample='./audio/Clap 003.wav'></sampler>
+      <sampler channel='2' note='35' sample='./audio/808 Bass A.WAV'></sampler> -->
     </a-scene>
   </div>
 </template>
 
 <script>
+import { EventBus } from './event-bus.js'
 import sequencer from './components/Sequencer.vue'
 import synth from './components/Synth.vue'
 import FMsynth from './components/FM-synth.vue'
@@ -48,8 +50,9 @@ console.warn = function(){}
 
 // require('./slider-handle.js')
 require('./slider-component.js')
-require('./toggle-button-component.js')
+require('./button-component.js')
 require('./level-indicator-component.js')
+require('./audio-output-channel-selector.js')
 
 export default {
   name: 'app',
@@ -62,10 +65,19 @@ export default {
   },
   data () {
     return {
-      started: true
+      started: true,
+      audio_channels: [],
+      midi_channels: []
     }
   },
   beforeCreate () {
+    var self = this
+    EventBus.$on('new-audio-channel', function (event) {
+      console.log('new audio channels')
+      self.audio_channels.push(event)
+      console.log(event.channel_name)
+    })
+
     AFRAME.registerComponent('controller', {
       init: function () {
         console.log('loaded controller')
@@ -77,7 +89,7 @@ export default {
   },
   mounted () {
     var self = this
-    //repeated event every 8th note
+    window.channels = self.audio_channels
     setTimeout(function() {
       Tone.Transport.start()
     }, 300)

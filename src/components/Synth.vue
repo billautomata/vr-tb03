@@ -42,21 +42,18 @@ export default {
         }
       },
       midi_input_channel: 1,
-      audio_output_channel: '',
-      currentOSCTypeIndex: 0
+      currentOSCTypeIndex: 0,
     }
   },
   mounted () {
     console.log('synth mounted')
     this.synth = new Tone.Synth()
-
-    window.synth = this.synth
     var self = this
     self.midi_input_channel = self.$el.getAttribute('channel')
-    self.audio_output_channel = self.$el.getAttribute('audioChannel')
+    self.$nextTick(function () {
+      self.$el.object3D.userData.synth = self.synth
+    })
     console.log('synth midi channel', self.midi_input_channel)
-    console.log('synth audio channel', self.audio_output_channel)
-    self.synth.send(self.audio_output_channel)
     EventBus.$on(['channel-',self.midi_input_channel].join(''), function (evt) {
       self.synth.triggerAttackRelease(Tone.Frequency(evt.note, 'midi'), "16n", evt.time);
     })
