@@ -39,6 +39,22 @@ AFRAME.registerComponent('audio-output-channel-selector', {
       // self.el.object3D.userData.synth.disconnect()
       console.log(indicator, self.clickedOpen)
       window.indicator = indicator
+
+      window.channels.forEach(function (c, channelIndex) {
+        var o = document.createElement('a-box')
+        o.setAttribute('depth', 0.1)
+        o.setAttribute('width', 0.1)
+        o.setAttribute('height', 0.1)
+        o.setAttribute('position', [ -0.15, -channelIndex * 0.11, 0 ].join(' '))
+        o.setAttribute('color', 'green')
+        indicator.appendChild(o)
+        o.addEventListener('click', function () {
+          console.log('channel clicked')
+          self.el.object3D.userData.synth.disconnect()
+          self.el.object3D.userData.synth.send(c.channel_name)
+        })
+      })
+
       // list each avaialble channel
       // if any of them are clicked disconnect the synth and connect it to that channel
     })
@@ -54,6 +70,7 @@ AFRAME.registerComponent('audio-output-channel-selector', {
           }
         })
       } else {
+        window.channels[Number(channel)].used = true
         self.el.object3D.userData.synth.send(window.channels[Number(channel)].channel_name)
       }
     }

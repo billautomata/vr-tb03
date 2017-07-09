@@ -15,7 +15,7 @@
           <sequencer channel='1'></sequencer>
         </a-entity>
         <a-entity position='0 -0.3 0'>
-          <synth audio-output-channel-selector="channel: 3" channel='1'></synth>
+          <synth audio-output-channel-selector="channel: 1" channel='1'></synth>
         </a-entity>
       </a-entity>
 
