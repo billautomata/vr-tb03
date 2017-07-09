@@ -24,7 +24,7 @@
           <sequencer channel='2'></sequencer>
         </a-entity>
         <a-entity position='0 -0.3 0'>
-          <synth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: chorus;"></synth>
+          <synth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: chorus01;"></synth>
         </a-entity>
       </a-entity>
 
@@ -33,7 +33,7 @@
       </a-entity>
 
       <a-entity position='1.5 -0.5 0'>
-        <chorus inputChannelName='chorus' audio-output-channel-selector="channel: 1;"></chorus>
+        <chorus inputChannelName='chorus01' audio-output-channel-selector="channel: 1;"></chorus>
       </a-entity>
 
       <!-- <sampler channel='2' note='34' sample='./audio/Clap 003.wav'></sampler>
