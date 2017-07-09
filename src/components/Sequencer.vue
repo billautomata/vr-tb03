@@ -1,5 +1,5 @@
 <template>
-  <a-entity id='drum-machine' rotation='0 0 0'>
+  <a-entity id='Sequencer' rotation='0 0 0'>
     <a-entity geometry='primitive: box; width: 2.0; height: 0.1; depth: 0.75;' material="color: #00F;" position='0.75 -0.07 -0.13'></a-entity>
     <!-- steps -->
     <a-entity v-for="(step, index) in steps">
@@ -31,12 +31,12 @@
 <script>
 var d3 = require('d3')
 window.d3 = d3
-import { EventBus } from './event-bus.js';
+import { EventBus } from '../event-bus.js';
 
 var transposeScale = d3.scaleQuantile().domain([ 0.0, 1.0 ]).range(d3.range(-12, 13))
 
 export default {
-  name: 'drum-machine',
+  name: 'Sequencer',
   data () {
     return {
       current_step: 0,

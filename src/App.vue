@@ -38,10 +38,10 @@
 </template>
 
 <script>
-import sequencer from './Sequencer.vue'
-import synth from './synth.vue'
-import FMsynth from './FM-synth.vue'
-import Sampler from './Sampler.vue'
+import sequencer from './components/Sequencer.vue'
+import synth from './components/Synth.vue'
+import FMsynth from './components/FM-synth.vue'
+import Sampler from './components/Sampler.vue'
 import Mixer from './components/Mixer.vue'
 
 console.warn = function(){}

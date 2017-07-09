@@ -24,7 +24,7 @@ var synth = new Tone.FMSynth().toMaster();
 var validOSCTypes = [ 'triangle', 'sine', 'square', 'sawtooth' ]
 var currentOSCTypeIndex = 0
 
-import { EventBus } from './event-bus.js'
+import { EventBus } from '../event-bus.js'
 
 export default {
   name: 'fm-synth',

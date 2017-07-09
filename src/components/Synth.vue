@@ -24,7 +24,7 @@
 <script>
 var validOSCTypes = [ 'triangle', 'sine', 'square', 'sawtooth' ]
 
-import { EventBus } from './event-bus.js'
+import { EventBus } from '../event-bus.js'
 
 export default {
   name: 'synth',
@@ -52,9 +52,6 @@ export default {
 
     window.synth = this.synth
     var self = this
-    console.log('this', self)
-    console.log('what')
-    // return
     self.midi_input_channel = self.$el.getAttribute('channel')
     self.audio_output_channel = self.$el.getAttribute('audioChannel')
     console.log('synth midi channel', self.midi_input_channel)
@@ -66,15 +63,14 @@ export default {
   },
   methods: {
     clicked: function () {
-      console.log('clicked synth')
+      console.log('clicked synth osc type button')
       this.currentOSCTypeIndex += 1
       this.currentOSCTypeIndex %= validOSCTypes.length
       this.synth.oscillator.type = validOSCTypes[this.currentOSCTypeIndex]
     },
     change_envelope : function (v, evt) {
-      console.log('changed envelope', v, evt, evt.detail.value)
+      // console.log('changed envelope', v, evt, evt.detail.value)
       this.synth.envelope[v] = evt.detail.value
-      // console.log(this.el.userData)
     }
   }
 }
