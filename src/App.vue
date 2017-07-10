@@ -9,7 +9,7 @@
       <a-entity position="1 0 2">
          <a-entity camera look-controls-enabled='false' look-controls mouse-cursor wasd-controls></a-entity>
        </a-entity>
-
+<!--
       <a-entity position='0 0 0'>
         <a-entity rotation='90 0 0'>
           <sequencer channel='1'></sequencer>
@@ -17,9 +17,9 @@
         <a-entity position='0 -0.3 0'>
           <synth midi-input-channel-selector="channel: 1;" audio-output-channel-selector="channel: 0;"></synth>
         </a-entity>
-      </a-entity>
+      </a-entity> -->
 
-      <a-entity position='3 0 0'>
+      <a-entity position='0 0 0'>
         <a-entity rotation='90 0 0'>
           <sequencer channel='2'></sequencer>
         </a-entity>
@@ -33,7 +33,10 @@
       </a-entity>
 
       <a-entity position='1.5 -0.5 0'>
-        <chorus inputChannelName='chorus01' audio-output-channel-selector="channel: 1;"></chorus>
+        <chorus inputChannelName='chorus01' audio-output-channel-selector="channel: distortion;"></chorus>
+        <a-entity position='0 -1.1 0'>
+          <distortion inputChannelName='distortion' audio-output-channel-selector="channel: 1;"></distortion>
+        </a-entity>
       </a-entity>
 
       <!-- <sampler channel='2' note='34' sample='./audio/Clap 003.wav'></sampler>
@@ -50,6 +53,7 @@ import FMsynth from './components/FM-synth.vue'
 import Sampler from './components/Sampler.vue'
 import Mixer from './components/Mixer.vue'
 import Chorus from './components/Chorus.vue'
+import Distortion from './components/Distortion.vue'
 
 console.warn = function(){}
 
@@ -68,7 +72,8 @@ export default {
     'fm-synth': FMsynth,
     'sampler': Sampler,
     'mixer': Mixer,
-    'chorus': Chorus
+    'chorus': Chorus,
+    'distortion': Distortion
   },
   data () {
     return {

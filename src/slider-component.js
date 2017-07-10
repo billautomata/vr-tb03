@@ -56,6 +56,7 @@ window.AFRAME.registerComponent('slider', {
   },
   update: function (old) {
     var self = this
+    // console.log('update called', old)
     self.el.emit('override', { value: self.data.initialValue })
   }
 })

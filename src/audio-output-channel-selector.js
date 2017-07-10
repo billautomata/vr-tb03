@@ -8,38 +8,23 @@ AFRAME.registerComponent('audio-output-channel-selector', {
   },
   init: function () {
     console.log('audio output channel selector')
-    console.log(this.data)
-    console.log(this)
-    // append a button to the
     var self = this
+    this.connected = false
+    this.clickedOpen = false
     var indicator = document.createElement('a-box')
     self.indicator = indicator
-    window.m = self
-    // console.log('indicator', self.indicator)
     indicator.setAttribute('depth', 0.1)
     indicator.setAttribute('width', 0.1)
     indicator.setAttribute('height', 0.1)
     indicator.setAttribute('position', '0 0 0.01')
     indicator.setAttribute('color', 'blue')
-
-    console.log('audio channels', window.channels)
-
-    this.connected = false
-    this.clickedOpen = false
-
     if (this.data.channel === 'auto') {
       auto_connect()
     } else {
       auto_connect(this.data.channel)
     }
-
     indicator.addEventListener('click', function (evt) {
       self.clickedOpen = !self.clickedOpen
-      console.log('synth', self.el.object3D.userData.synth)
-      // self.el.object3D.userData.synth.disconnect()
-      console.log(indicator, self.clickedOpen)
-      window.indicator = indicator
-
       window.channels.forEach(function (c, channelIndex) {
         var o = document.createElement('a-box')
         o.setAttribute('depth', 0.1)
@@ -54,9 +39,6 @@ AFRAME.registerComponent('audio-output-channel-selector', {
           self.el.object3D.userData.synth.send(c.channel_name)
         })
       })
-
-      // list each avaialble channel
-      // if any of them are clicked disconnect the synth and connect it to that channel
     })
 
     function auto_connect (channel) {

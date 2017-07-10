@@ -17,11 +17,19 @@
       <a-entity position='0.55 0 0' scale='0.5 0.3 0.5'>
         <a-entity :slider="'initialValue: '+synth.envelope.release+';'" v-on:changed="change_envelope('release', $event)"></a-entity>
       </a-entity>
+
+      <a-entity position='0.5 -0.3 0' scale='0.75 0.75 0.75'>
+        <a-entity rotation='0 0 -90'>
+          <a-entity :slider="['initialValue: ',scales['filterEnvelope.baseFrequency'].invert(synth.filterEnvelope.baseFrequency),';'].join('')" v-on:changed="changeFilterFrequency"></a-entity>
+        </a-entity>
+      </a-entity>
+
     </a-entity>
   </a-entity>
 </template>
 
 <script>
+var d3 = require('d3')
 import { EventBus } from '../event-bus.js'
 var validOSCTypes = [ 'triangle', 'sine', 'square', 'sawtooth' ]
 
@@ -33,25 +41,41 @@ export default {
         oscillator: {
           type: ''
         },
+        filter: {
+          Q: 0
+        },
         envelope: {
           attack: 0,
           decay: 0,
           sustain: 0,
           release: 0
-        }
+        },
+        filterEnvelope: {
+          attack: 0,
+          decay: 0,
+          sustain: 0,
+          release: 0,
+          baseFrequency: 1000,
+        },
       },
       currentOSCTypeIndex: 0,
+      scales: {}
     }
+  },
+  created () {
+    this.scales['filterEnvelope.baseFrequency'] = new d3.scaleLinear().domain([0.0,1.0]).range([100, 1000])
   },
   mounted () {
     console.log('synth mounted')
     var self = this
-    this.synth = new Tone.Synth()
+    this.synth = new Tone.MonoSynth()
+    console.log(this.synth.filterEnvelope.baseFrequency)
     // assign the synth to the aframe object3d userdata so it can be used in components
     self.$nextTick(function () {
       console.log('assinging synth in next tick')
       self.$el.object3D.userData.synth = self.synth
     })
+    // this.scales['filterEnvelope.baseFrequency'] = new d3.scaleLinear().domain([0,1]).range([100, 10000])
   },
   methods: {
     clicked: function () {
@@ -63,6 +87,10 @@ export default {
     change_envelope : function (v, evt) {
       // console.log('changed envelope', v, evt, evt.detail.value)
       this.synth.envelope[v] = evt.detail.value
+    },
+    changeFilterFrequency: function (event){
+      // console.log('change filter frequency', event.detail.value, this.scales['filterEnvelope.baseFrequency'](event.detail.value))
+      this.synth.filterEnvelope.baseFrequency = this.scales['filterEnvelope.baseFrequency'](event.detail.value)
     }
   }
 }
