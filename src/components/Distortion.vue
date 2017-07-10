@@ -34,7 +34,7 @@ export default {
   mounted () {
     console.log('distortion mounted')
     var self = this
-    self.synth = new Tone.Distortion(40.0)
+    self.synth = new Tone.Distortion(4.0)
     self.synth.channel_name = self.$el.getAttribute('inputChannelName')
     self.$nextTick(function () {
       self.$el.object3D.userData.synth = self.synth

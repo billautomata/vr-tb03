@@ -12,6 +12,10 @@
       <a-entity v-on:changed="setFrequency" :slider="['initialValue: ', scales['frequency'].invert(synth.frequency.value), ';'].join('')" position='0.1 0.5 0.1' scale='0.5 0.5 0.5'>
         <a-text value='frequency' rotation='0 0 90' align='center'></a-text>
       </a-entity>
+      <a-entity v-on:changed="setFeedback" :slider="['initialValue: ', scales['feedback'].invert(synth.feedback.value), ';'].join('')" position='0.71 0.5 0.1' scale='0.5 0.5 0.5'>
+        <a-text value='feedback' rotation='0 0 90' align='center'></a-text>
+      </a-entity>
+
     </a-entity>
   </a-entity>
 </template>
@@ -38,7 +42,13 @@ export default {
             }
           }
         },
-        feedback: 0,
+        feedback: {
+          get: function (){
+            return {
+              value: 0
+            }
+          }
+        },
         frequency: {
           get: function (){
             return {
@@ -51,15 +61,15 @@ export default {
     }
   },
   created () {
-    this.scales['frequency'] = new d3.scaleLinear().domain([0.0,1.0]).range([0.0,5.0])
-    this.scales['wet'] = new d3.scaleLinear().domain([0.0,1.0]).range([0.0,1.0])
-    this.scales['depth'] = new d3.scaleLinear().domain([0.0,1.0]).range([0.0,1.0])
-    this.scales['feedback'] = d3.scaleLinear().domain([0.0,1.0]).range([0.0,1.0])
+    this.scales['frequency'] = d3.scaleLinear().domain([0.0,1.0]).range([0.0,5.0])
+    this.scales['wet'] = d3.scaleLinear().domain([0.0,1.0]).range([0.0,1.0])
+    this.scales['depth'] = d3.scaleLinear().domain([0.0,1.0]).range([0.0,1.0])
+    this.scales['feedback'] = d3.scaleLinear().domain([0.0,1.0]).range([0.0,0.1])
   },
   mounted () {
     console.log('chorus mounted')
     var self = this
-    self.synth = new Tone.Chorus(3, 1, 0.5)
+    self.synth = new Tone.Chorus(3, 3, 0.5)
     self.synth.channel_name = self.$el.getAttribute('inputChannelName')
     self.$nextTick(function () {
       self.$el.object3D.userData.synth = self.synth
@@ -82,6 +92,11 @@ export default {
       console.log(event.detail.value)
       console.log('set depth', event.detail.value)
       this.synth.set('depth', this.scales['depth'](event.detail.value))
+    },
+    setFeedback: function (event) {
+      console.log(event.detail.value)
+      console.log('set feedback', event.detail.value)
+      this.synth.set('feedback', this.scales['feedback'](event.detail.value))
     },
   }
 }
