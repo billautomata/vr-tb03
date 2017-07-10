@@ -23,20 +23,27 @@
         <a-entity rotation='90 0 0'>
           <sequencer channel='2'></sequencer>
         </a-entity>
-        <a-entity position='0 -0.3 0'>
-          <synth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: chorus01;"></synth>
+        <a-entity position='0 -0.5 0'>
+          <synth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: chorus;"></synth>
         </a-entity>
       </a-entity>
 
       <a-entity position='-2 0 0'>
-        <mixer></mixer>
+        <mixer name='primary'></mixer>
+      </a-entity>
+
+      <a-entity position='-4.1 0 0'>
+        <mixer v-for="(mixer,index) in mixers" v-bind:mixer="mixer" v-bind:index="index"></mixer>
       </a-entity>
 
       <a-entity position='1.5 -0.5 0'>
-        <freeverb inputChannelName='chorus01' audio-output-channel-selector="channel: 1;"></freeverb>
-        <!-- <chorus inputChannelName='chorus01' audio-output-channel-selector="channel: distortion;"></chorus> -->
-        <a-entity position='0 -1.1 0'>
-          <!-- <distortion inputChannelName='distortion' audio-output-channel-selector="channel: 1;"></distortion> -->
+
+        <chorus inputChannelName='chorus' audio-output-channel-selector="channel: 0;"></chorus>
+        <a-entity position='1.1 0 0'>
+          <distortion inputChannelName='distortion' audio-output-channel-selector="channel: 1;"></distortion>
+        </a-entity>
+        <a-entity position='2.2 0 0'>
+          <freeverb inputChannelName='freeverb' audio-output-channel-selector="channel: 2;"></freeverb>
         </a-entity>
       </a-entity>
 
@@ -57,14 +64,13 @@ import Chorus from './components/Chorus.vue'
 import Distortion from './components/Distortion.vue'
 import Freeverb from './components/Freeverb.vue'
 
-console.warn = function(){}
-
-// require('./slider-handle.js')
 require('./slider-component.js')
 require('./button-component.js')
 require('./level-indicator-component.js')
 require('./audio-output-channel-selector.js')
 require('./midi-input-channel-selector.js')
+
+console.warn = function(){}
 
 export default {
   name: 'app',
@@ -82,7 +88,8 @@ export default {
     return {
       started: true,
       audio_channels: [],
-      midi_channels: []
+      midi_channels: [],
+      mixers: []
     }
   },
   beforeCreate () {
@@ -104,6 +111,9 @@ export default {
   },
   mounted () {
     var self = this
+    this.mixers.push({
+      name: 'foo'
+    })
     window.channels = self.audio_channels
     setTimeout(function() {
       Tone.Transport.start()

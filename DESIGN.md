@@ -1,3 +1,7 @@
+# global transport
+* [ ] tempo control
+* [ ] sequencers are driven by a count from zero to 128 and increment the internal step based on the divisor setting
+
 # sequencer
 
 * [x] note - slider
@@ -8,6 +12,9 @@
 * [ ] output channel select
 * [ ] pattern begin step
 * [ ] pattern end step
+
+# audio channel selector
+* [ ] refresh list when open
 
 # slider / butan
 > A visual element that is locked on 2 dimensions and limited in the remaining
@@ -33,8 +40,14 @@
 # routing matrix
 
 # drum machine
+* [ ] step sequencer
+* [ ] sampler
 
+# sample library
+* [ ] list of samples
+* [ ] grab tape
+* [ ] load in to sampler object
 
 ```html
-<a-entity audioInputName='filter1' audio-output-channel-selector='auto'></a-entity>
+<a-entity inputChannelName='filter1' audio-output-channel-selector='initialValue: auto;'></a-entity>
 ```

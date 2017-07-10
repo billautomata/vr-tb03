@@ -20,14 +20,25 @@ export default {
       meters: []
     }
   },
+  props: [
+    'mixer',
+    'index'
+  ],
   mounted () {
     var self = this
-    window.smixer = self
+    console.log(this.$el.getAttribute('name'))
+    var mixerName = this.$el.getAttribute('name')
+    if(this.mixer === undefined){
+      console.log('raw mixer no props')
+    } else {
+      console.log('props configed mixer')
+      mixerName = this.mixer.name
+    }
     d3.range(0,4).forEach(function(i){
       console.log('i', i)
       var eq = new Tone.EQ3()
-      eq.receive('channel_'+i).toMaster()
-      eq.channel_name = 'channel_'+i
+      eq.receive([ mixerName, i ].join('_')).toMaster()
+      eq.channel_name = [ mixerName, i ].join('_')
       self.eqs.push(eq)
       var meter = new Tone.Meter('level')
       self.meters.push(meter)
