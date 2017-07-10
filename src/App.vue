@@ -33,9 +33,10 @@
       </a-entity>
 
       <a-entity position='1.5 -0.5 0'>
-        <chorus inputChannelName='chorus01' audio-output-channel-selector="channel: distortion;"></chorus>
+        <freeverb inputChannelName='chorus01' audio-output-channel-selector="channel: 1;"></freeverb>
+        <!-- <chorus inputChannelName='chorus01' audio-output-channel-selector="channel: distortion;"></chorus> -->
         <a-entity position='0 -1.1 0'>
-          <distortion inputChannelName='distortion' audio-output-channel-selector="channel: 1;"></distortion>
+          <!-- <distortion inputChannelName='distortion' audio-output-channel-selector="channel: 1;"></distortion> -->
         </a-entity>
       </a-entity>
 
@@ -54,6 +55,7 @@ import Sampler from './components/Sampler.vue'
 import Mixer from './components/Mixer.vue'
 import Chorus from './components/Chorus.vue'
 import Distortion from './components/Distortion.vue'
+import Freeverb from './components/Freeverb.vue'
 
 console.warn = function(){}
 
@@ -73,7 +75,8 @@ export default {
     'sampler': Sampler,
     'mixer': Mixer,
     'chorus': Chorus,
-    'distortion': Distortion
+    'distortion': Distortion,
+    'freeverb': Freeverb
   },
   data () {
     return {
