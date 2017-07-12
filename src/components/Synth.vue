@@ -64,12 +64,15 @@ export default {
   },
   created () {
     this.scales['filterEnvelope.baseFrequency'] = new d3.scaleLinear().domain([0.0,1.0]).range([100, 1000])
+    this.scales['oscillator.detune'] = new d3.scaleLinear().domain([0.0,1.0]).range([1.0, 10.0])
   },
   mounted () {
     console.log('synth mounted')
     var self = this
     this.synth = new Tone.MonoSynth()
+    window.f = this.synth
     console.log(this.synth.filterEnvelope.baseFrequency)
+    console.log(this.synth.oscillator.detune)
     // assign the synth to the aframe object3d userdata so it can be used in components
     self.$nextTick(function () {
       console.log('assinging synth in next tick')
@@ -91,7 +94,12 @@ export default {
     changeFilterFrequency: function (event){
       // console.log('change filter frequency', event.detail.value, this.scales['filterEnvelope.baseFrequency'](event.detail.value))
       this.synth.filterEnvelope.baseFrequency = this.scales['filterEnvelope.baseFrequency'](event.detail.value)
+    },
+    changeOscillatorDetune: function (event){
+      console.log('change osc detune ', event.detail.value, this.scales['filterEnvelope.baseFrequency'](event.detail.value))
+      this.synth.oscillator.set('detune', this.scales['oscillator.detune'](event.detail.value))
     }
+
   }
 }
 </script>

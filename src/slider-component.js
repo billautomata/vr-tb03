@@ -10,7 +10,10 @@ window.AFRAME.registerComponent('slider', {
     var self = this
     self.setup = false
 
-    var handleEl = document.createElement('a-sphere')
+    var handleEl = document.createElement('a-box')
+    handleEl.setAttribute('width', 0.15)
+    handleEl.setAttribute('height', 0.15)
+    handleEl.setAttribute('depth', 0.15)
     handleEl.setAttribute('radius', 0.1)
     handleEl.setAttribute('color', '#F00')
     handleEl.setAttribute('click-drag', true)
@@ -40,6 +43,7 @@ window.AFRAME.registerComponent('slider', {
     if (self.setup === false) {
       self.setup = true
       self.el.emit('override', { value: self.data.initialValue })
+      return
     }
     // clamp the x and z to zero
     self.sphere.object3D.position.x = 0

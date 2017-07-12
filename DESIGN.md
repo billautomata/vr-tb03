@@ -1,3 +1,9 @@
+## major design changes to the internal api
+Move away from having vue observe the data on the Tone objects and do a .get()/.set() in the vue update function.  Tie the slider to the vue data, but specifically do not observe the synth, or register the synth in a global object and tie to a UUID generated in the vue instance
+
+* [x] `self.el.object3D.userData.synth = synth`
+  * [x] setFrequency ... `self.el.object3D.userData.synth.set('frequency', scales['frequency'](event.detail.value))`
+
 # global transport
 * [ ] tempo control
 * [ ] sequencers are driven by a count from zero to 128 and increment the internal step based on the divisor setting
@@ -25,6 +31,8 @@
 # synth
 * [x] oscillator select
 * [x] ADSR
+* [x] filter
+* [ ] presets
 
 # sampler
 * [x] basic
@@ -33,11 +41,11 @@
 * [x] basic mixer
 * [x] level meters
 * [ ] more extensible
+  * [x] name channels using mixer name
+  * [ ] eq controls
 
-# effects
-* [x] inputs registering as outputs
-
-# routing matrix
+# save configuration
+* [ ] instruments, effects
 
 # drum machine
 * [ ] step sequencer

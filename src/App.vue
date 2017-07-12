@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <a-scene physics="debug: true;">
+    <a-scene physics="debug: true;" >
       <a-assets>
       </a-assets>
 
@@ -21,10 +21,11 @@
 
       <a-entity position='0 0 0'>
         <a-entity rotation='90 0 0'>
-          <sequencer channel='2'></sequencer>
+          <polysequencer channel='2'></polysequencer>
         </a-entity>
         <a-entity position='0 -0.5 0'>
-          <synth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: chorus;"></synth>
+          <polysynth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: primary_0;"></polysynth>
+          <!-- <synth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: filter;"></synth> -->
         </a-entity>
       </a-entity>
 
@@ -33,19 +34,19 @@
       </a-entity>
 
       <a-entity position='-4.1 0 0'>
-        <mixer v-for="(mixer,index) in mixers" v-bind:mixer="mixer" v-bind:index="index"></mixer>
+        <!-- <mixer v-for="(mixer,index) in mixers" v-bind:mixer="mixer" v-bind:index="index"></mixer> -->
       </a-entity>
 
-      <a-entity position='1.5 -0.5 0'>
+      <!-- <a-entity position='1.5 -0.5 0'>
 
-        <chorus inputChannelName='chorus' audio-output-channel-selector="channel: 0;"></chorus>
+        <filterf inputChannelName='filter' audio-output-channel-selector="channel: 0;"></filterf>
         <a-entity position='1.1 0 0'>
           <distortion inputChannelName='distortion' audio-output-channel-selector="channel: 1;"></distortion>
         </a-entity>
         <a-entity position='2.2 0 0'>
           <freeverb inputChannelName='freeverb' audio-output-channel-selector="channel: 2;"></freeverb>
         </a-entity>
-      </a-entity>
+      </a-entity> -->
 
       <!-- <sampler channel='2' note='34' sample='./audio/Clap 003.wav'></sampler>
       <sampler channel='2' note='35' sample='./audio/808 Bass A.WAV'></sampler> -->
@@ -56,6 +57,7 @@
 <script>
 import { EventBus } from './event-bus.js'
 import sequencer from './components/Sequencer.vue'
+import PolySequencer from './components/PolySequencer.vue'
 import synth from './components/Synth.vue'
 import FMsynth from './components/FM-synth.vue'
 import Sampler from './components/Sampler.vue'
@@ -63,6 +65,8 @@ import Mixer from './components/Mixer.vue'
 import Chorus from './components/Chorus.vue'
 import Distortion from './components/Distortion.vue'
 import Freeverb from './components/Freeverb.vue'
+import Filter from './components/Filter.vue'
+import PolySynth from './components/PolySynth.vue'
 
 require('./slider-component.js')
 require('./button-component.js')
@@ -82,7 +86,10 @@ export default {
     'mixer': Mixer,
     'chorus': Chorus,
     'distortion': Distortion,
-    'freeverb': Freeverb
+    'freeverb': Freeverb,
+    'filterf': Filter,
+    'polysequencer': PolySequencer,
+    'polysynth': PolySynth
   },
   data () {
     return {
