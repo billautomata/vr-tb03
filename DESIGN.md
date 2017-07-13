@@ -8,7 +8,12 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 * [x] meter/indicator
 * [x] level-indicator-component needs to have an internal scale schema
 * [x] registry of lfo inputs + connector
-* [ ] knobs for mix, max, frequency
+* [x] knobs for mix, max
+* [ ] frequency knob
+* [ ] start/stop
+* [ ] when disconnecting the lfo send an event to the synth to reset the target value of the field being LFO'd
+  * if you don't reset the value on the synth side it will remain at whatever the lfo was at the last time
+* [ ] lfo indicator component, zero centered
 
 # global transport
 * [ ] tempo control
@@ -27,6 +32,7 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 
 # audio channel selector
 * [ ] refresh list when open
+* [ ] indicate which ones are connected, multiple connections are possible
 
 # slider / butan
 > A visual element that is locked on 2 dimensions and limited in the remaining
