@@ -6,7 +6,7 @@
 
       <a-light color="white" type='point' position="0 4 2" intensity='2' distance='10'></a-light>
 
-      <a-entity position="1 0 2">
+      <a-entity position="1 0 3">
          <a-entity camera look-controls-enabled='false' mouse-cursor wasd-controls></a-entity>
        </a-entity>
 <!--
@@ -21,13 +21,13 @@
           <!-- <polysequencer channel='2'></polysequencer> -->
           <sequencer channel='1'></sequencer>
         </a-entity>
-        <a-entity position='0 -0.5 -1'>
+        <a-entity position='-2 -0.5 0'>
           <!-- <polysynth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: filter;"></polysynth> -->
           <synth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></synth>
         </a-entity>
       </a-entity>
 
-      <a-entity position='-2 0 0'>
+      <a-entity position='5 0 0'>
         <mixer name='primary'></mixer>
       </a-entity>
 
@@ -40,9 +40,8 @@
       </a-entity>
 
       <a-entity position='0 -0.5 0'>
-        <lfo></lfo>
+        <lfo lfo-output-selector></lfo>
       </a-entity>
-
 
       <!-- <a-entity position='1.1 0 0'>
         <distortion inputChannelName='distortion' audio-output-channel-selector="channel: 1;"></distortion>
@@ -78,6 +77,7 @@ require('./button-component.js')
 require('./level-indicator-component.js')
 require('./audio-output-channel-selector.js')
 require('./midi-input-channel-selector.js')
+require('./lfo-output-selector.js')
 
 console.warn = function(){}
 
@@ -103,6 +103,7 @@ export default {
       audio_channels: [],
       synths: [],
       lfos: [],
+      lfo_inputs: [],
       midi_channels: [],
       mixers: []
     }
@@ -124,6 +125,11 @@ export default {
       self.lfos.push(event)
       console.log(event.name)
     })
+    EventBus.$on('new-lfo-input', function (event) {
+      console.log('new lfo input')
+      self.lfo_inputs.push(event)
+      console.log(event.name)
+    })
 
 
     AFRAME.registerComponent('controller', {
@@ -143,6 +149,7 @@ export default {
     window.channels = self.audio_channels
     window.synth_registry = self.synths
     window.lfo_registry = self.lfos
+    window.lfo_inputs = self.lfo_inputs
     setTimeout(function() {
       Tone.Transport.start()
     }, 300)

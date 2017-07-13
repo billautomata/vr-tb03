@@ -4,11 +4,11 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 * [x] `self.el.object3D.userData.synth = synth`
   * [x] setFrequency ... `self.el.object3D.userData.synth.set('frequency', scales['frequency'](event.detail.value))`
 
-
 # LFO
 * [x] meter/indicator
 * [x] level-indicator-component needs to have an internal scale schema
-* [ ] registry of lfo targets 
+* [x] registry of lfo inputs + connector
+* [ ] knobs for mix, max, frequency
 
 # global transport
 * [ ] tempo control

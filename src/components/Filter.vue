@@ -12,6 +12,7 @@
 
 <script>
 var d3 = require('d3')
+var crapuid = require('../crapuid.js')
 import {EventBus} from '../event-bus.js'
 export default {
   name: 'filter',
@@ -29,18 +30,17 @@ export default {
     var self = this
     var synth = new Tone.Filter()
     synth.channel_name = self.$el.getAttribute('inputChannelName')
-    synth.name = [ 'filter', Number(Math.random()).toString(16).split('.')[1] ].join('_')
+    synth.name = [ 'filter', crapuid() ].join('_')
     self.$nextTick(function () {
       self.$el.object3D.userData.synth = synth
-      console.log('frequency', synth.frequency)
       synth.receive(synth.channel_name)
       EventBus.$emit('new-audio-channel', synth)
       EventBus.$emit('new-synth', synth)
+      EventBus.$emit('new-lfo-input', { name: synth.name, synth: synth, field: 'frequency' })
     })
   },
   methods: {
     setFrequency: function (event) {
-      console.log('set frequency event', event.detail.value)
       this.$el.object3D.userData.synth.frequency.value = this.scales['frequency'](event.detail.value)
     }
   }

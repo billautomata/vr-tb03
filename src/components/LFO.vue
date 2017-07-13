@@ -13,7 +13,7 @@
         <a-text value='frequency' rotation='0 0 90' align='center'></a-text>
       </a-entity> -->
     </a-entity>
-    <a-entity butan v-on:changed="resetLFO" position='0.1 -0.75 0.05'></a-entity>
+    <a-entity butan="buttonType: momentary;" v-on:changed="resetLFO" position='0.1 -0.75 0.05'></a-entity>
   </a-entity>
 </template>
 
@@ -25,7 +25,7 @@ export default {
   data () {
     return {
       min: 100.0,
-      max: 1000.0,
+      max: 500,
       amplitude: 1,
       frequency: '1n',
       scales: {}
@@ -55,6 +55,7 @@ export default {
     },
     resetLFO: function () {
       console.log('reset lfo')
+      this.$el.object3D.userData.synth.disconnect()
       this.$el.object3D.userData.synth.connect(this.$el.querySelector('#indicator').object3D.userData.indicator)
     }
   }

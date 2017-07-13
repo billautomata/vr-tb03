@@ -20,7 +20,9 @@
 
       <a-entity position='0.5 -0.3 0' scale='0.75 0.75 0.75'>
         <a-entity rotation='0 0 -90'>
-          <a-entity :slider="['initialValue: ',scales['filterEnvelope.baseFrequency'].invert(synth.filterEnvelope.baseFrequency),';'].join('')" v-on:changed="changeFilterFrequency"></a-entity>
+          <a-entity :slider="['initialValue: ',scales['filterEnvelope.baseFrequency'].invert(synth.filterEnvelope.baseFrequency),';'].join('')" v-on:changed="changeFilterFrequency">
+            <a-text value='frequency' rotation='0 0 90' align='center'></a-text>
+          </a-entity>
         </a-entity>
       </a-entity>
 
@@ -30,6 +32,7 @@
 
 <script>
 var d3 = require('d3')
+var crapuid = require('../crapuid.js')
 import { EventBus } from '../event-bus.js'
 var validOSCTypes = [ 'triangle', 'sine', 'square', 'sawtooth' ]
 
@@ -69,14 +72,14 @@ export default {
   mounted () {
     console.log('synth mounted')
     var self = this
-    this.synth = new Tone.MonoSynth()
-    window.f = this.synth
-    console.log(this.synth.filterEnvelope.baseFrequency)
-    console.log(this.synth.oscillator.detune)
+    var synth = new Tone.MonoSynth()
+    this.synth = synth
+    synth.name = [ 'synth', crapuid() ].join('_')
     // assign the synth to the aframe object3d userdata so it can be used in components
     self.$nextTick(function () {
       console.log('assinging synth in next tick')
-      self.$el.object3D.userData.synth = self.synth
+      self.$el.object3D.userData.synth = synth
+      EventBus.$emit('new-lfo-input', { name: synth.name, synth: synth, field: 'oscillator.detune' })
     })
     // this.scales['filterEnvelope.baseFrequency'] = new d3.scaleLinear().domain([0,1]).range([100, 10000])
   },
