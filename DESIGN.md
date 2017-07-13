@@ -4,6 +4,11 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 * [x] `self.el.object3D.userData.synth = synth`
   * [x] setFrequency ... `self.el.object3D.userData.synth.set('frequency', scales['frequency'](event.detail.value))`
 
+
+# LFO
+* [x] meter/indicator
+* [ ] level-indicator-component needs to have an internal scale schema 
+
 # global transport
 * [ ] tempo control
 * [ ] sequencers are driven by a count from zero to 128 and increment the internal step based on the divisor setting
@@ -48,7 +53,8 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 * [ ] instruments, effects
 
 # drum machine
-* [ ] step sequencer
+* [ ] synth sources!!!
+* [x] poly step sequencer
 * [ ] sampler
 
 # sample library

@@ -80,7 +80,7 @@ export default {
       })
       for(var j = 0; j < self.n_poly; j++){
         self.steps[i].notes.push({
-          note: Math.floor(Math.random() * 20.0) + 35.0,
+          note: Number(34+(j*2)),
           velocity: 0,
           slide: 0,
           accent: 0,
@@ -97,8 +97,6 @@ export default {
     window.p = this
 
     Tone.Transport.scheduleRepeat(function(time){
-    	// do something with the time
-      // console.log(time, 'ok')
       self.current_step += 1
       self.current_step = self.current_step % self.n_steps
       self.steps.forEach(function(s,i){
@@ -108,21 +106,16 @@ export default {
           s.active = false
         }
       })
-      //play a middle 'C' for the duration of an 8th note
-      console.log(self.steps)
-
       if(self.steps[self.current_step].notes.filter(function(o){return o.rest}).length !== 0){
         var notes = []
         self.steps[self.current_step].notes.forEach(function(n){
-          // console.log(n)
           if(n.rest === false){
             notes.push(n.note + self.transpose)
           }
         })
-        console.log(notes)
         EventBus.$emit(['channel-',self.output_channel].join(''), { type: 'poly', notes: notes, time: time })
       }
-    }, "4n");
+    }, "16n");
     console.log('Sequencer Mounted')
   }
 }

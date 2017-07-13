@@ -17,7 +17,7 @@ window.AFRAME.registerComponent('midi-input-channel-selector', {
       c = '1'
     }
     EventBus.$on(['channel-', c].join(''), function (evt) {
-      console.log('evt', evt)
+      // console.log('evt', evt)
       if (evt.type === 'poly') {
         self.el.object3D.userData.synth.triggerAttackRelease(evt.notes.map(function (o) { return window.Tone.Frequency(o, 'midi') }), '16n', evt.time)
       } else {

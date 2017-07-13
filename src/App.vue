@@ -23,8 +23,8 @@
         <a-entity rotation='90 0 0'>
           <polysequencer channel='2'></polysequencer>
         </a-entity>
-        <a-entity position='0 -0.5 0'>
-          <polysynth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: primary_0;"></polysynth>
+        <a-entity position='0 -0.5 -1'>
+          <polysynth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: filter;"></polysynth>
           <!-- <synth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: filter;"></synth> -->
         </a-entity>
       </a-entity>
@@ -37,16 +37,22 @@
         <!-- <mixer v-for="(mixer,index) in mixers" v-bind:mixer="mixer" v-bind:index="index"></mixer> -->
       </a-entity>
 
-      <!-- <a-entity position='1.5 -0.5 0'>
-
+      <a-entity position='1.5 -0.5 0'>
         <filterf inputChannelName='filter' audio-output-channel-selector="channel: 0;"></filterf>
-        <a-entity position='1.1 0 0'>
-          <distortion inputChannelName='distortion' audio-output-channel-selector="channel: 1;"></distortion>
-        </a-entity>
-        <a-entity position='2.2 0 0'>
-          <freeverb inputChannelName='freeverb' audio-output-channel-selector="channel: 2;"></freeverb>
-        </a-entity>
+      </a-entity>
+
+      <a-entity position='0 -0.5 0'>
+        <lfo></lfo>
+      </a-entity>
+
+
+      <!-- <a-entity position='1.1 0 0'>
+        <distortion inputChannelName='distortion' audio-output-channel-selector="channel: 1;"></distortion>
+      </a-entity>
+      <a-entity position='2.2 0 0'>
+        <freeverb inputChannelName='freeverb' audio-output-channel-selector="channel: 2;"></freeverb>
       </a-entity> -->
+
 
       <!-- <sampler channel='2' note='34' sample='./audio/Clap 003.wav'></sampler>
       <sampler channel='2' note='35' sample='./audio/808 Bass A.WAV'></sampler> -->
@@ -67,6 +73,7 @@ import Distortion from './components/Distortion.vue'
 import Freeverb from './components/Freeverb.vue'
 import Filter from './components/Filter.vue'
 import PolySynth from './components/PolySynth.vue'
+import Lfo from './components/LFO.vue'
 
 require('./slider-component.js')
 require('./button-component.js')
@@ -89,12 +96,15 @@ export default {
     'freeverb': Freeverb,
     'filterf': Filter,
     'polysequencer': PolySequencer,
-    'polysynth': PolySynth
+    'polysynth': PolySynth,
+    'lfo': Lfo
   },
   data () {
     return {
       started: true,
       audio_channels: [],
+      synths: [],
+      lfos: [],
       midi_channels: [],
       mixers: []
     }
@@ -106,6 +116,17 @@ export default {
       self.audio_channels.push(event)
       console.log(event.channel_name)
     })
+    EventBus.$on('new-synth', function (event) {
+      console.log('new synth channels')
+      self.synths.push(event)
+      console.log(event.name)
+    })
+    EventBus.$on('new-lfo', function (event) {
+      console.log('new lfo')
+      self.lfos.push(event)
+      console.log(event.name)
+    })
+
 
     AFRAME.registerComponent('controller', {
       init: function () {
@@ -122,6 +143,8 @@ export default {
       name: 'foo'
     })
     window.channels = self.audio_channels
+    window.synth_registry = self.synths
+    window.lfo_registry = self.lfos
     setTimeout(function() {
       Tone.Transport.start()
     }, 300)
