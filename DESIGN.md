@@ -7,7 +7,8 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 
 # LFO
 * [x] meter/indicator
-* [ ] level-indicator-component needs to have an internal scale schema 
+* [x] level-indicator-component needs to have an internal scale schema
+* [ ] registry of lfo targets 
 
 # global transport
 * [ ] tempo control

@@ -7,13 +7,10 @@
       <a-light color="white" type='point' position="0 4 2" intensity='2' distance='10'></a-light>
 
       <a-entity position="1 0 2">
-         <a-entity camera look-controls-enabled='false' look-controls mouse-cursor wasd-controls></a-entity>
+         <a-entity camera look-controls-enabled='false' mouse-cursor wasd-controls></a-entity>
        </a-entity>
 <!--
       <a-entity position='0 0 0'>
-        <a-entity rotation='90 0 0'>
-          <sequencer channel='1'></sequencer>
-        </a-entity>
         <a-entity position='0 -0.3 0'>
           <synth midi-input-channel-selector="channel: 1;" audio-output-channel-selector="channel: 0;"></synth>
         </a-entity>
@@ -21,11 +18,12 @@
 
       <a-entity position='0 0 0'>
         <a-entity rotation='90 0 0'>
-          <polysequencer channel='2'></polysequencer>
+          <!-- <polysequencer channel='2'></polysequencer> -->
+          <sequencer channel='1'></sequencer>
         </a-entity>
         <a-entity position='0 -0.5 -1'>
-          <polysynth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: filter;"></polysynth>
-          <!-- <synth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: filter;"></synth> -->
+          <!-- <polysynth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: filter;"></polysynth> -->
+          <synth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></synth>
         </a-entity>
       </a-entity>
 

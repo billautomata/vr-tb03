@@ -8,11 +8,14 @@ window.AFRAME.registerComponent('level-indicator', {
     this.default_bevahior = true
     if (this.data.min !== 0.0 || this.data.max !== 0.0) {
       this.default_behavior = false
-      this.scale = d3.scaleLinear().domain([ this.data.min, this.data.max ]).range([ 0.0, 1.0 ])
+      // this.scale = d3.scaleLinear().domain([ this.data.min, this.data.max ]).range([ 0.0, 1.0 ])
     }
   },
   tick: function () {
     return this.indicate()
+  },
+  update: function () {
+    this.scale = d3.scaleLinear().domain([ this.data.min, this.data.max ]).range([ 0.0, 1.0 ])
   },
   indicate: function () {
     var v = this.el.object3D.userData.indicator.get('value').value
