@@ -11,7 +11,6 @@
       </a-entity>
       <a-entity  position='0.55 0.5 0.1' v-on:changed="slideSet('harmonicity', $event)" :slider="['initialValue: ', scales['harmonicity'].invert(harmonicity), ';'].join('')" scale='0.5 0.5 0.5'>
         <a-text position='-0.12 0 0' value='harmonicity' rotation='0 0 90' align='center'></a-text>
-        <!-- <a-text position='0.12 0 0' :value="type" rotation='0 0 90' align='center'></a-text> -->
       </a-entity>
       <a-entity  position='0.7 0.5 0.1' v-on:changed="slideSet('oscillator.type', $event)" :slider="['initialValue: ', scales['oscillator.type'].invertExtent(oscillator.type)[0], ';'].join('')" scale='0.5 0.5 0.5'>
         <a-text position='-0.12 0 0' value='osc type' rotation='0 0 90' align='center'></a-text>

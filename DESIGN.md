@@ -6,6 +6,9 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
     * `self.frequency = scales['frequency'](event.detail.value)`
     * `self.el.object3D.userData.synth.set('frequency', scales['frequency'](event.detail.value))`
 
+# presets
+* [ ] presets with vue directives, setting the value of the vm.$data when using the slider sets the values !!!!!!!
+
 # LFO
 * [x] meter/indicator
 * [x] level-indicator-component needs to have an internal scale schema
@@ -14,17 +17,24 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 * [x] frequency knob
 * [x] start/stop
 * [x] lfo indicator component, zero centered
+* [ ] range selector for multiplier for min max, [-1,1] or [-10,10] or [-100,100] or [-1000,1000]
 * [ ] when disconnecting the lfo send an event to the synth to reset the target value of the field being LFO'd
   * if you don't reset the value on the synth side it will remain at whatever the lfo was at the last time
 
 # synths
 * [ ] rebuild monosynth
 * [ ] fm synth
-* [ ] metal synth 
+* [ ] metal synth
+* [x] DuoSynth
+* [x] raw PolySynth
+  * [ ] expandable polysynth
 
 # global transport
 * [ ] tempo control
 * [ ] sequencers are driven by a count from zero to 128 and increment the internal step based on the divisor setting
+
+# chord progression sequencer
+* [ ] choose a key
 
 # sequencer
 * [x] note - slider
@@ -39,13 +49,7 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 # audio channel selector component
 * [ ] refresh list when open
 * [ ] indicate which ones are connected, multiple connections are possible
-* [ ] check for an array of channels, fan out to them
-
-# slider / butan
-> A visual element that is locked on 2 dimensions and limited in the remaining
-
-* user set properties: initialValue
-* events: changed (value was changed), override (set value [0,1])
+* [ ] check for an array of channels specified on initial value, fan out to them
 
 # synth
 * [x] oscillator select
@@ -75,7 +79,3 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 * [ ] list of samples
 * [ ] grab tape
 * [ ] load in to sampler object
-
-```html
-<a-entity inputChannelName='filter1' audio-output-channel-selector='initialValue: auto;'></a-entity>
-```

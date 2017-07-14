@@ -21,7 +21,7 @@
           <sequencer channel='1' scale='2 2 2'></sequencer>
         </a-entity>
         <a-entity position='-2 -0.5 0'>
-          <polysynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></polysynth>
+          <polysynth v-presets midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></polysynth>
           <!-- <duosynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></duosynth>  -->
           <!-- <fmsynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></fmsynth> -->
           <!-- <synth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></synth> -->
@@ -31,7 +31,7 @@
         <lfo lfo-output-selector></lfo>
       </a-entity>
       <a-entity position='1 -0.5 0'>
-        <filterf inputChannelName='filter' audio-output-channel-selector="channel: analyser;"></filterf>
+        <filterf v-presets  inputChannelName='filter' audio-output-channel-selector="channel: analyser;"></filterf>
       </a-entity>
       <a-entity position='2.5 -0.3 0'>
         <analyser analyser-display analyser-type='waveform' inputChannelName='analyser' audio-output-channel-selector="channel: analyser-fft;"></analyser>
@@ -86,6 +86,7 @@ require('./audio-output-channel-selector.js')
 require('./midi-input-channel-selector.js')
 require('./lfo-output-selector.js')
 require('./analyser-display-component.js')
+require('./vue-preset-directive.js')
 
 console.warn = function(){}
 
@@ -119,6 +120,9 @@ export default {
     }
   },
   beforeCreate () {
+
+
+
     var self = this
     EventBus.$on('new-audio-channel', function (event) {
       console.log('new audio channels')

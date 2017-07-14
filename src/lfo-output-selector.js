@@ -81,13 +81,3 @@ AFRAME.registerComponent('lfo-output-selector', {
     // console.log(this.el.object3D.userData.synth)
   }
 })
-
-// import Vue from 'vue'
-// Vue.directive('audio-output-channel-selector', {
-//   inserted: function (el, bindings, vnode) {
-//     // console.log(vnode)
-//     // var synth = vnode.$data
-//     // console.log('VUE audio output channel selector inserted')
-//     // console.log(synth)
-//   }
-// })
