@@ -21,7 +21,8 @@ export default {
   mounted () {
     console.log('filter mounted')
     var self = this
-    var synth = new Tone.PolySynth()
+    var synth = new Tone.PolySynth(6)
+    synth.set('detune', -500)
     synth.channel_name = self.$el.getAttribute('inputChannelName')
     self.$nextTick(function () {
       self.$el.object3D.userData.synth = synth

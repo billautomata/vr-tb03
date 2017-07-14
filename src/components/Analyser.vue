@@ -41,8 +41,8 @@ export default {
   },
   created () {
     var self = this
-    this.scales['pos_x'] = d3.scaleLinear().domain([0,this.size]).range([0.0,0.8])
-    this.scales['pos_y'] = d3.scaleLinear().domain([0,255]).range([-0.5,0.0])
+    this.scales['pos_x'] = d3.scaleLinear().domain([0,this.size]).range([0.0,0.9])
+    this.scales['pos_y'] = d3.scaleLinear().domain([0,255]).range([-0.6,0.0])
     d3.range(0,this.size).forEach(function(b,i){
       self.indicator_boxes.push({
         v: 0
@@ -53,8 +53,12 @@ export default {
     // this.scales['type'] = d3.scaleQuantile().domain([0.0,1.0]).range(['lowpass', 'bandpass', 'highpass'])
   },
   mounted () {
-    console.log('analyser mounted')
     var self = this
+    console.log('analyser mounted')
+    this.type = this.$el.getAttribute('analyser-type')
+    if(this.type === 'waveform'){
+      this.size = 1024
+    }
     var synth = new Tone.Analyser(this.type, this.size)
     synth.channel_name = self.$el.getAttribute('inputChannelName')
     synth.name = [ 'analyser', crapuid() ].join('_')

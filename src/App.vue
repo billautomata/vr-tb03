@@ -21,7 +21,9 @@
           <sequencer channel='1' scale='2 2 2'></sequencer>
         </a-entity>
         <a-entity position='-2 -0.5 0'>
-          <duosynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></duosynth> 
+          <polysynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></polysynth>
+          <!-- <duosynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></duosynth>  -->
+          <!-- <fmsynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></fmsynth> -->
           <!-- <synth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></synth> -->
         </a-entity>
       </a-entity>
@@ -31,8 +33,11 @@
       <a-entity position='1 -0.5 0'>
         <filterf inputChannelName='filter' audio-output-channel-selector="channel: analyser;"></filterf>
       </a-entity>
-      <a-entity position='2.5 -0.5 0'>
-        <analyser analyser-display inputChannelName='analyser' audio-output-channel-selector="channel: 0;"></analyser>
+      <a-entity position='2.5 -0.3 0'>
+        <analyser analyser-display analyser-type='waveform' inputChannelName='analyser' audio-output-channel-selector="channel: analyser-fft;"></analyser>
+      </a-entity>
+      <a-entity position='2.5 -1.5 0'>
+        <analyser analyser-display analyser-type='fft' inputChannelName='analyser-fft' audio-output-channel-selector="channel: 0;"></analyser>
       </a-entity>
       <a-entity position='5 0 0'>
         <mixer name='primary'></mixer>
@@ -62,7 +67,7 @@ import { EventBus } from './event-bus.js'
 import sequencer from './components/Sequencer.vue'
 import PolySequencer from './components/PolySequencer.vue'
 import synth from './components/Synth.vue'
-import FMsynth from './components/FM-synth.vue'
+import FMSynth from './components/FMSynth.vue'
 import Sampler from './components/Sampler.vue'
 import Mixer from './components/Mixer.vue'
 import Chorus from './components/Chorus.vue'
@@ -89,7 +94,7 @@ export default {
   components: {
     'sequencer': sequencer,
     'synth': synth,
-    'fm-synth': FMsynth,
+    'fmsynth': FMSynth,
     'sampler': Sampler,
     'mixer': Mixer,
     'chorus': Chorus,
