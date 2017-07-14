@@ -25,7 +25,8 @@ export default {
   name: 'filter',
   data () {
     return {
-      frequency: 5120,
+      registryType: 'filter',
+      frequency: 32,
       Q: 1,
       type: 'lowpass',
       scales: {}
@@ -41,9 +42,6 @@ export default {
     var self = this
     var synth = new Tone.Filter()
     synth.channel_name = self.$el.getAttribute('inputChannelName')
-    setTimeout(function(){
-      self.frequency = 0
-    },5000)
     synth.name = [ 'filter', crapuid() ].join('_')
     self.$nextTick(function () {
       self.$el.object3D.userData.synth = synth

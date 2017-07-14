@@ -31,7 +31,7 @@
         <lfo lfo-output-selector></lfo>
       </a-entity>
       <a-entity position='1 -0.5 0'>
-        <filterf v-presets  inputChannelName='filter' audio-output-channel-selector="channel: analyser;"></filterf>
+        <filterf v-presets inputChannelName='filter' audio-output-channel-selector="channel: analyser;"></filterf>
       </a-entity>
       <a-entity position='2.5 -0.3 0'>
         <analyser analyser-display analyser-type='waveform' inputChannelName='analyser' audio-output-channel-selector="channel: analyser-fft;"></analyser>

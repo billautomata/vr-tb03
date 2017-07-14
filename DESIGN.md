@@ -7,7 +7,10 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
     * `self.el.object3D.userData.synth.set('frequency', scales['frequency'](event.detail.value))`
 
 # presets
-* [ ] presets with vue directives, setting the value of the vm.$data when using the slider sets the values !!!!!!!
+* [x] presets with vue directives, setting the value of the vm.$data when using the slider sets the values !!!!!!!
+* [x] save preset to local storage
+* [x] check for clones by value and registry type
+* [ ] add ui for loading and saving presets 
 
 # LFO
 * [x] meter/indicator
