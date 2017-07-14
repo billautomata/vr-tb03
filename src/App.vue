@@ -17,9 +17,9 @@
       </a-entity> -->
 
       <a-entity position='0 0 0'>
-        <a-entity rotation='90 0 0'>
+        <a-entity rotation='90 0 0' position='0 0.3 0'>
           <!-- <polysequencer channel='2'></polysequencer> -->
-          <sequencer channel='1'></sequencer>
+          <sequencer channel='1' scale='2 2 2'></sequencer>
         </a-entity>
         <a-entity position='-2 -0.5 0'>
           <!-- <polysynth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: filter;"></polysynth> -->

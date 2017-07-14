@@ -18,10 +18,10 @@
         <a-entity :slider="'initialValue: '+synth.envelope.release+';'" v-on:changed="change_envelope('release', $event)"></a-entity>
       </a-entity>
 
-      <a-entity position='0.5 -0.3 0' scale='0.75 0.75 0.75'>
+      <a-entity position='0.5 -0.4 0' scale='0.75 0.75 0.75'>
         <a-entity rotation='0 0 -90'>
           <a-entity :slider="['initialValue: ',scales['filterEnvelope.baseFrequency'].invert(synth.filterEnvelope.baseFrequency),';'].join('')" v-on:changed="changeFilterFrequency">
-            <a-text value='frequency' rotation='0 0 90' align='center'></a-text>
+            <a-text position='-0.12 0 0' value='fltr freq' rotation='0 0 90' align='center'></a-text>
           </a-entity>
         </a-entity>
       </a-entity>

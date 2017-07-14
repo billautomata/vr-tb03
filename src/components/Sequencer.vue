@@ -11,7 +11,7 @@
         <a-entity position='0 0 -0.2' rotation='0 0 0' scale='0.5 0.5 0.5'>
           <a-entity rotation='90 180 0' scale='0.5 0.5 0.5' :slider="'initialValue: '+scale.invert(step.note)+';'" v-on:changed="setNoteSlider(index, $event)"></a-entity>
           <a-box color='#AAA' position='0 -0.01 -0.4' scale='0.13 0.01 0.13'></a-box>
-          <a-text :value='step.note' rotation='-90 0 0' color='#F0F' position='0 0.01 -0.4' scale='0.4 0.4 0.4' align='center'></a-text>
+          <a-text :value='step.note' rotation='-90 0 0' color='#FFF' position='0 0.01 -0.4' scale='0.4 0.4 0.4' align='center'></a-text>
         </a-entity>
         <a-sphere :id='indicator-light' position='0 -0.02 0.12' scale='0.05 0.05 0.05' :color='step.active ? "#0F0" : "#F00"' radius='0.5'></a-sphere>
       </a-entity>

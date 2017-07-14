@@ -14,9 +14,9 @@ AFRAME.registerComponent('lfo-output-selector', {
     var indicator = document.createElement('a-box')
     self.indicator = indicator
     indicator.setAttribute('depth', 0.1)
-    indicator.setAttribute('width', 0.3)
+    indicator.setAttribute('width', 0.1)
     indicator.setAttribute('height', 0.1)
-    indicator.setAttribute('position', '0 0 0.01')
+    indicator.setAttribute('position', '0 -1.0 0.01')
     indicator.setAttribute('color', 'orange')
     var display_parent = document.createElement('a-entity')
     display_parent.setAttribute('position', '-0.1 0 0.25')
@@ -31,10 +31,10 @@ AFRAME.registerComponent('lfo-output-selector', {
         console.log('here, open')
         if (display_parent.children.length === 0) {
           var back = document.createElement('a-box')
-          back.setAttribute('width', 1)
+          back.setAttribute('width', 2.1)
           back.setAttribute('height', 1)
           back.setAttribute('depth', 0.05)
-          back.setAttribute('position', '-0.5 -0.4 -0.05')
+          back.setAttribute('position', '-1.05 -0.4 -0.05')
           display_parent.appendChild(back)
           // first time open, add the boxes
           console.log('creating box elements')
@@ -69,9 +69,7 @@ AFRAME.registerComponent('lfo-output-selector', {
           display_parent.object3D.visible = true
         }
       }
-
     })
-
     self.el.appendChild(display_parent)
     self.el.appendChild(indicator)
   },
