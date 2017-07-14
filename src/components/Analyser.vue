@@ -56,7 +56,6 @@ export default {
     console.log('analyser mounted')
     var self = this
     var synth = new Tone.Analyser(this.type, this.size)
-    window.zed = synth
     synth.channel_name = self.$el.getAttribute('inputChannelName')
     synth.name = [ 'analyser', crapuid() ].join('_')
     self.$nextTick(function () {

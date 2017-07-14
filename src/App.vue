@@ -21,7 +21,8 @@
           <sequencer channel='1' scale='2 2 2'></sequencer>
         </a-entity>
         <a-entity position='-2 -0.5 0'>
-          <synth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></synth>
+          <duosynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></duosynth> 
+          <!-- <synth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></synth> -->
         </a-entity>
       </a-entity>
       <a-entity position='-0.5 -0.5 0'>
@@ -71,6 +72,7 @@ import Filter from './components/Filter.vue'
 import PolySynth from './components/PolySynth.vue'
 import Lfo from './components/LFO.vue'
 import Analyser from './components/Analyser.vue'
+import DuoSynth from './components/DuoSynth.vue'
 
 require('./slider-component.js')
 require('./button-component.js')
@@ -97,7 +99,8 @@ export default {
     'polysequencer': PolySequencer,
     'polysynth': PolySynth,
     'lfo': Lfo,
-    'analyser': Analyser
+    'analyser': Analyser,
+    'duosynth': DuoSynth
   },
   data () {
     return {

@@ -25,7 +25,7 @@ export default {
   name: 'filter',
   data () {
     return {
-      frequency: 512,
+      frequency: 5120,
       Q: 1,
       type: 'lowpass',
       scales: {}
