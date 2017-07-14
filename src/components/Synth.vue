@@ -58,7 +58,7 @@ export default {
           decay: 0,
           sustain: 0,
           release: 0,
-          baseFrequency: 1000,
+          baseFrequency: 10000,
         },
       },
       currentOSCTypeIndex: 0,
@@ -66,7 +66,7 @@ export default {
     }
   },
   created () {
-    this.scales['filterEnvelope.baseFrequency'] = new d3.scaleLinear().domain([0.0,1.0]).range([100, 1000])
+    this.scales['filterEnvelope.baseFrequency'] = new d3.scaleLinear().domain([0.0,1.0]).range([100, 10000])
     this.scales['oscillator.detune'] = new d3.scaleLinear().domain([0.0,1.0]).range([1.0, 10.0])
   },
   mounted () {

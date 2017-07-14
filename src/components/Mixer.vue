@@ -2,10 +2,10 @@
   <a-entity id='mixer'>
     <a-box depth='0.1' width='2' height='2' color="#cad"></a-box>
     <a-text value='MIXER' position='0 -0.75 0.1' rotation='0 0 0' align='center'></a-text>
-    <a-entity class='channel0' id='0' v-on:changed="setLevel" slider='initialValue: 0.01;' position='-0.75 0 0.1'></a-entity>
-    <a-entity class='channel1' id='1' v-on:changed="setLevel" slider='initialValue: 0.5;' position='-0.25 0 0.1'></a-entity>
-    <a-entity class='channel2' id='2' v-on:changed="setLevel" slider='initialValue: 0.01;' position='0.25 0 0.1'></a-entity>
-    <a-entity class='channel3' id='3' v-on:changed="setLevel" slider='initialValue: 0.01;' position='0.75 0 0.1'></a-entity>
+    <a-entity class='channel0' id='0' v-on:changed="setLevel" slider='initialValue: 0.1;' position='-0.75 0 0.1'></a-entity>
+    <a-entity class='channel1' id='1' v-on:changed="setLevel" slider='initialValue: 0.2;' position='-0.25 0 0.1'></a-entity>
+    <a-entity class='channel2' id='2' v-on:changed="setLevel" slider='initialValue: 0.3;' position='0.25 0 0.1'></a-entity>
+    <a-entity class='channel3' id='3' v-on:changed="setLevel" slider='initialValue: 0.4;' position='0.75 0 0.1'></a-entity>
   </a-entity>
 </template>
 

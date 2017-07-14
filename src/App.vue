@@ -18,30 +18,25 @@
 
       <a-entity position='0 0 0'>
         <a-entity rotation='90 0 0' position='0 0.3 0'>
-          <!-- <polysequencer channel='2'></polysequencer> -->
           <sequencer channel='1' scale='2 2 2'></sequencer>
         </a-entity>
         <a-entity position='-2 -0.5 0'>
-          <!-- <polysynth midi-input-channel-selector="channel: 2;"  audio-output-channel-selector="channel: filter;"></polysynth> -->
           <synth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></synth>
         </a-entity>
       </a-entity>
-
+      <a-entity position='-0.5 -0.5 0'>
+        <lfo lfo-output-selector></lfo>
+      </a-entity>
+      <a-entity position='1 -0.5 0'>
+        <filterf inputChannelName='filter' audio-output-channel-selector="channel: analyser;"></filterf>
+      </a-entity>
+      <a-entity position='2.5 -0.5 0'>
+        <analyser analyser-display inputChannelName='analyser' audio-output-channel-selector="channel: 0;"></analyser>
+      </a-entity>
       <a-entity position='5 0 0'>
         <mixer name='primary'></mixer>
       </a-entity>
 
-      <a-entity position='-4.1 0 0'>
-        <!-- <mixer v-for="(mixer,index) in mixers" v-bind:mixer="mixer" v-bind:index="index"></mixer> -->
-      </a-entity>
-
-      <a-entity position='1.5 -0.5 0'>
-        <filterf inputChannelName='filter' audio-output-channel-selector="channel: 0;"></filterf>
-      </a-entity>
-
-      <a-entity position='0 -0.5 0'>
-        <lfo lfo-output-selector></lfo>
-      </a-entity>
 
       <!-- <a-entity position='1.1 0 0'>
         <distortion inputChannelName='distortion' audio-output-channel-selector="channel: 1;"></distortion>
@@ -49,6 +44,10 @@
       <a-entity position='2.2 0 0'>
         <freeverb inputChannelName='freeverb' audio-output-channel-selector="channel: 2;"></freeverb>
       </a-entity> -->
+
+      <a-entity position='-4.1 0 0'>
+        <!-- <mixer v-for="(mixer,index) in mixers" v-bind:mixer="mixer" v-bind:index="index"></mixer> -->
+      </a-entity>
 
 
       <!-- <sampler channel='2' note='34' sample='./audio/Clap 003.wav'></sampler>
@@ -71,6 +70,7 @@ import Freeverb from './components/Freeverb.vue'
 import Filter from './components/Filter.vue'
 import PolySynth from './components/PolySynth.vue'
 import Lfo from './components/LFO.vue'
+import Analyser from './components/Analyser.vue'
 
 require('./slider-component.js')
 require('./button-component.js')
@@ -78,6 +78,7 @@ require('./level-indicator-component.js')
 require('./audio-output-channel-selector.js')
 require('./midi-input-channel-selector.js')
 require('./lfo-output-selector.js')
+require('./analyser-display-component.js')
 
 console.warn = function(){}
 
@@ -95,7 +96,8 @@ export default {
     'filterf': Filter,
     'polysequencer': PolySequencer,
     'polysynth': PolySynth,
-    'lfo': Lfo
+    'lfo': Lfo,
+    'analyser': Analyser
   },
   data () {
     return {
@@ -130,6 +132,9 @@ export default {
       self.lfo_inputs.push(event)
       console.log(event.name)
     })
+
+
+
 
 
     AFRAME.registerComponent('controller', {

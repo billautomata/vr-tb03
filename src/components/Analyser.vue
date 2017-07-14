@@ -1,8 +1,16 @@
 <template>
-  <a-entity id='filter'>
+  <a-entity id='analyser'>
     <a-box width='1' height='1' depth='0.1' color='#303' position='0.5 -0.5 0'></a-box>
-    <a-text value='FILTER' position='0.5 -0.85 0.1' rotation='0 0 0' align='center'></a-text>
-    <a-entity rotation='0 0 -90'>
+    <a-text value='ANALYSER' position='0.5 -0.85 0.1' rotation='0 0 0' scale='0.8 0.8 0.8' align='center'></a-text>
+
+    <a-entity id='indicator-boxes'>
+      <a-box v-for='(box,index) in indicator_boxes'
+        :box="box" :index="index"
+        :position="[scales['pos_x'](index), scales['pos_y'](box.v), '0.05'].join(' ')"
+        color='white' :width="scales['pos_x'](1)" :height="scales['pos_x'](1)" :depth="scales['pos_x'](1)"></a-box>
+    </a-entity>
+
+    <!-- <a-entity rotation='0 0 -90'>
       <a-entity position='0.2 0.5 0.1' v-on:changed="slideSet('frequency', $event)" :slider="['initialValue: ', scales['frequency'].invert(frequency), ';'].join('')" scale='0.5 0.5 0.5'>
         <a-text position='-0.12 0 0' value='frequency' rotation='0 0 90' align='center'></a-text>
       </a-entity>
@@ -13,7 +21,7 @@
         <a-text position='-0.12 0 0' value='type' rotation='0 0 90' align='center'></a-text>
         <a-text position='0.12 0 0' :value="type" rotation='0 0 90' align='center'></a-text>
       </a-entity>
-    </a-entity>
+    </a-entity> -->
   </a-entity>
 </template>
 
@@ -22,32 +30,40 @@ var d3 = require('d3')
 var crapuid = require('../crapuid.js')
 import {EventBus} from '../event-bus.js'
 export default {
-  name: 'filter',
+  name: 'analyser',
   data () {
     return {
-      frequency: 512,
-      Q: 1,
-      type: 'lowpass',
+      type: 'fft',
+      size: 128,
+      indicator_boxes: [],
       scales: {}
     }
   },
   created () {
-    this.scales['frequency'] = d3.scaleLinear().domain([0.0,1.0]).range([100.0,10000.0])
-    this.scales['Q'] = d3.scaleLinear().domain([0.0,1.0]).range([0.0,20.0])
-    this.scales['type'] = d3.scaleQuantile().domain([0.0,1.0]).range(['lowpass', 'bandpass', 'highpass'])
+    var self = this
+    this.scales['pos_x'] = d3.scaleLinear().domain([0,this.size]).range([0.0,0.8])
+    this.scales['pos_y'] = d3.scaleLinear().domain([0,255]).range([-0.5,0.0])
+    d3.range(0,this.size).forEach(function(b,i){
+      self.indicator_boxes.push({
+        v: 0
+      })
+    })
+    // this.scales['frequency'] = d3.scaleLinear().domain([0.0,1.0]).range([100.0,1000.0])
+    // this.scales['Q'] = d3.scaleLinear().domain([0.0,1.0]).range([0.0,20.0])
+    // this.scales['type'] = d3.scaleQuantile().domain([0.0,1.0]).range(['lowpass', 'bandpass', 'highpass'])
   },
   mounted () {
-    console.log('filter mounted')
+    console.log('analyser mounted')
     var self = this
-    var synth = new Tone.Filter()
+    var synth = new Tone.Analyser(this.type, this.size)
+    window.zed = synth
     synth.channel_name = self.$el.getAttribute('inputChannelName')
-    synth.name = [ 'filter', crapuid() ].join('_')
+    synth.name = [ 'analyser', crapuid() ].join('_')
     self.$nextTick(function () {
       self.$el.object3D.userData.synth = synth
+      self.$el.object3D.userData.indicator_boxes = self.indicator_boxes
       synth.receive(synth.channel_name)
       EventBus.$emit('new-audio-channel', synth)
-      EventBus.$emit('new-synth', synth)
-      EventBus.$emit('new-lfo-input', { name: synth.name, synth: synth, field: 'frequency' })
     })
   },
   methods: {

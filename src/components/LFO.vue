@@ -4,7 +4,7 @@
     <a-text value='LFO' position='0.5 -0.85 0.1' rotation='0 0 0' align='center'></a-text>
     <a-entity rotation='0 0 -90'>
       <a-box id='indicator'
-        :level-indicator="['min: ', min, '; max: ', max, ';'].join('')"
+        :level-indicator="['min: ', min, '; max: ', max, ';'].join('') + ' indicatorType: box;'"
         depth='0.1' width='0.1' position='0.03 0 0.01'></a-box>
       <a-entity v-on:changed="setAmplitude" :slider="['initialValue: ', scales['amplitude'].invert(amplitude), ';'].join('')" position='0.5 0.5 0.1' scale='0.5 0.5 0.5'>
         <a-text position='-0.12 0 0' value='amplitude' rotation='0 0 90' align='center'></a-text>
@@ -18,10 +18,6 @@
       <a-entity v-on:changed="slideSet('frequency', $event)" :slider="['initialValue: ', scales['frequency'].invertExtent(frequency)[0], ';'].join('')" position='0.65 0.5 0.1' scale='0.5 0.5 0.5'>
         <a-text position='-0.12 0 0' value='frequency' rotation='0 0 90' align='center'></a-text>
       </a-entity>
-
-      <!-- <a-entity v-on:changed="setFrequency" :slider="['initialValue: ', scales['frequency'].invert(frequency), ';'].join('')" position='0.1 0.5 0.1' scale='0.5 0.5 0.5'>
-        <a-text value='frequency' rotation='0 0 90' align='center'></a-text>
-      </a-entity> -->
     </a-entity>
     <a-entity butan="buttonType: momentary;" v-on:changed="resetLFO" position='0.1 -0.75 0.05'></a-entity>
     <a-entity butan="buttonType: toggle; initialValue: false;" v-on:changed="toggleStart" position='0.9 -0.75 0.05'></a-entity>
@@ -46,9 +42,9 @@ export default {
   },
   created () {
     this.scales['amplitude'] = d3.scaleLinear().domain([0.0,1.0]).range([0.0,1.0])
-    this.scales['min'] = d3.scaleLinear().domain([0.0,1.0]).range([-1000.0,1000.0])
-    this.scales['max'] = d3.scaleLinear().domain([0.0,1.0]).range([-1000.0,1000.0])
     this.scales['frequency'] = d3.scaleQuantile().domain([0.0,1.0]).range(['1n', '2n', '4n', '8n', '16n'])
+    this.scales['max'] = d3.scaleLinear().domain([0.0,1.0]).range([-1000.0,1000.0])
+    this.scales['min'] = d3.scaleLinear().domain([0.0,1.0]).range([-1000.0,1000.0])
   },
   mounted () {
     console.log('lfo mounted')
@@ -72,7 +68,7 @@ export default {
     },
     setAmplitude: function (event) {
       this.amplitude = this.scales['amplitude'](event.detail.value)
-      console.log('setting amplitude', this.amplitude)
+      // console.log('setting amplitude', this.amplitude)
       this.$el.object3D.userData.synth.set('amplitude', this.scales['amplitude'](event.detail.value))
     },
     resetLFO: function () {

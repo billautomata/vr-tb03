@@ -76,6 +76,7 @@ AFRAME.registerComponent('audio-output-channel-selector', {
 
     function auto_connect (channel) {
       if (Number.isNaN(Number(channel))) {
+        // is the channel a name?
         self.el.object3D.userData.synth.send(channel)
       } else {
         if (channel === undefined) {

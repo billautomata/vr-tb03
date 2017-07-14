@@ -1,7 +1,8 @@
 window.AFRAME.registerComponent('level-indicator', {
   schema: {
     min: { type: 'number', default: 0.0 },
-    max: { type: 'number', default: 1.0 }
+    max: { type: 'number', default: 1.0 },
+    indicatorType: { type: 'string', default: 'default' }
   },
   init: function () {
     var d3 = require('d3')
@@ -23,8 +24,13 @@ window.AFRAME.registerComponent('level-indicator', {
       this.el.object3D.children[0].position.y = v * 0.5
       this.el.object3D.children[0].scale.y = v * 1.0
     } else {
-      this.el.object3D.children[0].position.y = this.scale(v) * 0.5
-      this.el.object3D.children[0].scale.y = this.scale(v) * 1.0
+      if(this.data.indicatorType === 'default'){
+        this.el.object3D.children[0].position.y = this.scale(v) * 0.5
+        this.el.object3D.children[0].scale.y = this.scale(v) * 1.0
+      } else {
+        this.el.object3D.children[0].position.y = this.scale(v)
+        this.el.object3D.children[0].scale.y = 0.1
+      }
     }
   }
 })
