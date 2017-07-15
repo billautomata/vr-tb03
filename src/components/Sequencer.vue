@@ -9,7 +9,7 @@
           <!-- <a-entity :ui-toggle="'value: '+(step.rest === true ? 0 : 1)+';'" v-on:change="step.rest = !step.rest" :id="'toggle' + index"></a-entity> -->
         </a-entity>
         <a-entity position='0 0 -0.2' rotation='0 0 0' scale='0.5 0.5 0.5'>
-          <a-entity rotation='90 180 0' scale='0.5 0.5 0.5' :slider="'initialValue: '+scale.invert(step.note)+';'" v-on:changed="setNoteSlider(index, $event)"></a-entity>
+          <a-entity rotation='90 180 0' scale='0.5 0.5 0.5' :slider="'initialValue: '+scales.note.invert(step.note)+';'" v-on:changed="setNoteSlider(index, $event)"></a-entity>
           <a-box color='#AAA' position='0 -0.01 -0.4' scale='0.13 0.01 0.13'></a-box>
           <a-text :value='step.note' rotation='-90 0 0' color='#FFF' position='0 0.01 -0.4' scale='0.4 0.4 0.4' align='center'></a-text>
         </a-entity>
@@ -39,22 +39,32 @@ export default {
   name: 'Sequencer',
   data () {
     return {
+      registryType: 'step-sequencer',
       current_step: 0,
       n_steps: 16,
       steps: [],
       transpose: 0,
-      scale: d3.scaleLinear().domain([ 0.0, 1.0 ]).range([ 34, 60 ]),
+      scales: {
+        note: d3.scaleLinear().domain([ 0.0, 1.0 ]).range([ 34, 60 ])
+      },
       output_channel: 1
     }
   },
-  updated () {
-    // console.log('updated 2')
+  created () {
+    var self = this
+    for(var i = 0; i < self.n_steps; i++){
+      self.steps.push({
+        note: Math.floor(Math.random() * 20.0) + 35.0,
+        active: false,
+        rest: Math.random() < 0.5 ? true : false
+      })
+    }
   },
   methods: {
     setNoteSlider: function (index, evt) {
       var o = evt.detail
       // console.log('set note slider', evt)
-      this.steps[index].note = Math.floor(this.scale(o.value))
+      this.steps[index].note = Math.floor(this.scales.note(o.value))
     },
     setTranspose : function (evt) {
       this.transpose = transposeScale(evt.detail.value)
@@ -65,28 +75,27 @@ export default {
         step.note = Math.floor(Math.random() * 20.0) + 35.0
         step.rest = Math.random() < 0.5 ? true : false
       })
+    },
+    loadPreset : function (evt) {
+      console.log('load preset called on Seqeuncer', evt)
+      var o = evt.detail
+      this.n_steps = o.n_steps
+      this.steps.forEach(function (s,i) {
+        s.note = o.steps[i].note
+        s.rest = o.steps[i].rest
+      })
+      this.transpose = o.transpose
     }
   },
   mounted () {
     console.log('sequencer mounted')
     var self = this
 
+    self.$el.addEventListener('load-preset', self.loadPreset)
     self.output_channel = self.$el.getAttribute('channel')
 
-    window.r = self.scale
-    for(var i = 0; i < self.n_steps; i++){
-      self.steps.push({
-        note: Math.floor(Math.random() * 20.0) + 35.0,
-        velocity: 0,
-        slide: 0,
-        accent: 0,
-        active: false,
-        rest: Math.random() < 0.5 ? true : false
-      })
-    }
+    // setup the tick of the sequencer
     Tone.Transport.scheduleRepeat(function(time){
-    	// do something with the time
-      // console.log(time, 'ok')
       self.current_step += 1
       self.current_step = self.current_step % self.n_steps
       self.steps.forEach(function(s,i){
@@ -96,12 +105,10 @@ export default {
           s.active = false
         }
       })
-      //play a middle 'C' for the duration of an 8th note
       if(self.steps[self.current_step].rest === false){
         EventBus.$emit(['channel-',self.output_channel].join(''), { type: 'mono', note: self.steps[self.current_step].note + self.transpose, time: time })
       }
     }, "16n");
-    console.log('Sequencer Mounted')
   }
 }
 </script>

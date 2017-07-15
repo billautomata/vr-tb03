@@ -18,17 +18,17 @@
 
       <a-entity position='0 0 0'>
         <a-entity rotation='90 0 0' position='0 0.3 0'>
-          <sequencer channel='1' scale='2 2 2'></sequencer>
+          <sequencer v-presets channel='1' scale='2 2 2'></sequencer>
         </a-entity>
         <a-entity position='-2 -0.5 0'>
-          <polysynth v-presets midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></polysynth>
+          <polysynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></polysynth>
           <!-- <duosynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></duosynth>  -->
           <!-- <fmsynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></fmsynth> -->
           <!-- <synth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></synth> -->
         </a-entity>
       </a-entity>
       <a-entity position='-0.5 -0.5 0'>
-        <lfo lfo-output-selector></lfo>
+        <lfo v-presets lfo-output-selector></lfo>
       </a-entity>
       <a-entity position='1 -0.5 0'>
         <filterf v-presets inputChannelName='filter' audio-output-channel-selector="channel: analyser;"></filterf>
@@ -79,14 +79,14 @@ import Lfo from './components/LFO.vue'
 import Analyser from './components/Analyser.vue'
 import DuoSynth from './components/DuoSynth.vue'
 
-require('./slider-component.js')
-require('./button-component.js')
-require('./level-indicator-component.js')
-require('./audio-output-channel-selector.js')
-require('./midi-input-channel-selector.js')
-require('./lfo-output-selector.js')
-require('./analyser-display-component.js')
-require('./vue-preset-directive.js')
+require('./lib/slider-component.js')
+require('./lib/button-component.js')
+require('./lib/level-indicator-component.js')
+require('./lib/audio-output-channel-selector.js')
+require('./lib/midi-input-channel-selector.js')
+require('./lib/lfo-output-selector.js')
+require('./lib/analyser-display-component.js')
+require('./lib/vue-preset-directive.js')
 
 console.warn = function(){}
 
@@ -120,9 +120,6 @@ export default {
     }
   },
   beforeCreate () {
-
-
-
     var self = this
     EventBus.$on('new-audio-channel', function (event) {
       console.log('new audio channels')
@@ -144,11 +141,6 @@ export default {
       self.lfo_inputs.push(event)
       console.log(event.name)
     })
-
-
-
-
-
     AFRAME.registerComponent('controller', {
       init: function () {
         console.log('loaded controller')

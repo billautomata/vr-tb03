@@ -26,7 +26,7 @@ export default {
   data () {
     return {
       registryType: 'filter',
-      frequency: 32,
+      frequency: 5120,
       Q: 1,
       type: 'lowpass',
       scales: {}
@@ -46,8 +46,9 @@ export default {
     self.$nextTick(function () {
       self.$el.object3D.userData.synth = synth
       synth.receive(synth.channel_name)
-      EventBus.$emit('new-audio-channel', synth)
-      EventBus.$emit('new-synth', synth)
+      EventBus.$emit('new-synth', synth)          // add me to the list of things
+      EventBus.$emit('new-audio-channel', synth)  // add me to the list of audio inputs
+      // add 'frequency' and my synth object to the list of available LFO targets
       EventBus.$emit('new-lfo-input', { name: synth.name, synth: synth, field: 'frequency' })
     })
   },

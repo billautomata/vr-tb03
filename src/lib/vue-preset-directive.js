@@ -1,8 +1,5 @@
 import Vue from 'vue'
 Vue.directive('presets', {
-  inserted: function (el, bindings, vnode) {
-
-  },
   bind: function (el, bindings, vnode) {
     window.el = el
     window.bindings = bindings
@@ -11,7 +8,10 @@ Vue.directive('presets', {
     console.log(Object.keys(el.__vue__.$data))
     window.q = el.__vue__
     setupPresets()
-    savePreset(el.__vue__.$data)
+    // savePreset(el.__vue__.$data)
+  },
+  inserted: function (el, bindings, vnode) {
+    readPresets(el.__vue__.$data, el)
   }
 })
 
@@ -22,7 +22,7 @@ function savePreset (data) {
   } else {
     var m = getPresets()
     var o = {}
-    Object.keys(data).filter(function (o) { return (o !== 'scales' && o !== 'registryType') }).forEach(function (p) {
+    Object.keys(data).filter(function (o) { return (o !== 'scales' && o !== 'registryType' && o.slice(0,1) !== '_') }).forEach(function (p) {
       // console.log('savePreset', p, data[p])
       o[p] = data[p]
     })
@@ -40,6 +40,12 @@ function savePreset (data) {
 
 function getPresets () {
   return JSON.parse(window.localStorage.getItem('presets'))
+}
+
+function readPresets (data, el) {
+  var localPresets = getPresets()[data.registryType]
+  console.log('emitting preset')
+  el.emit('load-preset', localPresets.pop())
 }
 
 function setupPresets () {
@@ -61,8 +67,6 @@ function setupPresets () {
 function isClone (a,array) {
   var clone = false
   var clones_found = 0
-  // console.log('savePreset array', array)
-  var all_match = true
 
   array.forEach(function (b) {
     var all_match = true

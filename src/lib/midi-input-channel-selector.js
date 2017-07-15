@@ -1,5 +1,5 @@
 // component that listens for midi channel messages and triggers the synth
-import {EventBus} from './event-bus.js'
+import {EventBus} from '../event-bus.js'
 
 window.AFRAME.registerComponent('midi-input-channel-selector', {
   schema: {

@@ -32,11 +32,12 @@ export default {
   name: 'lfo',
   data () {
     return {
+      registryType: 'lfo',
       min: -100.0,
       max: 500,
       amplitude: 1,
       frequency: '1n',
-      started: false,
+      _started: false,
       scales: {}
     }
   },
@@ -78,8 +79,8 @@ export default {
     },
     toggleStart: function () {
       var self = this
-      this.started = !this.started
-      if(this.started === true){
+      this._started = !this._started
+      if(this._started === true){
         self.$el.object3D.userData.synth.start()
       } else {
         self.$el.object3D.userData.synth.stop()
