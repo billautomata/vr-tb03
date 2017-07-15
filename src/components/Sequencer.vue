@@ -51,7 +51,7 @@ export default {
       scales: {
         note: d3.scaleLinear().domain([ 0.0, 1.0 ]).range([ 34, 60 ])
       },
-      output_channel: 1
+      _output_channel: 1
     }
   },
   created () {
@@ -96,7 +96,7 @@ export default {
     var self = this
 
     self.$el.addEventListener('load-preset', self.loadPreset)
-    self.output_channel = self.$el.getAttribute('channel')
+    self._output_channel = self.$el.getAttribute('midi-output-channel')
 
     // setup the tick of the sequencer
     Tone.Transport.scheduleRepeat(function(time){
@@ -110,7 +110,7 @@ export default {
         }
       })
       if(self.steps[self.current_step].rest === false){
-        EventBus.$emit(['channel-',self.output_channel].join(''), { type: 'mono', note: self.steps[self.current_step].note + self.transpose, time: time })
+        EventBus.$emit(['channel-',self._output_channel].join(''), { type: 'mono', note: self.steps[self.current_step].note + self.transpose, time: time })
       }
     }, "16n");
   }

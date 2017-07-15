@@ -27,16 +27,12 @@ export default {
   ],
   mounted () {
     var self = this
-    console.log(this.$el.getAttribute('name'))
     var mixerName = this.$el.getAttribute('name')
     if(this.mixer === undefined){
-      console.log('raw mixer no props')
     } else {
-      console.log('props configed mixer')
       mixerName = this.mixer.name
     }
     d3.range(0,4).forEach(function(i){
-      console.log('i', i)
       var eq = new Tone.EQ3()
       eq.receive([ mixerName, i ].join('_')).toMaster()
       eq.channel_name = [ mixerName, i ].join('_')
@@ -60,7 +56,6 @@ export default {
     })
     // publish the inputs
     this.eqs.forEach(function (m,idx) {
-      console.log(m.channel_name)
       EventBus.$emit('new-audio-channel', m)
     })
   },

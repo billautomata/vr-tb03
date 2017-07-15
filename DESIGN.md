@@ -2,26 +2,15 @@
 Move away from having vue observe the data on the Tone objects and do a .get()/.set() in the vue update function.  Tie the slider to the vue data, but specifically do not observe the synth, or register the synth in a global object and tie to a UUID generated in the vue instance
 
 ## api design
-* [ ] write a document for how to create a synth module, the required fields and methods and events
-  * [ ] scales & slider initialization
-  * [ ] toggle buttons
-  * [ ] `setSlider` and the vue instance data with nested fields - `synth.oscillator.detune` `synth.voice0.oscillator.detune`
-  * [ ] assign the `synth` object to the `object3D.userData.synth` field
-  * [ ] `loadPresets` vue instance methods
-  * [ ] emitting events to the global registry, synth, audio output
-
-* [x] `self.el.object3D.userData.synth = synth`
-  * [x] setFrequency ...
-    * `self.frequency = scales['frequency'](event.detail.value)`
-    * `self.el.object3D.userData.synth.set('frequency', scales['frequency'](event.detail.value))`
+* [x] write a document for how to create a synth module, the required fields and methods and events
 
 # presets
 * [x] presets with vue directives, setting the value of the vm.$data when using the slider sets the values !!!!!!!
 * [x] save preset to local storage
 * [x] check for clones by value and registry type
 * [x] add ui for loading and saving presets
-  * [ ] delete saved preset  ui
-  * [ ] event on the menu indicator to append a new child if a preset is saved, live update
+  * [ ] button to delete saved preset
+  * [ ] menuIndicator listens for 'refresh' events
 * [x] load presets
 * [ ] flag to decide to load preset if found
 * [ ] non vr preset viewer and editor, names, values, etc
@@ -86,6 +75,7 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 
 # save global configuration
 * [ ] instruments, effects, connections (lfo, audio)
+* [ ] listen for .send() events for audio
 
 # drum machine
 * [ ] synth sources!!!

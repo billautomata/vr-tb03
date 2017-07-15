@@ -12,7 +12,7 @@
 
       <a-entity position='0 0 0'>
         <a-entity position='-0.5 1.8 0' scale='2 2 2'>
-          <sequencer movable v-presets channel='1'></sequencer>
+          <sequencer movable v-presets midi-output-channel='1'></sequencer>
         </a-entity>
         <a-entity position='-2 -0.5 0'>
           <polysynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></polysynth>
