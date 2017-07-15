@@ -1,16 +1,65 @@
 import Vue from 'vue'
 Vue.directive('presets', {
   bind: function (el, bindings, vnode) {
-    window.el = el
-    window.bindings = bindings
-    window.vnode = vnode
-    console.log('bind', el.__vue__.$data)
-    console.log(Object.keys(el.__vue__.$data))
-    window.q = el.__vue__
     setupPresets()
+    var data = el.__vue__.$data
+
+    var indicator = document.createElement('a-box')
+    indicator.setAttribute('depth', 0.1)
+    indicator.setAttribute('width', 0.1)
+    indicator.setAttribute('height', 0.1)
+    indicator.setAttribute('position', '-0.1 -0.65 0.01')
+    indicator.setAttribute('color', 'purple')
+
+    var indicatorSavePreset = document.createElement('a-box')
+    indicatorSavePreset.setAttribute('depth', 0.1)
+    indicatorSavePreset.setAttribute('width', 0.1)
+    indicatorSavePreset.setAttribute('height', 0.1)
+    indicatorSavePreset.setAttribute('position', '-0.1 -0.5 0.01')
+    indicatorSavePreset.setAttribute('color', 'gold')
+
+    indicatorSavePreset.addEventListener('click', function (event) {
+      savePreset(el.__vue__.$data)
+    })
+
+    el.appendChild(indicator)
+    el.appendChild(indicatorSavePreset)
+
+    var menuDisplayParent = document.createElement('a-entity')
+    menuDisplayParent.setAttribute('position', '-0.1 0 0')
+    indicator.appendChild(menuDisplayParent)
+
+    indicator.addEventListener('click', function (event) {
+      console.log('preset event listener clicked')
+      var m = getPresets()[data.registryType]
+      console.log(m)
+      if (m === undefined || m.length === 0) {
+        return
+      }
+      console.log(menuDisplayParent.children)
+      // menuDisplayParent.object3D.visible = menuDisplayParent.object3D.visible
+      if (menuDisplayParent.hasChildNodes() === false) {
+        console.log('creating child nodes')
+        m.forEach(function (preset, index) {
+          var presetButton = document.createElement('a-box')
+          presetButton.setAttribute('scale', '0.1 0.1 0.1')
+          presetButton.setAttribute('position', [ -0.1, (index * 0.11), 0.1 ].join(' '))
+          presetButton.setAttribute('color', '#3366FF')
+          presetButton.addEventListener('click', function (event) {
+            event.preventDefault()
+            event.stopPropagation()
+            console.log('preset', preset)
+            el.__vue__.loadPreset(preset)
+          })
+          menuDisplayParent.appendChild(presetButton)
+        })
+      }
+    })
+
     // savePreset(el.__vue__.$data)
   },
   inserted: function (el, bindings, vnode) {
+    console.log('inserted', el)
     readPresets(el.__vue__.$data, el)
   }
 })
@@ -22,7 +71,7 @@ function savePreset (data) {
   } else {
     var m = getPresets()
     var o = {}
-    Object.keys(data).filter(function (o) { return (o !== 'scales' && o !== 'registryType' && o.slice(0,1) !== '_') }).forEach(function (p) {
+    Object.keys(data).filter(function (o) { return (o !== 'scales' && o !== 'registryType' && o.slice(0, 1) !== '_') }).forEach(function (p) {
       // console.log('savePreset', p, data[p])
       o[p] = data[p]
     })
@@ -44,8 +93,9 @@ function getPresets () {
 
 function readPresets (data, el) {
   var localPresets = getPresets()[data.registryType]
-  console.log('emitting preset')
-  el.emit('load-preset', localPresets.pop())
+  if (localPresets !== undefined && localPresets.length !== 0) {
+    el.__vue__.loadPreset(localPresets.pop())
+  }
 }
 
 function setupPresets () {
@@ -64,31 +114,25 @@ function setupPresets () {
   // console.log('savePreset setupPresets correctly', k)
 }
 
-function isClone (a,array) {
+function isClone (a, array) {
   var clone = false
-  var clones_found = 0
-
+  var clonesFound = 0
   array.forEach(function (b) {
-    var all_match = true
+    var allMatch = true
     Object.keys(a).forEach(function (n) {
       if (a[n] !== b[n]) {
-        // console.log('savePreset setting all_match to false')
-        all_match = false
+        allMatch = false
       }
     })
-    if (all_match === true) {
-      clones_found += 1
+    if (allMatch === true) {
+      clonesFound += 1
     }
   })
-  if (clones_found !== 0) {
-    // console.log('savePreset setting clone to true because clonse found is not zero, ', clones_found)
+  if (clonesFound !== 0) {
     clone = true
   }
   if (array.length === 0) {
-    // console.log('savePreset setting cloen to false because array.length = 0')
     clone = false
   }
-
-  // console.log('savePreset returning', clone)
   return clone
 }

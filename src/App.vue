@@ -17,7 +17,7 @@
       </a-entity> -->
 
       <a-entity position='0 0 0'>
-        <a-entity rotation='90 0 0' position='0 0.3 0'>
+        <a-entity position='-0.5 1.8 0'>
           <sequencer v-presets channel='1' scale='2 2 2'></sequencer>
         </a-entity>
         <a-entity position='-2 -0.5 0'>
@@ -28,10 +28,10 @@
         </a-entity>
       </a-entity>
       <a-entity position='-0.5 -0.5 0'>
-        <lfo v-presets lfo-output-selector></lfo>
+        <lfo lfo-output-selector></lfo>
       </a-entity>
       <a-entity position='1 -0.5 0'>
-        <filterf v-presets inputChannelName='filter' audio-output-channel-selector="channel: analyser;"></filterf>
+        <filterf inputChannelName='filter' audio-output-channel-selector="channel: analyser;"></filterf>
       </a-entity>
       <a-entity position='2.5 -0.3 0'>
         <analyser analyser-display analyser-type='waveform' inputChannelName='analyser' audio-output-channel-selector="channel: analyser-fft;"></analyser>
