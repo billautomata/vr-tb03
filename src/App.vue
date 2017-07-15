@@ -17,8 +17,8 @@
       </a-entity> -->
 
       <a-entity position='0 0 0'>
-        <a-entity position='-0.5 1.8 0'>
-          <sequencer v-presets channel='1' scale='2 2 2'></sequencer>
+        <a-entity position='-0.5 1.8 0' scale='2 2 2'>
+          <sequencer movable v-presets channel='1'></sequencer>
         </a-entity>
         <a-entity position='-2 -0.5 0'>
           <polysynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></polysynth>
@@ -40,7 +40,7 @@
         <analyser analyser-display analyser-type='fft' inputChannelName='analyser-fft' audio-output-channel-selector="channel: 0;"></analyser>
       </a-entity>
       <a-entity position='5 0 0'>
-        <mixer name='primary'></mixer>
+        <mixer movable name='primary'></mixer>
       </a-entity>
 
 
@@ -87,6 +87,7 @@ require('./lib/midi-input-channel-selector.js')
 require('./lib/lfo-output-selector.js')
 require('./lib/analyser-display-component.js')
 require('./lib/vue-preset-directive.js')
+require('./lib/movable-component.js')
 
 console.warn = function(){}
 
@@ -166,6 +167,9 @@ export default {
   methods : {
     indicate_change: function (evt) {
       console.log('changed!', evt.detail)
+    },
+    elementDrag: function (event) {
+      console.log('element drag', event)
     }
   }
 }
