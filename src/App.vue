@@ -9,12 +9,6 @@
       <a-entity position="1 0 3">
          <a-entity camera look-controls-enabled='false' mouse-cursor wasd-controls></a-entity>
        </a-entity>
-<!--
-      <a-entity position='0 0 0'>
-        <a-entity position='0 -0.3 0'>
-          <synth midi-input-channel-selector="channel: 1;" audio-output-channel-selector="channel: 0;"></synth>
-        </a-entity>
-      </a-entity> -->
 
       <a-entity position='0 0 0'>
         <a-entity position='-0.5 1.8 0' scale='2 2 2'>
@@ -43,7 +37,6 @@
         <mixer movable name='primary'></mixer>
       </a-entity>
 
-
       <!-- <a-entity position='1.1 0 0'>
         <distortion inputChannelName='distortion' audio-output-channel-selector="channel: 1;"></distortion>
       </a-entity>
@@ -51,13 +44,9 @@
         <freeverb inputChannelName='freeverb' audio-output-channel-selector="channel: 2;"></freeverb>
       </a-entity> -->
 
-      <a-entity position='-4.1 0 0'>
-        <!-- <mixer v-for="(mixer,index) in mixers" v-bind:mixer="mixer" v-bind:index="index"></mixer> -->
-      </a-entity>
-
-
-      <!-- <sampler channel='2' note='34' sample='./audio/Clap 003.wav'></sampler>
-      <sampler channel='2' note='35' sample='./audio/808 Bass A.WAV'></sampler> -->
+      <!-- <a-entity position='-4.1 0 0'>
+        <mixer v-for="(mixer,index) in mixers" v-bind:mixer="mixer" v-bind:index="index"></mixer>
+      </a-entity> -->
     </a-scene>
   </div>
 </template>
