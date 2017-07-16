@@ -51,7 +51,7 @@ export default {
     synth.name = object_name
     self.$nextTick(function () {
       self.$el.object3D.userData.synth = synth
-      synth.receive(synth.channel_name) // move to audio-input-channel-selector component
+      synth.receive(synth.channel_name)           // move to audio-input-channel-selector component
       EventBus.$emit('new-synth', synth)          // add me to the list of things
       EventBus.$emit('new-audio-channel', synth)  // add me to the list of audio inputs
       // add 'frequency' and my synth object to the list of available LFO targets

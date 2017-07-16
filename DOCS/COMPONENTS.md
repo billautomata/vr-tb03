@@ -15,13 +15,13 @@
 
 ```html
 <!-- app -->
-<foo movable
-  :foo="foo"
+<foo
+  :_synth="foo"
   name='foo left'
-  v-presets
+  v-presets movable
   midi-input-channel-selector="channel: 1;"
   audio-output-channel-selector="channel: filter;"
-  audio-input-channel-selector="channel: foo_left"
+  audio-input-channel-selector="channel: foo_left" // TODO
   (optional) analyser-display analyser-type="waveform|fft" lfo-output-selector >
 </foo>
 ```

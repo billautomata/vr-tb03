@@ -1,27 +1,34 @@
 ## major design changes to the internal api
 Move away from having vue observe the data on the Tone objects and do a .get()/.set() in the vue update function.  Tie the slider to the vue data, but specifically do not observe the synth, or register the synth in a global object and tie to a UUID generated in the vue instance
 
-## scene descriptions
-* query the scene by id for the synthesizers `document.querySelectorAll('a-entity#Sequencer').object3D.userData` and `.position` and `.rotation`
-* access the vue element from the `.__vue__.$data`
-* get presets information from a vue component method `.__vue__.methodName()`, or use all the data values that aren't scales or prefixed with an underscore ( _ )
-* get the positions of the elements - `document.querySelectorAll('a-entity#mixer').forEach(function(o){console.log(o.object3D.getWorldPosition())})`
-* get the proper `.name` of the synth to use in the connection registry setup, get it from the name Attribute on the DOM element
-* create a registry of connections to run after the scene loads `filter_349839d9` connects to `channel: 0` or `channel: distortion`
-  * find them again by running the querySelectorAll on the registryType
+## instantiate type block
+* [ ] click block > menu appears > click type 'LFO' > creates the element by putting it on the vue master list
+
+## rewrite components to use new setup for presets, slideSet
+* [x] Filter
+* [x] Sequencer
+* [x] LFO
+* [x] DuoSynth
+* [ ] Chorus
+* [ ] Distortion
+* [ ] Freeverb
+* [ ] PolySynth
+* [ ] Synth
+* [o] AutoFilter
+* [ ] BitCrusher
 
 ## api design
 * [x] write a document for how to create a synth module, the required fields and methods and events
+* [ ] can this work? store the scales[field].domain([0,1]).range(v) information in the slider attributes for automatic setup! `scaleRange=['highpass', 'lowpass', 'bandpass']; scaleType=quantile;`
 
 # live load
-* document.createElement('mixer') works!
+* [x] document.createElement('mixer') works!
 
-# component, audio input channel selector
+# component, audio input channel selector for Effects
 > performs the .receive call on the channel name
 
 * [ ] `audio-input-channel-selector="channel: filter"`
 * [ ] analog of the output channel selector
-* [ ] reads the inputChannelName attribute
 
 # presets vue directive
 * [x] presets with vue directives, setting the value of the vm.$data when using the slider sets the values !!!!!!!
@@ -31,7 +38,7 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
   * [x] button to delete saved preset
   * [x] menuIndicator listens for 'refresh' events
 * [x] load presets method assigned to the vue instance
-* [ ] flag to decide to load preset if found, or load a preset value by name from the named preset values used in the scene interop lists 
+* [ ] flag to decide to load preset if found, or load a preset value by name from the named preset values used in the scene interop lists
 * [ ] non vr preset viewer and editor, names, values, etc
 * [x] automatically load a preset if found
 

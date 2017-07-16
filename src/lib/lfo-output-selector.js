@@ -17,7 +17,7 @@ AFRAME.registerComponent('lfo-output-selector', {
     indicator.setAttribute('width', 0.1)
     indicator.setAttribute('height', 0.1)
     indicator.setAttribute('position', '0 -1.0 0.01')
-    indicator.setAttribute('color', 'orange')
+    indicator.setAttribute('color', 'teal')
     var display_parent = document.createElement('a-entity')
     display_parent.setAttribute('position', '-0.1 0 0.25')
     indicator.addEventListener('click', function (evt) {

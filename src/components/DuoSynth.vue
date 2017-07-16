@@ -80,7 +80,7 @@ export default {
     synth.name = [ 'DuoSynth', crapuid() ].join('_')  // TODO: get the name from the attribute
     self.$nextTick(function () {
       if(self._synth !== undefined){
-        // how do I load the preset values from the prop if
+        // how do I load the preset values from the prop if there is no slider doing the automatic update?
         console.log('there is a prop, running load preset with the prop information')
         console.log(self)
         self.loadPreset(self, self._synth)
