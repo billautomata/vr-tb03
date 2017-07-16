@@ -1,19 +1,28 @@
 ## major design changes to the internal api
 Move away from having vue observe the data on the Tone objects and do a .get()/.set() in the vue update function.  Tie the slider to the vue data, but specifically do not observe the synth, or register the synth in a global object and tie to a UUID generated in the vue instance
 
+## scene descriptions
+* query the scene by id for the synthesizers `document.querySelectorAll('a-entity#Sequencer').object3D.userData` and `.position` and `.rotation`
+* access the vue element from the `.__vue__.$data`
+* get presets information from a vue component method `.__vue__.methodName()`
+* get the proper `.name` of the synth to use in the connection registry setup
+* create a registry of connections to run after the scene loads `filter_349839d9` connects to `channel: 0` or `channel: distortion`
+  * find them again by running the querySelectorAll on the registryType
+
 ## api design
 * [x] write a document for how to create a synth module, the required fields and methods and events
 
-# presets
+# presets vue directive
 * [x] presets with vue directives, setting the value of the vm.$data when using the slider sets the values !!!!!!!
 * [x] save preset to local storage
 * [x] check for clones by value and registry type
 * [x] add ui for loading and saving presets
-  * [ ] button to delete saved preset
-  * [ ] menuIndicator listens for 'refresh' events
+  * [x] button to delete saved preset
+  * [x] menuIndicator listens for 'refresh' events
 * [x] load presets
 * [ ] flag to decide to load preset if found
 * [ ] non vr preset viewer and editor, names, values, etc
+* [ ] port to an a-frame component?
 
 # LFO
 * [x] meter/indicator

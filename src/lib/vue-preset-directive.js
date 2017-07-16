@@ -29,7 +29,7 @@ Vue.directive('presets', {
     el.appendChild(indicatorSavePreset)
 
     var menuDisplayParent = document.createElement('a-entity')
-    menuDisplayParent.setAttribute('position', '-0.1 0 0')
+    menuDisplayParent.setAttribute('position', '-0.11 0 0.05')
     indicator.appendChild(menuDisplayParent)
 
     indicator.addEventListener('click', function (event) {
@@ -53,7 +53,7 @@ Vue.directive('presets', {
         m.forEach(function (preset, index) {
           var presetButton = document.createElement('a-box')
           presetButton.setAttribute('scale', '0.1 0.1 0.1')
-          presetButton.setAttribute('position', [ -0.1, (index * 0.11), 0.01 ].join(' '))
+          presetButton.setAttribute('position', [ 0, (index * 0.11), 0 ].join(' '))
           presetButton.setAttribute('color', '#3366FF')
           presetButton.addEventListener('click', function (event) {
             event.preventDefault()
@@ -89,7 +89,7 @@ function deletePreset (registryType, presetIndex, populatePresets) {
   console.log('got asked to delete preset', registryType, presetIndex)
   var p = getPresets()
   var m = p[registryType]
-  if(m === undefined){
+  if (m === undefined) {
     return
   }
   console.log(m[presetIndex])
@@ -147,7 +147,6 @@ function setupPresets () {
       return setupPresets()
     }
   }
-  // console.log('savePreset setupPresets correctly', k)
 }
 
 function isClone (a, array) {

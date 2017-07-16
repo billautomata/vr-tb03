@@ -26,6 +26,7 @@
       </a-entity>
       <a-entity position='-0.5 -0.5 0'>
         <lfo lfo-output-selector></lfo>
+        <lfo lfo-output-selector></lfo>
       </a-entity>
       <a-entity position='1 -0.5 0'>
         <filterf inputChannelName='filter' audio-output-channel-selector="channel: analyser;"></filterf>
