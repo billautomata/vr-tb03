@@ -11,8 +11,6 @@
          <a-entity camera look-controls-enabled='false' mouse-cursor wasd-controls></a-entity>
        </a-entity>
 
-
-
       <a-entity position='0 0 0'>
         <a-entity position='-0.5 1.8 0' scale='2 2 2'>
           <sequencer movable v-presets midi-output-channel='1'></sequencer>
@@ -26,10 +24,12 @@
       </a-entity>
       <a-entity position='-0.5 -0.5 0'>
         <lfo lfo-output-selector></lfo>
-        <lfo lfo-output-selector></lfo>
+        <a-entity position='0 -1.1 0'>
+          <lfo lfo-output-selector></lfo>
+        </a-entity>
       </a-entity>
       <a-entity position='1 -0.5 0'>
-        <filterf inputChannelName='filter' audio-output-channel-selector="channel: analyser;"></filterf>
+        <filterf name='filter one' inputChannelName='filter' audio-output-channel-selector="channel: analyser;"></filterf>
       </a-entity>
       <a-entity position='2.5 -0.3 0'>
         <analyser analyser-display analyser-type='waveform' inputChannelName='analyser' audio-output-channel-selector="channel: analyser-fft;"></analyser>

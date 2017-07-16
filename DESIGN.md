@@ -16,6 +16,13 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 # live load
 * document.createElement('mixer') ?
 
+# component, audio input channel selector
+> performs the .receive call on the channel name
+
+* [ ] `audio-input-channel-selector="channel: filter"`
+* [ ] analog of the output channel selector
+* [ ] reads the inputChannelName
+
 # presets vue directive
 * [x] presets with vue directives, setting the value of the vm.$data when using the slider sets the values !!!!!!!
 * [x] save preset to local storage
