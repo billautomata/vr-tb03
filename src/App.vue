@@ -5,10 +5,13 @@
       </a-assets>
 
       <a-light color="white" type='point' position="0 4 2" intensity='2' distance='10'></a-light>
+      <a-sky color="#3366FF"></a-sky>
 
       <a-entity position="1 0 3">
          <a-entity camera look-controls-enabled='false' mouse-cursor wasd-controls></a-entity>
        </a-entity>
+
+
 
       <a-entity position='0 0 0'>
         <a-entity position='-0.5 1.8 0' scale='2 2 2'>

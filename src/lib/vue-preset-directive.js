@@ -8,18 +8,21 @@ Vue.directive('presets', {
     indicator.setAttribute('depth', 0.1)
     indicator.setAttribute('width', 0.1)
     indicator.setAttribute('height', 0.1)
-    indicator.setAttribute('position', '-0.1 -0.65 0.01')
+    indicator.setAttribute('position', '0 -0.65 0.01')
     indicator.setAttribute('color', 'purple')
 
     var indicatorSavePreset = document.createElement('a-box')
     indicatorSavePreset.setAttribute('depth', 0.1)
     indicatorSavePreset.setAttribute('width', 0.1)
     indicatorSavePreset.setAttribute('height', 0.1)
-    indicatorSavePreset.setAttribute('position', '-0.1 -0.5 0.01')
+    indicatorSavePreset.setAttribute('position', '0 -0.8 0.01')
     indicatorSavePreset.setAttribute('color', 'gold')
 
     indicatorSavePreset.addEventListener('click', function (event) {
+      event.preventDefault()
+      event.stopPropagation()
       savePreset(el.__vue__.$data)
+      populatePresets()
     })
 
     el.appendChild(indicator)
@@ -30,6 +33,13 @@ Vue.directive('presets', {
     indicator.appendChild(menuDisplayParent)
 
     indicator.addEventListener('click', function (event) {
+      event.preventDefault()
+      event.stopPropagation()
+      populatePresets()
+    })
+
+    function populatePresets () {
+      menuDisplayParent.innerHTML = ''
       console.log('preset event listener clicked')
       var m = getPresets()[data.registryType]
       console.log(m)
@@ -43,7 +53,7 @@ Vue.directive('presets', {
         m.forEach(function (preset, index) {
           var presetButton = document.createElement('a-box')
           presetButton.setAttribute('scale', '0.1 0.1 0.1')
-          presetButton.setAttribute('position', [ -0.1, (index * 0.11), 0.1 ].join(' '))
+          presetButton.setAttribute('position', [ -0.1, (index * 0.11), 0.01 ].join(' '))
           presetButton.setAttribute('color', '#3366FF')
           presetButton.addEventListener('click', function (event) {
             event.preventDefault()
@@ -51,10 +61,21 @@ Vue.directive('presets', {
             console.log('preset', preset)
             el.__vue__.loadPreset(preset)
           })
+          var deleteButton = document.createElement('a-box')
+          deleteButton.setAttribute('scale', '0.8 0.8 0.8')
+          deleteButton.setAttribute('position', '-1.1 0 0')
+          deleteButton.setAttribute('color', 'red')
+          deleteButton.addEventListener('click', function (event) {
+            event.preventDefault()
+            event.stopPropagation()
+            console.log('delete preset', preset)
+            deletePreset(data.registryType, index, populatePresets)
+          })
+          presetButton.appendChild(deleteButton)
           menuDisplayParent.appendChild(presetButton)
         })
       }
-    })
+    }
 
     // savePreset(el.__vue__.$data)
   },
@@ -63,6 +84,21 @@ Vue.directive('presets', {
     readPresets(el.__vue__.$data, el)
   }
 })
+
+function deletePreset (registryType, presetIndex, populatePresets) {
+  console.log('got asked to delete preset', registryType, presetIndex)
+  var p = getPresets()
+  var m = p[registryType]
+  if(m === undefined){
+    return
+  }
+  console.log(m[presetIndex])
+  console.log(m.length, p[registryType].length)
+  m.splice(presetIndex, 1)
+  console.log(m.length, p[registryType].length)
+  window.localStorage.setItem('presets', JSON.stringify(p))
+  populatePresets()
+}
 
 function savePreset (data) {
   // console.log('savePreset', data, Object.keys(data).join('\t'))

@@ -20,8 +20,6 @@ window.AFRAME.registerComponent('movable', {
     mover.addEventListener('dragmove', function (event) {
       var o = event.detail.nextPosition
       var r = event.detail.nextRotation
-      mover.object3D.position.set(0, 0, 0)
-      mover.object3D.rotation.set(0, 0, 0)
       self.el.object3D.position.set(o.x, o.y, o.z)
       self.el.object3D.rotation.set(r.x, r.y, r.z)
     })
