@@ -1,7 +1,7 @@
 <template>
   <a-entity id='DuoSynth'>
-    <a-box width='1' height='1' depth='0.1' color='#303' position='0.5 -0.5 0'></a-box>
-    <a-text value='DuoSynth' position='0.5 -0.85 0.1' rotation='0 0 0' align='center'></a-text>
+    <a-box width='2' height='2' depth='0.1' color='#bada55' position='1 -1 0'></a-box>
+    <a-text value='DuoSynth' position='2 -0.11 0.05' rotation='0 0 0' align='right'></a-text>
     <a-entity rotation='0 0 -90'>
       <a-entity position='0.2 0.5 0.1' v-on:changed="slideSet('vibratoAmount', $event)" :slider="['initialValue: ', scales['vibratoAmount'].invert(vibratoAmount), ';'].join('')" scale='0.5 0.5 0.5'>
         <a-text position='-0.12 0 0' value='vibratoAmount' rotation='0 0 90' align='center'></a-text>
@@ -13,6 +13,22 @@
         <a-text position='-0.12 0 0' value='harmonicity' rotation='0 0 90' align='center'></a-text>
         <!-- <a-text position='0.12 0 0' :value="type" rotation='0 0 90' align='center'></a-text> -->
       </a-entity>
+      <a-entity  position='0.8 0.5 0.1' v-on:changed="slideSet('voice0.oscillator.type', $event)" :slider="['initialValue: ', scales['voice0.oscillator.type'].invertExtent(voice0.oscillator.type)[0], ';'].join('')" scale='0.75 0.75 0.75'>
+        <a-text position='-0.12 0 0' value='osc 0' rotation='0 0 90' align='center'></a-text>
+        <a-text position='0.12 0 0' :value="voice0.oscillator.type" rotation='0 0 90' align='center'></a-text>
+      </a-entity>
+      <a-entity  position='0.8 1.3 0.1' v-on:changed="slideSet('voice0.portamento', $event)" :slider="['initialValue: ', scales['voice0.portamento'].invert(voice0.portamento), ';'].join('')" scale='0.5 0.5 0.5'>
+        <a-text position='-0.12 0 0' value='osc0.portamento' rotation='0 0 90' align='center'></a-text>
+      </a-entity>
+
+      <a-entity  position='1.2 0.5 0.1' v-on:changed="slideSet('voice1.oscillator.type', $event)" :slider="['initialValue: ', scales['voice1.oscillator.type'].invertExtent(voice1.oscillator.type)[0], ';'].join('')" scale='0.75 0.75 0.75'>
+        <a-text position='-0.12 0 0' value='osc 1' rotation='0 0 90' align='center'></a-text>
+        <a-text position='0.12 0 0' :value="voice1.oscillator.type" rotation='0 0 90' align='center'></a-text>
+      </a-entity>
+      <a-entity  position='1.2 1.3 0.1' v-on:changed="slideSet('voice1.portamento', $event)" :slider="['initialValue: ', scales['voice1.portamento'].invert(voice1.portamento), ';'].join('')" scale='0.5 0.5 0.5'>
+        <a-text position='-0.12 0 0' value='osc1.portamento' rotation='0 0 90' align='center'></a-text>
+      </a-entity>
+
     </a-entity>
   </a-entity>
 </template>
@@ -28,6 +44,18 @@ export default {
       vibratoAmount: 0.5,
       vibratoRate: 0.1,
       harmonicity: 1.5,
+      voice0: {
+        oscillator: {
+          type: 'square'
+        },
+        portamento: 0,
+      },
+      voice1: {
+        oscillator: {
+          type: 'triangle'
+        },
+        portamento: 0,
+      },
       scales: {}
     }
   },
@@ -35,17 +63,15 @@ export default {
     this.scales['vibratoAmount'] = d3.scaleLinear().domain([0.0,1.0]).range([0.0, 2.0])
     this.scales['vibratoRate'] = d3.scaleLinear().domain([0.0,1.0]).range([0.0,0.5])
     this.scales['harmonicity'] = d3.scaleLinear().domain([0.0,1.0]).range([0.0, 4])
+    this.scales['voice0.oscillator.type'] = d3.scaleQuantile().domain([0.0,1.0]).range(['sine', 'triangle', 'square'])
+    this.scales['voice1.oscillator.type'] = d3.scaleQuantile().domain([0.0,1.0]).range(['sine', 'triangle', 'square'])
+    this.scales['voice0.portamento'] = d3.scaleLinear().domain([0.0,1.0]).range([0,2])
+    this.scales['voice1.portamento'] = d3.scaleLinear().domain([0.0,1.0]).range([0,2])
   },
   mounted () {
     console.log('DuoSynth mounted')
     var self = this
-    var synth = new Tone.DuoSynth({
-      vibratoRate: this.vibratoRate,
-      vibratoAmount: this.vibratoAmount,
-      harmonicity: this.harmonicity
-    })
-    synth.set('voice0.oscillator.type', 'triangle')
-    synth.set('voice0.oscillator.type', 'square')
+    var synth = new Tone.DuoSynth()
     synth.name = [ 'DuoSynth', crapuid() ].join('_')
     self.$nextTick(function () {
       self.$el.object3D.userData.synth = synth
@@ -55,8 +81,25 @@ export default {
   },
   methods: {
     slideSet: function (field, event) {
-      this[field] = this.scales[field](event.detail.value)
+      // set the vue data
+      var depth = field.split('.').length
+      if(depth === 1){
+        this[field] = this.scales[field](event.detail.value)
+      } else if(depth === 2) {
+        var f0 = field.split('.')[0]
+        var f1 = field.split('.')[1]
+        this[f0][f1] = this.scales[field](event.detail.value)
+      } else if(depth === 3) {
+        var f0 = field.split('.')[0]
+        var f1 = field.split('.')[1]
+        var f2 = field.split('.')[2]
+        this[f0][f1][f2] = this.scales[field](event.detail.value)
+      }
+      // set the synth data
       this.$el.object3D.userData.synth.set(field, this.scales[field](event.detail.value))
+    },
+    loadPreset: function (o) {
+
     }
   }
 }

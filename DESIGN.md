@@ -21,7 +21,7 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 
 * [ ] `audio-input-channel-selector="channel: filter"`
 * [ ] analog of the output channel selector
-* [ ] reads the inputChannelName
+* [ ] reads the inputChannelName attribute
 
 # presets vue directive
 * [x] presets with vue directives, setting the value of the vm.$data when using the slider sets the values !!!!!!!

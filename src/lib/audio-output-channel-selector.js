@@ -16,7 +16,7 @@ AFRAME.registerComponent('audio-output-channel-selector', {
     indicator.setAttribute('depth', 0.1)
     indicator.setAttribute('width', 0.1)
     indicator.setAttribute('height', 0.1)
-    indicator.setAttribute('position', '0 0 0.01')
+    indicator.setAttribute('position', '0 -0.25 0.01')
     indicator.setAttribute('color', 'blue')
     if (this.data.channel === 'auto') {
       auto_connect()

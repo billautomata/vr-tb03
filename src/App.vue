@@ -15,9 +15,9 @@
         <a-entity position='-0.5 1.8 0' scale='2 2 2'>
           <sequencer movable v-presets midi-output-channel='1'></sequencer>
         </a-entity>
-        <a-entity position='-2 -0.5 0'>
-          <polysynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></polysynth>
-          <!-- <duosynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></duosynth>  -->
+        <a-entity position='0 0 1'>
+          <!-- <polysynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></polysynth> -->
+          <duosynth movable midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></duosynth>
           <!-- <fmsynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></fmsynth> -->
           <!-- <synth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></synth> -->
         </a-entity>
