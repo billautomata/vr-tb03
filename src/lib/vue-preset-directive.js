@@ -39,6 +39,9 @@ Vue.directive('presets', {
     })
 
     el.__vue__.loadPreset = loadPresetDataToVueInstance
+    el.__vue__.getPresetValuesFromVueInstance = function () {
+      return getPresetValuesFromVueInstance(el.__vue__.$data)
+    }
 
     function populatePresets () {
       menuDisplayParent.innerHTML = ''
@@ -86,6 +89,14 @@ Vue.directive('presets', {
     readPresets(el.__vue__.$data, el)
   }
 })
+
+function getPresetValuesFromVueInstance (vueInstanceData) {
+  var r = {}
+  Object.keys(vueInstanceData).filter(function (o) { return (o !== 'scales' && o !== 'registryType' && o.slice(0, 1) !== '_') }).forEach(function (p) {
+    r[p] = vueInstanceData[p]
+  })
+  return r
+}
 
 function deletePreset (registryType, presetIndex, populatePresets) {
   console.log('got asked to delete preset', registryType, presetIndex)
