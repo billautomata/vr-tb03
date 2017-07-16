@@ -5,12 +5,16 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 * query the scene by id for the synthesizers `document.querySelectorAll('a-entity#Sequencer').object3D.userData` and `.position` and `.rotation`
 * access the vue element from the `.__vue__.$data`
 * get presets information from a vue component method `.__vue__.methodName()`
+* get the positions of the elements - `document.querySelectorAll('a-entity#mixer').forEach(function(o){console.log(o.object3D.getWorldPosition())})`
 * get the proper `.name` of the synth to use in the connection registry setup
 * create a registry of connections to run after the scene loads `filter_349839d9` connects to `channel: 0` or `channel: distortion`
   * find them again by running the querySelectorAll on the registryType
 
 ## api design
 * [x] write a document for how to create a synth module, the required fields and methods and events
+
+# live load
+* document.createElement('mixer') ?
 
 # presets vue directive
 * [x] presets with vue directives, setting the value of the vm.$data when using the slider sets the values !!!!!!!

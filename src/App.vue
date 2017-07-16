@@ -48,9 +48,15 @@
         <freeverb inputChannelName='freeverb' audio-output-channel-selector="channel: 2;"></freeverb>
       </a-entity> -->
 
-      <!-- <a-entity position='-4.1 0 0'>
-        <mixer v-for="(mixer,index) in mixers" v-bind:mixer="mixer" v-bind:index="index"></mixer>
-      </a-entity> -->
+
+      <a-entity position='0 0 0'>
+        <template v-for="(mixer,index) in mixers" v-bind:mixer="mixer" v-bind:index="index" >
+          <a-entity :position="[mixer.p.x, mixer.p.y, mixer.p.z].join(' ')">
+            <mixer :name="mixer.name" movable></mixer>
+          </a-entity>
+        </template>
+      </a-entity>
+
     </a-scene>
   </div>
 </template>
@@ -146,9 +152,7 @@ export default {
   },
   mounted () {
     var self = this
-    this.mixers.push({
-      name: 'foo'
-    })
+    window.ok = this
     window.channels = self.audio_channels
     window.synth_registry = self.synths
     window.lfo_registry = self.lfos
