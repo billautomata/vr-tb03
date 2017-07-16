@@ -41,7 +41,6 @@ export default {
     console.log('filter mounted')
     var self = this
     var synth = new Tone.Filter()
-    synth.channel_name = self.$el.getAttribute('inputChannelName')
     var object_name = self.$el.getAttribute('name')
     if(object_name === null){
       object_name = [ 'filter', crapuid() ].join('_')
@@ -51,7 +50,6 @@ export default {
     synth.name = object_name
     self.$nextTick(function () {
       self.$el.object3D.userData.synth = synth
-      synth.receive(synth.channel_name)           // move to audio-input-channel-selector component
       EventBus.$emit('new-synth', synth)          // add me to the list of things
       EventBus.$emit('new-audio-channel', synth)  // add me to the list of audio inputs
       // add 'frequency' and my synth object to the list of available LFO targets

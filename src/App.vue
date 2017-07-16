@@ -23,30 +23,23 @@
         </a-entity>
       </a-entity>
       <a-entity position='-0.5 -0.5 0'>
-        <lfo v-presets lfo-output-selector></lfo>
+        <lfo movable v-presets lfo-output-selector></lfo>
         <a-entity position='0 -1.1 0'>
-          <lfo v-presets lfo-output-selector></lfo>
+          <lfo movable v-presets lfo-output-selector></lfo>
         </a-entity>
       </a-entity>
       <a-entity position='1 -0.5 0'>
-        <filterf v-presets movable name='filter one' inputChannelName='filter' audio-output-channel-selector="channel: analyser;"></filterf>
+        <filterf v-presets movable name='filter one' audio-input-channel-connector="channel: filter" audio-output-channel-selector="channel: analyser;"></filterf>
       </a-entity>
       <a-entity position='2.5 -0.3 0'>
-        <analyser analyser-display analyser-type='waveform' inputChannelName='analyser' audio-output-channel-selector="channel: analyser-fft;"></analyser>
+        <analyser movable analyser-display analyser-type='waveform' audio-input-channel-connector="channel: analyser" audio-output-channel-selector="channel: analyser-fft;"></analyser>
       </a-entity>
       <a-entity position='2.5 -1.5 0'>
-        <analyser analyser-display analyser-type='fft' inputChannelName='analyser-fft' audio-output-channel-selector="channel: 0;"></analyser>
+        <analyser movable analyser-display analyser-type='fft' audio-input-channel-connector="channel: analyser-fft" audio-output-channel-selector="channel: 0;"></analyser>
       </a-entity>
       <a-entity position='5 0 0'>
         <mixer movable name='primary'></mixer>
       </a-entity>
-
-      <!-- <a-entity position='1.1 0 0'>
-        <distortion inputChannelName='distortion' audio-output-channel-selector="channel: 1;"></distortion>
-      </a-entity>
-      <a-entity position='2.2 0 0'>
-        <freeverb inputChannelName='freeverb' audio-output-channel-selector="channel: 2;"></freeverb>
-      </a-entity> -->
 
       <a-entity position='0 0 0'>
         <template v-for="(mixer,index) in mixers" v-bind:mixer="mixer" v-bind:index="index" >
@@ -69,13 +62,13 @@
 import { EventBus } from './event-bus.js'
 import sequencer from './components/Sequencer.vue'
 import PolySequencer from './components/PolySequencer.vue'
-import synth from './components/Synth.vue'
+// import synth from './components/Synth.vue'
 import FMSynth from './components/FMSynth.vue'
-import Sampler from './components/Sampler.vue'
+// import Sampler from './components/Sampler.vue'
 import Mixer from './components/Mixer.vue'
-import Chorus from './components/Chorus.vue'
-import Distortion from './components/Distortion.vue'
-import Freeverb from './components/Freeverb.vue'
+// import Chorus from './components/Chorus.vue'
+// import Distortion from './components/Distortion.vue'
+// import Freeverb from './components/Freeverb.vue'
 import Filter from './components/Filter.vue'
 import PolySynth from './components/PolySynth.vue'
 import Lfo from './components/LFO.vue'
@@ -86,6 +79,7 @@ require('./lib/slider-component.js')
 require('./lib/button-component.js')
 require('./lib/level-indicator-component.js')
 require('./lib/audio-output-channel-selector.js')
+require('./lib/audio-input-channel-connector.js')
 require('./lib/midi-input-channel-selector.js')
 require('./lib/lfo-output-selector.js')
 require('./lib/analyser-display-component.js')
@@ -98,13 +92,13 @@ export default {
   name: 'app',
   components: {
     'sequencer': sequencer,
-    'synth': synth,
+    // 'synth': synth,
     'fmsynth': FMSynth,
-    'sampler': Sampler,
+    // 'sampler': Sampler,
     'mixer': Mixer,
-    'chorus': Chorus,
-    'distortion': Distortion,
-    'freeverb': Freeverb,
+    // 'chorus': Chorus,
+    // 'distortion': Distortion,
+    // 'freeverb': Freeverb,
     'filterf': Filter,
     'polysequencer': PolySequencer,
     'polysynth': PolySynth,

@@ -52,7 +52,7 @@ var d3 = require('d3')
 import { EventBus } from '../event-bus.js'
 export default {
   name: 'foo',
-  props: [ 'foo', 'index' ],
+  props: [ '_preset', 'index' ],
   data () {
     return {
       registryType: 'foo',
@@ -71,7 +71,7 @@ export default {
     console.log('foo mounted')
     var self = this
     if(self.foo !== undefined){      
-      self.loadPreset(self.foo)   // configured from the master app with settings
+      self.loadPreset(self, self._preset)   // configured from the master app with settings
     }
     var synth = new Tone.Foo(this.value, this.type) // setup with initial values
     synth.name = self.$el.getAttribute('name')
