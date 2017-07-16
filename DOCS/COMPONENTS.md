@@ -75,7 +75,7 @@ export default {
     }
     var synth = new Tone.Foo(this.value, this.type) // setup with initial values
     synth.name = self.$el.getAttribute('name')
-    // there are values that may be in the presets but aren't associated to sliders, set those values
+    // TODO: there are values that may be in the presets but aren't associated to sliders, set the synth object for those fields... that would usually happen automatically because they were associated with slider objects that update the synth object when their respective aframe component update function is called
     self.$nextTick(function () {  // the ThreeJS object isn't there until the next tick so put off assigning anything to the userData
       self.$el.object3D.userData.synth = synth
       EventBus.$emit('new-synth', synth)          // add me to the list of things
