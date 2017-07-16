@@ -38,6 +38,8 @@ Vue.directive('presets', {
       populatePresets()
     })
 
+    el.__vue__.loadPreset = loadPresetDataToVueInstance
+
     function populatePresets () {
       menuDisplayParent.innerHTML = ''
       console.log('preset event listener clicked')
@@ -59,7 +61,7 @@ Vue.directive('presets', {
             event.preventDefault()
             event.stopPropagation()
             console.log('preset', preset)
-            el.__vue__.loadPreset(preset)
+            loadPresetDataToVueInstance(el.__vue__, preset)
           })
           var deleteButton = document.createElement('a-box')
           deleteButton.setAttribute('scale', '0.8 0.8 0.8')
@@ -123,6 +125,14 @@ function savePreset (data) {
   }
 }
 
+function loadPresetDataToVueInstance (vueInstance, preset) {
+  console.log('running load preset from vue preset directive')
+  Object.keys(vueInstance.$data).filter(function (o) { return (o !== 'scales' && o !== 'registryType' && o.slice(0, 1) !== '_') }).forEach(function (p) {
+    console.log(p)
+    vueInstance.$data[p] = JSON.parse(JSON.stringify(preset[p]))
+  })
+}
+
 function getPresets () {
   return JSON.parse(window.localStorage.getItem('presets'))
 }
@@ -130,7 +140,8 @@ function getPresets () {
 function readPresets (data, el) {
   var localPresets = getPresets()[data.registryType]
   if (localPresets !== undefined && localPresets.length !== 0) {
-    el.__vue__.loadPreset(localPresets.pop())
+    console.log('found a preset for ', data.registryType, localPresets[0])
+    el.__vue__.loadPreset(el.__vue__, localPresets.pop())
   }
 }
 

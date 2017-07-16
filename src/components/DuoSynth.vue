@@ -39,8 +39,10 @@ var crapuid = require('../crapuid.js')
 import {EventBus} from '../event-bus.js'
 export default {
   name: 'DuoSynth',
+  props: [ '_synth', 'index' ],
   data () {
     return {
+      registryType: 'DuoSynth',
       vibratoAmount: 0.5,
       vibratoRate: 0.1,
       harmonicity: 1.5,
@@ -72,8 +74,17 @@ export default {
     console.log('DuoSynth mounted')
     var self = this
     var synth = new Tone.DuoSynth()
-    synth.name = [ 'DuoSynth', crapuid() ].join('_')
+    console.log('duosynth loadpreset', this.loadPreset)
+    console.log('duosynth', synth.voice0)
+    console.log('duosynth', this._synth)
+    synth.name = [ 'DuoSynth', crapuid() ].join('_')  // TODO: get the name from the attribute
     self.$nextTick(function () {
+      if(self._synth !== undefined){
+        // how do I load the preset values from the prop if
+        console.log('there is a prop, running load preset with the prop information')
+        console.log(self)
+        self.loadPreset(self, self._synth)
+      }
       self.$el.object3D.userData.synth = synth
       EventBus.$emit('new-synth', synth)
       EventBus.$emit('new-lfo-input', { name: synth.name, synth: synth, field: 'harmonicity' })
@@ -97,9 +108,6 @@ export default {
       }
       // set the synth data
       this.$el.object3D.userData.synth.set(field, this.scales[field](event.detail.value))
-    },
-    loadPreset: function (o) {
-
     }
   }
 }

@@ -17,7 +17,7 @@
         </a-entity>
         <a-entity position='0 0 1'>
           <!-- <polysynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></polysynth> -->
-          <duosynth movable midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></duosynth>
+          <duosynth v-presets movable midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></duosynth>
           <!-- <fmsynth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></fmsynth> -->
           <!-- <synth midi-input-channel-selector="channel: 1;"  audio-output-channel-selector="channel: filter;"></synth> -->
         </a-entity>
@@ -48,11 +48,15 @@
         <freeverb inputChannelName='freeverb' audio-output-channel-selector="channel: 2;"></freeverb>
       </a-entity> -->
 
-
       <a-entity position='0 0 0'>
         <template v-for="(mixer,index) in mixers" v-bind:mixer="mixer" v-bind:index="index" >
           <a-entity :position="[mixer.p.x, mixer.p.y, mixer.p.z].join(' ')">
             <mixer :name="mixer.name" movable></mixer>
+          </a-entity>
+        </template>
+        <template v-for="(DuoSynth,index) in DuoSynths" v-bind:DuoSynth="DuoSynth" v-bind:index="index" >
+          <a-entity :position="[DuoSynth.p.x, DuoSynth.p.y, DuoSynth.p.z].join(' ')">
+            <duosynth :name="DuoSynth.name" :_synth="DuoSynth" movable v-presets></duosynth>
           </a-entity>
         </template>
       </a-entity>
@@ -116,6 +120,7 @@ export default {
       lfos: [],
       lfo_inputs: [],
       midi_channels: [],
+      DuoSynths: [],
       mixers: []
     }
   },
@@ -157,6 +162,7 @@ export default {
     window.synth_registry = self.synths
     window.lfo_registry = self.lfos
     window.lfo_inputs = self.lfo_inputs
+    window.DuoSynths = self.DuoSynths
     setTimeout(function() {
       Tone.Transport.start()
     }, 300)
