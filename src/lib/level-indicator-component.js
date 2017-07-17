@@ -16,6 +16,7 @@ window.AFRAME.registerComponent('level-indicator', {
     return this.indicate()
   },
   update: function () {
+    var d3 = require('d3')
     this.scale = d3.scaleLinear().domain([ this.data.min, this.data.max ]).range([ 0.0, 1.0 ])
   },
   indicate: function () {

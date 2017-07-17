@@ -7,7 +7,7 @@ AFRAME.registerComponent('audio-output-channel-selector', {
     }
   },
   init: function () {
-    console.log('audio output channel selector')
+    console.log('audio output channel selector init')
     var self = this
     this.connected = false
     this.clickedOpen = false
@@ -75,6 +75,7 @@ AFRAME.registerComponent('audio-output-channel-selector', {
     })
 
     function auto_connect (channel) {
+      console.log('calling auto connect with', channel)
       if (Number.isNaN(Number(channel))) {
         // is the channel a name?
         self.el.object3D.userData.synth.send(channel)

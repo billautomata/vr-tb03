@@ -85,7 +85,7 @@ Vue.directive('presets', {
     // savePreset(el.__vue__.$data)
   },
   inserted: function (el, bindings, vnode) {
-    console.log('inserted', el)
+    // console.log('inserted', el)
     readPresets(el.__vue__.$data, el)
   }
 })

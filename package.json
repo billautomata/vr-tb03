@@ -10,8 +10,10 @@
     "serve": "http-server -o -c 1 -a localhost",
     "dev": "npm-run-all --parallel watchify serve",
     "dev_hard": "npm-run-all --parallel watchify_hard serve",
+    "develop_tests": "supervisor -n exit -w ./test/unit/ -x npm -- run test_chrome",
     "lint": "eslint --ext .js,.vue src test/unit",
     "test": "karma start karma.conf.js",
+    "test_chrome": "./node_modules/karma/bin/karma start karma.conf-current.js",
     "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o dist/build.css ] -e src/main.js | uglifyjs -c warnings=false -m > dist/build.js"
   },
   "browserify": {
@@ -54,6 +56,7 @@
     "jasmine-core": "^2.4.1",
     "karma": "^1.2.0",
     "karma-browserify": "^5.1.0",
+    "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-spec-reporter": "0.0.26",
