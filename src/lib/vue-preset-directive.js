@@ -25,8 +25,11 @@ Vue.directive('presets', {
       populatePresets()
     })
 
-    el.appendChild(indicator)
-    el.appendChild(indicatorSavePreset)
+    if (el.__vue__.$data.registryType === undefined) {
+    } else {
+      el.appendChild(indicator)
+      el.appendChild(indicatorSavePreset)
+    }
 
     var menuDisplayParent = document.createElement('a-entity')
     menuDisplayParent.setAttribute('position', '-0.11 0 0.05')
@@ -158,7 +161,7 @@ function readPresets (data, el) {
   var localPresets = getPresets()[data.registryType]
   if (localPresets !== undefined && localPresets.length !== 0) {
     console.log('found a preset for ', data.registryType, localPresets[0])
-    el.__vue__.loadPreset(el.__vue__, localPresets.pop())
+    // el.__vue__.loadPreset(el.__vue__, localPresets.pop())
   }
 }
 

@@ -1,5 +1,6 @@
+/* global AFRAME */
 import {EventBus} from '../event-bus.js'
-function __t(o) { return [ o.object3D.getWorldPosition().x, o.object3D.getWorldPosition().y, o.object3D.getWorldPosition().z ].join(' ') }
+function __t (o) { return [ o.object3D.getWorldPosition().x, o.object3D.getWorldPosition().y, o.object3D.getWorldPosition().z ].join(' ') }
 
 AFRAME.registerComponent('graphical-audio-input-config', {
   init: function () {
@@ -12,10 +13,10 @@ AFRAME.registerComponent('graphical-audio-input-config', {
     inputBox.setAttribute('color', 'green')
     this.el.appendChild(inputBox)
   },
-  tick: function(){
+  tick: function () {
     return
   }
-});
+})
 
 AFRAME.registerComponent('graphical-audio-output-config', {
   init: function () {
@@ -32,22 +33,21 @@ AFRAME.registerComponent('graphical-audio-output-config', {
       console.log(self.el.object3D.position, self.el.object3D.getWorldPosition())
       var p = self.el.object3D.getWorldPosition()
       console.log('creating audio output connector node from ', self.el.getAttribute('name'), self.el.getAttribute('id'))
-      outputBox.setAttribute('position', [p.x,p.y,p.z].join(' '))
+      outputBox.setAttribute('position', [p.x, p.y, p.z].join(' '))
       outputBox.setAttribute('outputName', self.el.getAttribute('name'))
       outputBox.setAttribute('outputType', self.el.getAttribute('id'))
       outputBox.setAttribute('connector', '')
       document.querySelector('a-scene').appendChild(outputBox)
     })
   },
-  tick: function(){
+  tick: function () {
     return
   }
-});
+})
 
 AFRAME.registerComponent('connector', {
   init: function () {
     var self = this
-    var m = self
     console.log('loaded connector')
     var connectorBox = document.createElement('a-box')
     connectorBox.setAttribute('position', '0 0 0')
@@ -59,15 +59,15 @@ AFRAME.registerComponent('connector', {
     function dragmove (event) {
       var o = document.querySelectorAll('a-box.input-connector-element')
       // console.log(self.el.parentEl)
-      var closest_v = 1024.0
+      var closestV = 1024.0
       var closest = {}
       console.log('--')
       o.forEach(function (r) {
         // console.log(self.box.object3D.position)
         var d = self.box.object3D.getWorldPosition().distanceTo(r.object3D.getWorldPosition())
         console.log(d)
-        if(d < closest_v){
-          closest_v = d
+        if (d < closestV) {
+          closestV = d
           closest = r.parentEl
         }
       })
@@ -98,10 +98,10 @@ AFRAME.registerComponent('connector', {
                 }
               })
               r.synth.connect(o.synth)
-              var line_id = 'line__' + [id,name,outputType,outputName].join('_')
+              var lineId = 'line__' + [id, name, outputType, outputName].join('_')
               var positionString = ['start:', __t(r), '; end:', __t(o), '; color: white'].join(' ')
-              console.log('zoom', line_id, positionString)
-              document.querySelector('a-entity#lines').setAttribute(line_id, positionString)              
+              console.log('zoom', lineId, positionString)
+              document.querySelector('a-entity#lines').setAttribute(lineId, positionString)
               connectorBox.removeEventListener('dragmove', dragmove)
               connectorBox.removeEventListener('dragend', dragend)
               self.el.removeChild(connectorBox)
@@ -115,9 +115,9 @@ AFRAME.registerComponent('connector', {
     connectorBox.addEventListener('dragend', dragend)
     this.el.appendChild(connectorBox)
   },
-  tick: function(){
+  tick: function () {
     // find the closest element
     // console.log(o)
     return
   }
-});
+})
