@@ -13,10 +13,12 @@
 ## refactor to use presets and vue lists
 * [x] Filter
 * [x] Analyser
-* [ ] Mixer (multiple inputs? multiple outputs?)
+* [x] EQ3 with Gain
+* [x] Gain
+* [x] Master Outputs
 * [ ] DuoSynth
-* [ ] when complete tackle the registry
-
+* [ ] Sequencer
+* [ ] when complete tackle the registry cache
 
 ## `graphical-audio-input-config`
 * [x] create graphics for the input channels on the side of the object

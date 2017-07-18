@@ -1,4 +1,6 @@
 function __t (o) { return [ o.object3D.getWorldPosition().x, o.object3D.getWorldPosition().y, o.object3D.getWorldPosition().z ].join(' ') }
+function __t2 (o) { return [ o.object3D.getWorldPosition().x + 1, o.object3D.getWorldPosition().y - 0.5, o.object3D.getWorldPosition().z ].join(' ') }
+
 window.AFRAME.registerComponent('movable', {
   schema: {
     channel: {
@@ -42,7 +44,7 @@ window.AFRAME.registerComponent('movable', {
               a.end.z = Number(p[2])
             } else {
               // change the end
-              p = __t(self.el).split(' ')
+              p = __t2(self.el).split(' ')
               a.start.x = Number(p[0])
               a.start.y = Number(p[1])
               a.start.z = Number(p[2])

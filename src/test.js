@@ -23,6 +23,27 @@ module.exports = function (vueInstance) {
     p: { x: 4, y: 0, z: 0 }
   })
 
+  window.eq3s.push({
+    low: 0,
+    mid: 0,
+    high: 0,
+    volume: 1,
+    lowFrequency: 200,
+    highFrequency: 2500,    
+    p: { x: 0, y: 0, z: 0 }
+  })
+
+  window.gains.push({
+    gain: 1,
+    p: { x: 0, y: -1.1, z: 0 }
+  })
+
+  window.volumes.push({
+    volume: 0,
+    mute: false,
+    p: { x: 0, y: 1.1, z: 0 }
+  })
+
 
   // test tone
   vueInstance.$nextTick(function (){

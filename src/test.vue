@@ -16,18 +16,40 @@
       <a-entity position='0 0 0'>
         <template v-for="(filter,index) in filters" v-bind:filter="filter" v-bind:index="index" >
           <a-entity :position="[filter.p.x, filter.p.y, filter.p.z].join(' ')">
-            <filterf :name="index" v-presets movable :_preset="filter"
-              graphical-audio-output-config>
+            <filterf :name="index" :_preset="filter"
+              v-presets movable graphical-audio-output-config>
             </filterf>
           </a-entity>
         </template>
         <template v-for="(anaylser,index) in analysers" v-bind:anaylser="anaylser" v-bind:index="index" >
           <a-entity :position="[anaylser.p.x, anaylser.p.y, anaylser.p.z].join(' ')">
-            <analyser :name="index" v-presets movable :_preset="anaylser"
-              graphical-audio-input-config analyser-display>
+            <analyser :name="index" :_preset="anaylser"
+              v-presets movable graphical-audio-input-config analyser-display>
             </analyser>
           </a-entity>
         </template>
+        <template v-for="(eq3,index) in eq3s" v-bind:eq3="eq3" v-bind:index="index" >
+          <a-entity :position="[eq3.p.x, eq3.p.y, eq3.p.z].join(' ')">
+            <eq3 :name="index" :_preset="eq3"
+              v-presets movable graphical-audio-input-config graphical-audio-output-config>
+            </eq3>
+          </a-entity>
+        </template>
+        <template v-for="(gain,index) in gains" v-bind:gain="gain" v-bind:index="index" >
+          <a-entity :position="[gain.p.x, gain.p.y, gain.p.z].join(' ')">
+            <gain :name="index" :_preset="gain"
+              v-presets movable graphical-audio-input-config graphical-audio-output-config>
+            </gain>
+          </a-entity>
+        </template>
+        <template v-for="(volume,index) in volumes" v-bind:volume="volume" v-bind:index="index" >
+          <a-entity :position="[volume.p.x, volume.p.y, volume.p.z].join(' ')">
+            <volume :name="index" :_preset="volume"
+              v-presets movable graphical-audio-input-config>
+            </volume>
+          </a-entity>
+        </template>
+
       </a-entity>
 
       <!-- <a-entity position='2 0 0'>
@@ -42,6 +64,9 @@ import { EventBus } from './event-bus.js'
 import Filter from './components/Filter.vue'
 import Mixer from './components/Mixer.vue'
 import Analyser from './components/Analyser.vue'
+import EQ3 from './components/EQ3.vue'
+import Gain from './components/Gain.vue'
+import Volume from './components/Volume.vue'
 
 require('./lib/vue-preset-directive.js')
 
@@ -65,7 +90,10 @@ export default {
   components: {
     'filterf': Filter,
     'mixer': Mixer,
-    'analyser': Analyser
+    'analyser': Analyser,
+    'eq3': EQ3,
+    'gain': Gain,
+    'volume': Volume
   },
   data () {
     return {
@@ -78,7 +106,10 @@ export default {
       DuoSynths: [],
       mixers: [],
       filters: [],
-      analysers: []
+      analysers: [],
+      eq3s: [],
+      gains: [],
+      volumes: []
     }
   },
   beforeCreate () {
@@ -136,7 +167,9 @@ export default {
 
     window.filters = self.filters
     window.analysers = self.analysers
-
+    window.eq3s = self.eq3s
+    window.gains = self.gains
+    window.volumes = self.volumes
 
     Tone.Transport.start()
     require('./test.js')(self)
@@ -152,7 +185,9 @@ export default {
       console.log('element drag', event)
     },
     restoreSavedConnections: function () {
-      function __t(o) { return [ o.object3D.getWorldPosition().x, o.object3D.getWorldPosition().y, o.object3D.getWorldPosition().z ].join(' ') }
+      function __t (o) { return [ o.object3D.getWorldPosition().x, o.object3D.getWorldPosition().y, o.object3D.getWorldPosition().z ].join(' ') }
+      function __t2 (o) { return [ o.object3D.getWorldPosition().x + 1, o.object3D.getWorldPosition().y - 0.5, o.object3D.getWorldPosition().z ].join(' ') }
+
       console.log('calling restore saved connections')
       var m = window.localStorage.getItem('audio-connections')
       if(m === null){
@@ -174,7 +209,7 @@ export default {
                 console.log('zoom', r.object3D)
                 r.synth.connect(o.synth)
                 var line_id = 'line__' + [id,name,outputType,outputName].join('_')
-                var positionString = ['start:', __t(r), '; end:', __t(o), '; color: white'].join(' ')
+                var positionString = ['start:', __t(r), '; end:', __t2(o), '; color: white'].join(' ')
                 console.log('zoom', line_id, positionString)
                 document.querySelector('a-entity#lines').setAttribute(line_id, positionString)
               }
