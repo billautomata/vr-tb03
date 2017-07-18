@@ -7,6 +7,8 @@
       <a-light color="white" type='point' position="0 4 2" intensity='2' distance='10'></a-light>
       <a-sky color="#3366FF"></a-sky>
 
+      <a-entity id='lines'></a-entity>
+
       <a-entity position="1 0 3">
          <a-entity camera look-controls-enabled='false' mouse-cursor wasd-controls></a-entity>
       </a-entity>
@@ -133,8 +135,15 @@ export default {
     Tone.Transport.start()
     require('./test.js')(self)
     this.$nextTick(function() {
-      self.restoreSavedConnections()
+      self.$nextTick(function () {
+        self.$nextTick(function () {
+
+        })
+      })
     })
+    setTimeout(function () {
+      self.restoreSavedConnections()
+    }, 300)
   },
   methods : {
     indicate_change: function (evt) {
@@ -144,6 +153,7 @@ export default {
       console.log('element drag', event)
     },
     restoreSavedConnections: function () {
+      function __t(o) { return [ o.object3D.getWorldPosition().x, o.object3D.getWorldPosition().y, o.object3D.getWorldPosition().z ].join(' ') }
       console.log('calling restore saved connections')
       var m = window.localStorage.getItem('audio-connections')
       if(m === null){
@@ -162,8 +172,12 @@ export default {
             document.querySelectorAll('a-entity#' + outputType).forEach(function (r) {
               if (r.getAttribute('name') === outputName) {
                 console.log('connecting', r.synth, 'to', o.synth)
-                console.log(r.synth,o.synth)
+                console.log('zoom', r.object3D)
                 r.synth.connect(o.synth)
+                var line_id = 'line__' + [id,name,outputType,outputName].join('_')
+                var positionString = ['start:', __t(r), '; end:', __t(o), '; color: white'].join(' ')
+                console.log('zoom', line_id, positionString)
+                document.querySelector('a-entity#lines').setAttribute(line_id, positionString)
               }
             })
           }

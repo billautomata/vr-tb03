@@ -1,4 +1,5 @@
 import {EventBus} from '../event-bus.js'
+function __t(o) { return [ o.object3D.getWorldPosition().x, o.object3D.getWorldPosition().y, o.object3D.getWorldPosition().z ].join(' ') }
 
 AFRAME.registerComponent('graphical-audio-input-config', {
   init: function () {
@@ -97,6 +98,10 @@ AFRAME.registerComponent('connector', {
                 }
               })
               r.synth.connect(o.synth)
+              var line_id = 'line__' + [id,name,outputType,outputName].join('_')
+              var positionString = ['start:', __t(r), '; end:', __t(o), '; color: white'].join(' ')
+              console.log('zoom', line_id, positionString)
+              document.querySelector('a-entity#lines').setAttribute(line_id, positionString)              
               connectorBox.removeEventListener('dragmove', dragmove)
               connectorBox.removeEventListener('dragend', dragend)
               self.el.removeChild(connectorBox)

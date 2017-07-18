@@ -11,5 +11,6 @@
 ## `graphical-audio-output-config`
 * [x] when clicked creates a connection box
 * [x] when the connection box dragmove ends find the closest entry and connect the synth
-* [ ] then emit the details about the connection to parent app which will record them in the cache
-  * [ ] re-create the connections on load
+* [x] then emit the details about the connection to parent app which will record them in the cache
+  * [x] re-create the connections on load
+* [ ] draw a line from the source to the connected, have movable know about it, append the a-lines with a class you can select, then query the list of audio connections for the names of the entities to update the targets of the lines with on drag
