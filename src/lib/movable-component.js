@@ -39,23 +39,26 @@ window.AFRAME.registerComponent('movable', {
           if(attributeName.indexOf([type,name].join('_')) !== -1){
             console.log('found a match')
             var s = attributeName.split('_')
+            console.log(s, type, name)
             var p
-            if(s[0] === type && s[1] === name){
+            if(s[2] === type && s[3] === name){
               p = __t(self.el).split(' ')
               // change the start
-              console.log('p',p)
-              a.end.x = p[0]
-              a.end.y = p[1]
-              a.end.z = p[2]
+              console.log('p start',p)
+              a.end.x = Number(p[0])
+              a.end.y = Number(p[1])
+              a.end.z = Number(p[2])
+              
             } else {
               // change the end
               p = __t(self.el).split(' ')
-              console.log('p',p)
-              a.start.x = p[0]
-              a.start.y = p[1]
-              a.start.z = p[2]
-            }
+              a.start.x = Number(p[0])
+              a.start.y = Number(p[1])
+              a.start.z = Number(p[2])
 
+              console.log('p end',p)
+            }
+            console.log(a.start,a.end)
             var _s = 'start: ' + [a.start.x, a.start.y, a.start.z].join(' ') + '; end: ' + [a.end.x, a.end.y, a.end.z].join(' ') + '; color: white;'
             // console.log('setting attribute', attributeName, _s)
             elem.removeAttribute(attributeName)
