@@ -7,20 +7,17 @@ module.exports = function (vueInstance) {
     frequency: 7777,
     Q: 10,
     type: 'lowpass',
-    name: '1',
     p: { x: 2, y: 0, z: 0 }
   }
   window.filters.push(testFilter)
 
   window.analysers.push({
-    name: 'a1',
     type: 'fft',
     size: 128,
     p: { x: -2, y: 0, z: 0 }
   })
 
   window.analysers.push({
-    name: 'a2',
     type: 'waveform',
     size: 128,
     p: { x: 4, y: 0, z: 0 }

@@ -48,8 +48,11 @@ window.AFRAME.registerComponent('movable', {
               a.start.z = Number(p[2])
             }
             var _s = 'start: ' + [a.start.x, a.start.y, a.start.z].join(' ') + '; end: ' + [a.end.x, a.end.y, a.end.z].join(' ') + '; color: white;'
+            var _m = console.log
+            console.log = function () {}
             elem.removeAttribute(attributeName)
             elem.setAttribute(attributeName, _s)
+            console.log = _m
           }
         }
       })

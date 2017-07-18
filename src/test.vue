@@ -16,14 +16,14 @@
       <a-entity position='0 0 0'>
         <template v-for="(filter,index) in filters" v-bind:filter="filter" v-bind:index="index" >
           <a-entity :position="[filter.p.x, filter.p.y, filter.p.z].join(' ')">
-            <filterf :name="filter.name" v-presets movable :_preset="filter"
+            <filterf :name="index" v-presets movable :_preset="filter"
               graphical-audio-output-config>
             </filterf>
           </a-entity>
         </template>
         <template v-for="(anaylser,index) in analysers" v-bind:anaylser="anaylser" v-bind:index="index" >
           <a-entity :position="[anaylser.p.x, anaylser.p.y, anaylser.p.z].join(' ')">
-            <analyser :name="anaylser.name" v-presets movable :_preset="anaylser"
+            <analyser :name="index" v-presets movable :_preset="anaylser"
               graphical-audio-input-config analyser-display>
             </analyser>
           </a-entity>
@@ -140,13 +140,6 @@ export default {
 
     Tone.Transport.start()
     require('./test.js')(self)
-    this.$nextTick(function() {
-      self.$nextTick(function () {
-        self.$nextTick(function () {
-
-        })
-      })
-    })
     setTimeout(function () {
       self.restoreSavedConnections()
     }, 300)
