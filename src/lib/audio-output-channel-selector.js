@@ -7,8 +7,8 @@ AFRAME.registerComponent('audio-output-channel-selector', {
     }
   },
   init: function () {
-    console.log('audio output channel selector init')
     var self = this
+    console.log('audio output channel selector init')
     this.connected = false
     this.clickedOpen = false
     var indicator = document.createElement('a-box')
@@ -52,7 +52,7 @@ AFRAME.registerComponent('audio-output-channel-selector', {
             o.setAttribute('position', [ -0.15, -channelIndex * 0.11, 0 ].join(' '))
             o.setAttribute('color', 'green')
             var t = document.createElement('a-text')
-            t.setAttribute('value', c.channel_name)
+            t.setAttribute('value', c.input_channel_name)
             t.setAttribute('align', 'right')
             t.setAttribute('color', 'black')
             t.setAttribute('scale', '0.5 0.5 0.5')
@@ -63,7 +63,7 @@ AFRAME.registerComponent('audio-output-channel-selector', {
               console.log('channel clicked')
               console.log(c.channel_name)
               self.el.object3D.userData.synth.disconnect()
-              self.el.object3D.userData.synth.send(c.channel_name)
+              self.el.object3D.userData.synth.send(c.input_channel_name)
             })
           })
         } else {
@@ -86,14 +86,14 @@ AFRAME.registerComponent('audio-output-channel-selector', {
               console.log('connecting', self.el.object3D.userData.synth, 'to', c.channel_name)
               c.used = true
               self.connected = true
-              self.el.object3D.userData.synth.send(c.channel_name)
+              self.el.object3D.userData.synth.send(c.input_channel_name)
             }
           })
         } else {
-          console.log('connecting', self.el.object3D.userData.synth, 'to', Number(channel), window.channels[Number(channel)].channel_name)
+          console.log('connecting', self.el.object3D.userData.synth, 'to', Number(channel), window.channels[Number(channel)].input_channel_name)
           window.channels[Number(channel)].used = true
           self.connected = true
-          self.el.object3D.userData.synth.send(window.channels[Number(channel)].channel_name)
+          self.el.object3D.userData.synth.send(window.channels[Number(channel)].input_channel_name)
         }
       }
     }

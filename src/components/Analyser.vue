@@ -48,8 +48,6 @@ export default {
     self.$nextTick(function () {
       self.$el.object3D.userData.synth = synth
       self.$el.object3D.userData.indicator_boxes = self.indicator_boxes
-      synth.receive(synth.channel_name)
-      EventBus.$emit('new-audio-channel', synth)
     })
   },
   methods: {

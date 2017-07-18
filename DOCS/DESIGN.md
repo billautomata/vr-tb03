@@ -36,6 +36,7 @@ Move away from having vue observe the data on the Tone objects and do a .get()/.
 * [x] `audio-input-channel-connector="channel: filter"`
 * [x] analog of the output channel selector
 * [ ] confirm removing the channel name on the synth is not blocking everything
+* [ ] support for multiple inputs
 
 # presets vue directive
 * [x] presets with vue directives, setting the value of the vm.$data when using the slider sets the values !!!!!!!

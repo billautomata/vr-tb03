@@ -23,6 +23,7 @@ var crapuid = require('../crapuid.js')
 import {EventBus} from '../event-bus.js'
 export default {
   name: 'filter',
+  props: [ '_synth', 'index' ]
   data () {
     return {
       registryType: 'autofilter',

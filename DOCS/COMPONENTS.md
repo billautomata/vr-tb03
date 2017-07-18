@@ -70,16 +70,15 @@ export default {
   mounted () {
     console.log('foo mounted')
     var self = this
-    if(self.foo !== undefined){      
-      self.loadPreset(self, self._preset)   // configured from the master app with settings
-    }
     var synth = new Tone.Foo(this.value, this.type) // setup with initial values
     synth.name = self.$el.getAttribute('name')
+    if(self.foo !== undefined){      
+      self.loadPreset(self, self._preset)   // configured from the master app with settings
+    }    
     // TODO: there are values that may be in the presets but aren't associated to sliders, set the synth object for those fields... that would usually happen automatically because they were associated with slider objects that update the synth object when their respective aframe component update function is called
     self.$nextTick(function () {  // the ThreeJS object isn't there until the next tick so put off assigning anything to the userData
       self.$el.object3D.userData.synth = synth
       EventBus.$emit('new-synth', synth)          // add me to the list of things
-      EventBus.$emit('new-audio-channel', synth)  // add me to the list of audio inputs things with audio outputs can connect to      
       EventBus.$emit('new-lfo-input', { synth: synth, field: 'value' }) // add the field 'value' and my synth object to the list of available LFO targets
     })
   },

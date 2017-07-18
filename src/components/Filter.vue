@@ -42,12 +42,7 @@ export default {
     console.log('filter mounted')
     var self = this
     var synth = new Tone.Filter()
-    var object_name = self.$el.getAttribute('name')
-    if(object_name === null){
-      object_name = [ 'filter', crapuid() ].join('_')
-    } else {
-      object_name = [ 'filter', object_name ].join('_')
-    }
+    var object_name = [ 'filter', self.$el.getAttribute('name') ].join('_')
     synth.name = object_name
     if(self._synth !== undefined){
       // how do I load the preset values from the prop if there is no slider doing the automatic update?
@@ -56,9 +51,9 @@ export default {
       self.loadPreset(self, self._synth)
     }
     self.$nextTick(function () {
+      console.log('foo', self.$el.getAttribute('audio-input-channel-connector'))
       self.$el.object3D.userData.synth = synth
       EventBus.$emit('new-synth', synth)          // add me to the list of things
-      EventBus.$emit('new-audio-channel', synth)  // add me to the list of audio inputs
       // add 'frequency' and my synth object to the list of available LFO targets
       EventBus.$emit('new-lfo-input', { name: synth.name, synth: synth, field: 'frequency' })
     })

@@ -12,33 +12,27 @@
       </a-entity>
 
       <a-entity position='-2.5 -0.3 0'>
-        <analyser movable analyser-display analyser-type='waveform' audio-input-channel-connector="channel: filterOutput" audio-output-channel-selector="channel: analyser-fft;"></analyser>
+        <analyser name='a1' graphical-audio-input-config movable analyser-display analyser-type='waveform'></analyser>
       </a-entity>
+
       <a-entity position='-2.5 -1.5 0'>
-        <analyser movable analyser-display analyser-type='fft' audio-input-channel-connector="channel: analyser-fft" audio-output-channel-selector="channel: 2;"></analyser>
+        <analyser name='a2' graphical-audio-input-config movable analyser-display analyser-type='fft'></analyser>
       </a-entity>
 
       <a-entity position='0 0 0'>
         <template v-for="(filter,index) in filters" v-bind:filter="filter" v-bind:index="index" >
           <a-entity :position="[filter.p.x, filter.p.y, filter.p.z].join(' ')">
             <filterf :name="filter.name" v-presets movable :_synth="filter"
+              graphical-audio-output-config
               :audio-input-channel-connector="'channel: ' +filter.inputChannel+';'"
-              :audio-output-channel-selector="'channel: ' +filter.outputChannel+';'"></filterf>
+              ></filterf>
           </a-entity>
         </template>
-<!--
-        <template v-for="(DuoSynth,index) in DuoSynths" v-bind:DuoSynth="DuoSynth" v-bind:index="index" >
-          <a-entity :position="[DuoSynth.p.x, DuoSynth.p.y, DuoSynth.p.z].join(' ')">
-            <duosynth :name="DuoSynth.name" :_synth="DuoSynth" movable v-presets></duosynth>
-          </a-entity>
-        </template>
- -->
-
       </a-entity>
 
-      <a-entity position='2 0 0'>
+      <!-- <a-entity position='2 0 0'>
         <mixer name='primary'></mixer>
-      </a-entity>
+      </a-entity> -->
     </a-scene>
   </div>
 </template>
@@ -61,6 +55,8 @@ require('./lib/lfo-output-selector.js')
 require('./lib/analyser-display-component.js')
 require('./lib/vue-preset-directive.js')
 require('./lib/movable-component.js')
+
+require('./lib/graphical-audio-input-config.js')
 
 console.warn = function(){}
 
@@ -124,12 +120,8 @@ export default {
     window.lfo_inputs = self.lfo_inputs
     window.DuoSynths = self.DuoSynths
     window.filters = self.filters
-    this.$nextTick(function(){
-      setTimeout(function() {
-        Tone.Transport.start()
-      }, 300)
-      require('./test.js')()
-    })
+    Tone.Transport.start()
+    require('./test.js')(self)
   },
   methods : {
     indicate_change: function (evt) {
