@@ -14,20 +14,26 @@ module.exports = function (vueInstance) {
   }
   window.filters.push(testFilter)
   // test tone
-  var osc = new Tone.Oscillator()
-  osc.set('frequency', 120)
-  osc.set('type', 'square')
-  osc.set('volume', -10)
-  osc.send('filterInput')
-  osc.start()
-  // read meter
-  var meter = new Tone.Meter('level')
-  meter.receive('test-out')
-  window.meter = meter
-  // run tests
-  // test('audio-input-channel-connector works, audio-output-channel-selector works', function (t) {
-  //   t.plan(1)
-  //   console.log('meter get value', meter.get('value'))
-  //   t.notEqual(meter.get('value').value, 0.0)
-  // })
+  vueInstance.$nextTick(function (){
+    var osc = new Tone.Oscillator()
+    osc.set('frequency', 120)
+    osc.set('type', 'square')
+    osc.set('volume', -10)
+    osc.send('filterInput')
+    console.log('osc', document.querySelector('a-entity#filter'))
+    osc.connect(document.querySelector('a-entity#filter').synth)
+    osc.start()
+    // read meter
+    var meter = new Tone.Meter('level')
+    meter.receive('test-out')
+
+    window.meter = meter
+
+    // run tests
+    // test('audio-input-channel-connector works, audio-output-channel-selector works', function (t) {
+    //   t.plan(1)
+    //   console.log('meter get value', meter.get('value'))
+    //   t.notEqual(meter.get('value').value, 0.0)
+    // })
+  })
 }

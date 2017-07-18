@@ -32,7 +32,7 @@ export default {
       scales: {}
     }
   },
-  props: [ '_synth', 'index' ],
+  props: [ '_preset', 'index' ],
   created () {
     this.scales['frequency'] = d3.scaleLinear().domain([0.0,1.0]).range([100.0,10000.0])
     this.scales['Q'] = d3.scaleLinear().domain([0.0,1.0]).range([0.0,20.0])
@@ -42,27 +42,23 @@ export default {
     console.log('filter mounted')
     var self = this
     var synth = new Tone.Filter()
+    self.$el.synth = synth
     var object_name = [ 'filter', self.$el.getAttribute('name') ].join('_')
     synth.name = object_name
-    if(self._synth !== undefined){
+    if(self._preset !== undefined){
       // how do I load the preset values from the prop if there is no slider doing the automatic update?
       console.log('there is a prop, running load preset with the prop information')
       console.log(self)
-      self.loadPreset(self, self._synth)
+      self.loadPreset(self, self._preset)
     }
-    self.$nextTick(function () {
-      console.log('foo', self.$el.getAttribute('audio-input-channel-connector'))
-      self.$el.object3D.userData.synth = synth
-      EventBus.$emit('new-synth', synth)          // add me to the list of things
-      // add 'frequency' and my synth object to the list of available LFO targets
-      EventBus.$emit('new-lfo-input', { name: synth.name, synth: synth, field: 'frequency' })
-    })
+    EventBus.$emit('new-synth', synth)          // add me to the list of things
+    EventBus.$emit('new-lfo-input', { name: synth.name, synth: synth, field: 'frequency' })
   },
   methods: {
     slideSet: function (field, event) {
       this[field] = this.scales[field](event.detail.value)
       console.log('slide set', field, this[field], event.detail.value)
-      this.$el.object3D.userData.synth.set(field, this.scales[field](event.detail.value))
+      this.$el.synth.set(field, this.scales[field](event.detail.value))
     }
   }
 }

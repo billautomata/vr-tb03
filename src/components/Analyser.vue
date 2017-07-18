@@ -43,6 +43,7 @@ export default {
       this.size = 1024
     }
     var synth = new Tone.Analyser(this.type, this.size)
+    this.$el.synth = synth
     synth.channel_name = self.$el.getAttribute('inputChannelName')
     synth.name = [ 'analyser', crapuid() ].join('_')
     self.$nextTick(function () {

@@ -82,11 +82,21 @@ AFRAME.registerComponent('connector', {
       var outputName = self.el.getAttribute('outputName')
       document.querySelectorAll('a-entity#' + id).forEach(function (o) {
         if (o.getAttribute('name') === name) {
-          console.log(o.object3D.userData.synth)
+          console.log(o.synth)
           document.querySelectorAll('a-entity#' + outputType).forEach(function (r) {
             if (r.getAttribute('name') === outputName) {
-              console.log('connecting', r.object3D.userData.synth, 'to', o.object3D.userData.synth)
-              r.object3D.userData.synth.connect(o.object3D.userData.synth)
+              console.log('connecting', r.synth, 'to', o.synth)
+              EventBus.$emit('audio-connection', {
+                to: {
+                  type: id,
+                  name: name
+                },
+                from: {
+                  type: outputType,
+                  name: outputName
+                }
+              })
+              r.synth.connect(o.synth)
               connectorBox.removeEventListener('dragmove', dragmove)
               connectorBox.removeEventListener('dragend', dragend)
               self.el.removeChild(connectorBox)
