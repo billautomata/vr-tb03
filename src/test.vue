@@ -13,20 +13,19 @@
          <a-entity camera look-controls-enabled='false' mouse-cursor wasd-controls></a-entity>
       </a-entity>
 
-      <a-entity position='-2.5 -0.3 0'>
-        <analyser name='a1' graphical-audio-input-config movable analyser-display analyser-type='waveform'></analyser>
-      </a-entity>
-
-      <a-entity position='-2.5 -1.5 0'>
-        <analyser name='a2' graphical-audio-input-config movable analyser-display analyser-type='fft'></analyser>
-      </a-entity>
-
       <a-entity position='0 0 0'>
         <template v-for="(filter,index) in filters" v-bind:filter="filter" v-bind:index="index" >
           <a-entity :position="[filter.p.x, filter.p.y, filter.p.z].join(' ')">
             <filterf :name="filter.name" v-presets movable :_preset="filter"
               graphical-audio-output-config>
             </filterf>
+          </a-entity>
+        </template>
+        <template v-for="(anaylser,index) in analysers" v-bind:anaylser="anaylser" v-bind:index="index" >
+          <a-entity :position="[anaylser.p.x, anaylser.p.y, anaylser.p.z].join(' ')">
+            <analyser :name="anaylser.name" v-presets movable :_preset="anaylser"
+              graphical-audio-input-config analyser-display>
+            </analyser>
           </a-entity>
         </template>
       </a-entity>
@@ -78,7 +77,8 @@ export default {
       midi_channels: [],
       DuoSynths: [],
       mixers: [],
-      filters: []
+      filters: [],
+      analysers: []
     }
   },
   beforeCreate () {
@@ -131,7 +131,13 @@ export default {
     window.lfo_registry = self.lfos
     window.lfo_inputs = self.lfo_inputs
     window.DuoSynths = self.DuoSynths
+
+
+
     window.filters = self.filters
+    window.analysers = self.analysers
+
+
     Tone.Transport.start()
     require('./test.js')(self)
     this.$nextTick(function() {

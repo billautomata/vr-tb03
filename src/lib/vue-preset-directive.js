@@ -138,9 +138,15 @@ function savePreset (data) {
 
 function loadPresetDataToVueInstance (vueInstance, preset) {
   console.log('running load preset from vue preset directive')
-  Object.keys(vueInstance.$data).filter(function (o) { return (o !== 'scales' && o !== 'registryType' && o.slice(0, 1) !== '_') }).forEach(function (p) {
-    console.log(p)
-    vueInstance.$data[p] = JSON.parse(JSON.stringify(preset[p]))
+  // iterate over the keys of the data and pull the information from the preset
+  // Object.keys(vueInstance.$data).filter(function (o) { return (o !== 'scales' && o !== 'registryType' && o.slice(0, 1) !== '_') }).forEach(function (p) {
+  //   console.log(p)
+  //   vueInstance.$data[p] = JSON.parse(JSON.stringify(preset[p]))
+  // })
+  // iterate over the preset data and put the values on the data
+  Object.keys(preset).forEach(function (n) {
+    var v = preset[n]
+    vueInstance.$data[n] = JSON.parse(JSON.stringify(v))
   })
 }
 

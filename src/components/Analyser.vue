@@ -17,39 +17,42 @@ var crapuid = require('../crapuid.js')
 import {EventBus} from '../event-bus.js'
 export default {
   name: 'analyser',
+  props: [ '_preset', 'index' ],
   data () {
     return {
       type: 'fft',
       size: 128,
-      indicator_boxes: [],
+      indicator_boxes: Array(),
       scales: {}
     }
   },
   created () {
+    this.scales['pos_x'] = d3.scaleLinear().domain([0,this.size]).range([0.0,0.9])
+    this.scales['pos_y'] = d3.scaleLinear().domain([0,255]).range([-0.6,0.0])
+  },
+  mounted () {
+    console.log('analyser mounted', this.indicator_boxes, this.size)
     var self = this
     this.scales['pos_x'] = d3.scaleLinear().domain([0,this.size]).range([0.0,0.9])
     this.scales['pos_y'] = d3.scaleLinear().domain([0,255]).range([-0.6,0.0])
+    // window.m = self
+    self.$el.indicator_boxes = []
     d3.range(0,this.size).forEach(function(b,i){
-      self.indicator_boxes.push({
-        v: 0
-      })
+      self.indicator_boxes.push({ v: 0 })
     })
-  },
-  mounted () {
-    var self = this
-    console.log('analyser mounted')
-    this.type = this.$el.getAttribute('analyser-type')
+    if(self._preset !== undefined){
+      // how do I load the preset values from the prop if there is no slider doing the automatic update?
+      console.log('there is a prop, running load preset with the prop information')
+      console.log(self)
+      self.loadPreset(self, self._preset)
+    }
     if(this.type === 'waveform'){
       this.size = 1024
     }
     var synth = new Tone.Analyser(this.type, this.size)
-    this.$el.synth = synth
-    synth.channel_name = self.$el.getAttribute('inputChannelName')
-    synth.name = [ 'analyser', crapuid() ].join('_')
-    self.$nextTick(function () {
-      self.$el.object3D.userData.synth = synth
-      self.$el.object3D.userData.indicator_boxes = self.indicator_boxes
-    })
+    self.$el.synth = synth
+    self.$el.indicator_boxes = self.indicator_boxes
+    synth.name = [ 'analyser', self.$el.getAttribute('name') ].join('_')
   },
   methods: {
     slideSet: function (field, event) {

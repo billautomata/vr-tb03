@@ -8,18 +8,31 @@ module.exports = function (vueInstance) {
     Q: 10,
     type: 'lowpass',
     name: '1',
-    inputChannel: 'filterInput',
-    outputChannel: 'filterOutput',
     p: { x: 2, y: 0, z: 0 }
   }
   window.filters.push(testFilter)
+
+  window.analysers.push({
+    name: 'a1',
+    type: 'fft',
+    size: 128,
+    p: { x: -2, y: 0, z: 0 }
+  })
+
+  window.analysers.push({
+    name: 'a2',
+    type: 'waveform',
+    size: 128,
+    p: { x: 4, y: 0, z: 0 }
+  })
+
+
   // test tone
   vueInstance.$nextTick(function (){
     var osc = new Tone.Oscillator()
     osc.set('frequency', 120)
     osc.set('type', 'square')
     osc.set('volume', -10)
-    osc.send('filterInput')
     console.log('osc', document.querySelector('a-entity#filter'))
     osc.connect(document.querySelector('a-entity#filter').synth)
     osc.start()
@@ -28,6 +41,13 @@ module.exports = function (vueInstance) {
     meter.receive('test-out')
 
     window.meter = meter
+
+    document.querySelector('a-entity#analyser').synth.connect(meter)
+
+    // save presets
+    // document.querySelector('a-entity#filter').getAttribute('name')
+    // document.querySelector('a-entity#filter').__vue__.getPresetValuesFromVueInstance()
+    // document.querySelector('a-entity#filter').object3D.position
 
     // run tests
     // test('audio-input-channel-connector works, audio-output-channel-selector works', function (t) {
