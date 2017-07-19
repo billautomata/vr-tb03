@@ -137,13 +137,9 @@ export default {
   },
   beforeCreate () {
     var self = this
-    // EventBus.$on('element-updated', function (event) {
-    //   if(window.localStorage.getItem('master') !== null){
-    //     window.socket.emit('update', event)
-    //   } else {
-    //     console.log('not emitting')
-    //   }
-    // })
+    EventBus.$on('element-updated', function (event) {
+      window.socket.emit('update', event)
+    })
 
     EventBus.$on('audio-connection', function (event) {
       console.log('new audio connection', event)
@@ -187,29 +183,38 @@ export default {
   },
   mounted () {
 
-    // window.socket = io.connect(window.location.href)
-    // socket.on('echo', function (data) {
-    //   // console.log(data)
-    //   // setTimeout(function () {
-    //   //   socket.emit('echo', { v: Date.now() })
-    //   // },1000)
-    // })
-    // socket.on('update-element', function (data) {
-    //   if(socket.id === data.from){
-    //     return
-    //   } else {
-    //     console.log('got update element to update my settings', data)
-    //     console.log(window[data.type+'s'][Number(data.name)])
-    //
-    //     document.querySelectorAll('a-entity#'+data.type).forEach(function(element){
-    //       if(Number(element.getAttribute('name')) !== Number(data.name)) {
-    //         return
-    //       }
-    //       console.log('found!', element)
-    //       element.__vue__.loadPreset(element.__vue__, data.preset)
-    //     })
-    //   }
-    // })
+    window.socket = io.connect(window.location.href)
+    window.socket.network_timeout = {}
+    window.socket.on('echo', function (data) {
+      // console.log(data)
+      // setTimeout(function () {
+      //   socket.emit('echo', { v: Date.now() })
+      // },1000)
+    })
+    window.socket.on('update-element', function (data) {
+
+      if(window.socket.id === data.from){
+        return
+      } else {
+        console.log('got update element to update my settings', data)
+        console.log(window[data.type+'s'][Number(data.name)])
+
+        document.querySelectorAll('a-entity#'+data.type).forEach(function(element){
+          if(Number(element.getAttribute('name')) !== Number(data.name)) {
+            return
+          }
+          console.log('found!', element.synth, element.synth.network_on)
+          console.log('turning network OFF for', element.synth)
+          element.synth.network_on = false
+          element.__vue__.loadPreset(element.__vue__, data.preset)
+          clearTimeout(socket.network_timeout)
+          window.socket.network_timeout = setTimeout(function (){
+            console.log('turning network ON for', element.synth)
+            element.synth.network_on = true
+          },1000)
+        })
+      }
+    })
 
     var self = this
     window.ok = this

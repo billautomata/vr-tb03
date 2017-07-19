@@ -44,6 +44,7 @@ export default {
     console.log('filter mounted')
     var self = this
     var synth = new Tone.Filter()
+    synth.network_on = true
     self.$el.synth = synth
     synth.name =  [ 'filter', self.$el.getAttribute('name') ].join('_')
     if(self._preset !== undefined){
@@ -58,13 +59,16 @@ export default {
   methods: {
     slideSet: function (field, event) {
       this[field] = this.scales[field](event.detail.value)
-      console.log('slide set', field, this[field], event.detail.value)
       var self = this
-      EventBus.$emit('element-updated', {
-        type: self.$el.getAttribute('id'),
-        name: self.$el.getAttribute('name'),
-        preset: self.getPresetValuesFromVueInstance()
-      })      
+      console.log('slide set', field, this[field], event.detail.value, self.$el.synth.network_on)      
+      if(self.$el.synth.network_on === true){
+        console.log('emitting element update')
+        EventBus.$emit('element-updated', {
+          type: self.$el.getAttribute('id'),
+          name: self.$el.getAttribute('name'),
+          preset: self.getPresetValuesFromVueInstance()
+        })
+      }
       this.$el.synth.set(field, this.scales[field](event.detail.value))
     }
   }
