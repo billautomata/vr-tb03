@@ -8,8 +8,16 @@
       <a-sky color="#3366FF"></a-sky>
 
       <a-entity position='0 0 -2'>
-        <a-box color='yellow' position='-1 0 0' v-on:click='saveSceneToDisk'></a-box>
-        <a-box color='red' position='1 0 0' v-on:click='loadScene'></a-box>
+        <a-box color='yellow' position='-1 0 0' v-on:click='saveSceneToDisk'>
+          <a-text value="Save To Disk" align="center" position='0 1 0'></a-text>
+        </a-box>
+        <a-box color='red' position='1 0 0' v-on:click='loadScene'>
+          <a-text value="Load From Disk" align="center" position='0 1 0'></a-text>
+        </a-box>
+        <a-box color='green' position='4 0 0' v-on:click='broadcastConfig'>
+          <a-text value="Broadcast Config" align="center" position='0 1 0'></a-text>
+        </a-box>
+
       </a-entity>
 
       <a-entity id='lines'></a-entity>
@@ -138,6 +146,7 @@ export default {
   beforeCreate () {
     var self = this
     EventBus.$on('element-updated', function (event) {
+      // from the sliders, send to the server
       window.socket.emit('update', event)
     })
 
@@ -181,8 +190,7 @@ export default {
       }
     });
   },
-  mounted () {
-
+  mounted() {
     window.socket = io.connect(window.location.href)
     window.socket.network_timeout = {}
     window.socket.on('echo', function (data) {
@@ -191,8 +199,18 @@ export default {
       //   socket.emit('echo', { v: Date.now() })
       // },1000)
     })
+    window.socket.on('new-scene', function (data) {
+      console.log('got new scene event', data)
+      if(window.socket.id === data.from){
+        return
+      } else {
+        window.localStorage.setItem('scene', data.scene)
+        window.localStorage.setItem('audio-connections', data.connections)
+        window.location.reload()
+      }
+    })
     window.socket.on('update-element', function (data) {
-
+      // new slider data
       if(window.socket.id === data.from){
         return
       } else {
@@ -243,6 +261,15 @@ export default {
 
   },
   methods : {
+    broadcastConfig: function () {
+      this.saveSceneToDisk()
+      var o = {
+        scene: window.localStorage.getItem('scene'),
+        connections: window.localStorage.getItem('audio-connections')
+      }
+      console.log('sending this to the server', o)
+      window.socket.emit('scene-to-server', o)
+    },
     loadScene: function () {
       var self = this
       var scene = JSON.parse(window.localStorage.getItem('scene'))

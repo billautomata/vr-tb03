@@ -18,6 +18,10 @@
 
 ## network scene
 
-* when there is an incoming message, flip a flag on the synth instance that is checked in the emit routine, if the flag is off it won't rebroadcast settings when loading the preset, turn it back on after setting the values 
+* [x] transmit scene and connection data and overwrite the localstorage when that data comes in
+* [x] when there is an incoming slider settings message, flip a flag on the synth instance that is checked in the emit routine, if the flag is off it won't rebroadcast settings when loading the preset, turn it back on after setting the values
+* [ ] transport start / stop sync
 
 ### performance mode
+* [ ] network forced off on the clients
+* [ ]
