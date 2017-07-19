@@ -25,6 +25,9 @@
 * [x] record scene by grabbing the preset and position of the elements
 * [x] store scene in cache
 * [x] load scene from cache if found
+* [ ] CreatorNode
+* [x] save scene node
+* [x] load scene node
 
 ## `graphical-audio-input-config`
 * [x] create graphics for the input channels on the side of the object

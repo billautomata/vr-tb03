@@ -7,6 +7,11 @@
       <a-light color="white" type='point' position="0 4 2" intensity='2' distance='10'></a-light>
       <a-sky color="#3366FF"></a-sky>
 
+      <a-entity position='0 0 -2'>
+        <a-box color='yellow' position='-1 0 0' v-on:click='saveSceneToDisk'></a-box>
+        <a-box color='red' position='1 0 0' v-on:click='loadScene'></a-box>
+      </a-entity>
+
       <a-entity id='lines'></a-entity>
 
       <a-entity position="1 0 3">
@@ -132,12 +137,13 @@ export default {
   },
   beforeCreate () {
     var self = this
-    EventBus.$on('element-updated', function (event) {
-      console.log('element updated!', event)
-      if(window.localStorage.getItem('master') !== null){
-        window.socket.emit('update', event)
-      }      
-    })
+    // EventBus.$on('element-updated', function (event) {
+    //   if(window.localStorage.getItem('master') !== null){
+    //     window.socket.emit('update', event)
+    //   } else {
+    //     console.log('not emitting')
+    //   }
+    // })
 
     EventBus.$on('audio-connection', function (event) {
       console.log('new audio connection', event)
@@ -181,29 +187,29 @@ export default {
   },
   mounted () {
 
-    window.socket = io.connect(window.location.href)
-    socket.on('echo', function (data) {
-      // console.log(data)
-      // setTimeout(function () {
-      //   socket.emit('echo', { v: Date.now() })
-      // },1000)
-    })
-    socket.on('update-element', function (data) {
-      if(socket.id === data.from){
-        return
-      } else {
-        console.log('got update element to update my settings', data)
-        console.log(window[data.type+'s'][Number(data.name)])
-
-        document.querySelectorAll('a-entity#'+data.type).forEach(function(element){
-          if(Number(element.getAttribute('name')) !== Number(data.name)) {
-            return
-          }
-          console.log('found!', element)
-          element.__vue__.loadPreset(element.__vue__, data.preset)
-        })
-      }
-    })
+    // window.socket = io.connect(window.location.href)
+    // socket.on('echo', function (data) {
+    //   // console.log(data)
+    //   // setTimeout(function () {
+    //   //   socket.emit('echo', { v: Date.now() })
+    //   // },1000)
+    // })
+    // socket.on('update-element', function (data) {
+    //   if(socket.id === data.from){
+    //     return
+    //   } else {
+    //     console.log('got update element to update my settings', data)
+    //     console.log(window[data.type+'s'][Number(data.name)])
+    //
+    //     document.querySelectorAll('a-entity#'+data.type).forEach(function(element){
+    //       if(Number(element.getAttribute('name')) !== Number(data.name)) {
+    //         return
+    //       }
+    //       console.log('found!', element)
+    //       element.__vue__.loadPreset(element.__vue__, data.preset)
+    //     })
+    //   }
+    // })
 
     var self = this
     window.ok = this
@@ -230,8 +236,11 @@ export default {
       // loadScene()
     }
 
-    function loadScene () {
-      scene = JSON.parse(window.localStorage.getItem('scene'))
+  },
+  methods : {
+    loadScene: function () {
+      var self = this
+      var scene = JSON.parse(window.localStorage.getItem('scene'))
       scene.forEach(function(element){
         console.log(element.t, element.position)
         var o = element.presets
@@ -241,13 +250,10 @@ export default {
       setTimeout(function () {
         self.restoreSavedConnections()
       }, 1000)
-    }
-
-    window.loadScene = loadScene
-    window.sceneRecorder = require('./lib/scene-recorder.js')
-
-  },
-  methods : {
+    },
+    saveSceneToDisk: function () {
+      window.localStorage.setItem('scene', require('./lib/scene-recorder.js')())
+    },
     indicate_change: function (evt) {
       console.log('changed!', evt.detail)
     },

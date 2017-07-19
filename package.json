@@ -11,7 +11,7 @@
     "serve_old": "http-server --cors -o -c 1 -a localhost",
     "serve": "node web-server.js",
     "dev": "npm-run-all --parallel watchify serve",
-    "dev_hard": "npm-run-all --parallel watchify_hard serve",
+    "dev_hard": "npm-run-all --parallel watchify_hard serve_old",
     "dev_soft": "npm-run-all --parallel watchify_noreload serve",
     "develop_tests": "supervisor -n exit -w ./test/unit/ -x npm -- run test_chrome",
     "lint": "eslint --ext .js,.vue src test/unit",

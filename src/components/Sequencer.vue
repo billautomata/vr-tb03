@@ -110,6 +110,13 @@ export default {
     // self._output_channel = self.$el.getAttribute('midi-output-channel')
     self._output_channel = 1
 
+    if(self._preset !== undefined){
+      // how do I load the preset values from the prop if there is no slider doing the automatic update?
+      console.log('there is a prop, running load preset with the prop information')
+      console.log(self)
+      self.loadPreset(self, self._preset)
+    }
+
     // setup the tick of the sequencer
     Tone.Transport.scheduleRepeat(function(time){
       current_step += 1

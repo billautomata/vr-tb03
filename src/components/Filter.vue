@@ -39,12 +39,6 @@ export default {
     this.scales['type'] = d3.scaleQuantile().domain([0.0,1.0]).range(['lowpass', 'bandpass', 'highpass'])
   },
   updated () {
-    var self = this
-    EventBus.$emit('element-updated', {
-      type: self.$el.getAttribute('id'),
-      name: self.$el.getAttribute('name'),
-      preset: self.getPresetValuesFromVueInstance()
-    })
   },
   mounted () {
     console.log('filter mounted')
@@ -64,7 +58,13 @@ export default {
   methods: {
     slideSet: function (field, event) {
       this[field] = this.scales[field](event.detail.value)
-      // console.log('slide set', field, this[field], event.detail.value)
+      console.log('slide set', field, this[field], event.detail.value)
+      var self = this
+      EventBus.$emit('element-updated', {
+        type: self.$el.getAttribute('id'),
+        name: self.$el.getAttribute('name'),
+        preset: self.getPresetValuesFromVueInstance()
+      })      
       this.$el.synth.set(field, this.scales[field](event.detail.value))
     }
   }
