@@ -39,13 +39,14 @@ import { EventBus } from '../event-bus.js';
 
 var transposeScale = d3.scaleQuantile().domain([ 0.0, 1.0 ]).range(d3.range(-12, 13))
 
+var current_step = 0
+
 export default {
   name: 'sequencer',
   props: [ '_preset', 'index' ],
   data () {
     return {
       registryType: 'step-sequencer',
-      current_step: 0,
       n_steps: 16,
       steps: [],
       transpose: 0,
@@ -57,6 +58,7 @@ export default {
   },
   created () {
     var self = this
+    current_step = 0
     for(var i = 0; i < self.n_steps; i++){
       self.steps.push({
         note: 0,
@@ -65,6 +67,14 @@ export default {
       })
     }
     this.randomizePattern()
+  },
+  updated () {
+    var self = this
+    EventBus.$emit('element-updated', {
+      type: self.$el.getAttribute('id'),
+      name: self.$el.getAttribute('name'),
+      preset: self.getPresetValuesFromVueInstance()
+    })
   },
   methods: {
     setNoteSlider: function (index, evt) {
@@ -102,18 +112,18 @@ export default {
 
     // setup the tick of the sequencer
     Tone.Transport.scheduleRepeat(function(time){
-      self.current_step += 1
-      self.current_step = self.current_step % self.n_steps
+      current_step += 1
+      current_step = current_step % self.n_steps
       self.steps.forEach(function(s,i){
-        if(self.current_step === i){
-          s.active = true
+        if(current_step === i){
+          // s.active = true
         } else {
-          s.active = false
+          // s.active = false
         }
       })
-      if(self.steps[self.current_step].rest === false){
+      if(self.steps[current_step].rest === false){
         // console.log('ok', self._output_channel)
-        EventBus.$emit(['channel-',self._output_channel].join(''), { type: 'mono', note: self.steps[self.current_step].note + self.transpose, time: time })
+        EventBus.$emit(['channel-',self._output_channel].join(''), { type: 'mono', note: self.steps[current_step].note + self.transpose, time: time })
       }
     }, "16n");
   }

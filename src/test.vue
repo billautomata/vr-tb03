@@ -132,6 +132,13 @@ export default {
   },
   beforeCreate () {
     var self = this
+    EventBus.$on('element-updated', function (event) {
+      console.log('element updated!', event)
+      if(window.localStorage.getItem('master') !== null){
+        window.socket.emit('update', event)
+      }      
+    })
+
     EventBus.$on('audio-connection', function (event) {
       console.log('new audio connection', event)
       var m = window.localStorage.getItem('audio-connections')
@@ -173,6 +180,31 @@ export default {
     });
   },
   mounted () {
+
+    window.socket = io.connect(window.location.href)
+    socket.on('echo', function (data) {
+      // console.log(data)
+      // setTimeout(function () {
+      //   socket.emit('echo', { v: Date.now() })
+      // },1000)
+    })
+    socket.on('update-element', function (data) {
+      if(socket.id === data.from){
+        return
+      } else {
+        console.log('got update element to update my settings', data)
+        console.log(window[data.type+'s'][Number(data.name)])
+
+        document.querySelectorAll('a-entity#'+data.type).forEach(function(element){
+          if(Number(element.getAttribute('name')) !== Number(data.name)) {
+            return
+          }
+          console.log('found!', element)
+          element.__vue__.loadPreset(element.__vue__, data.preset)
+        })
+      }
+    })
+
     var self = this
     window.ok = this
     window.channels = self.audio_channels
@@ -195,6 +227,10 @@ export default {
     if(window.localStorage.getItem('scene') === null){
       require('./test.js')(self)
     } else {
+      // loadScene()
+    }
+
+    function loadScene () {
       scene = JSON.parse(window.localStorage.getItem('scene'))
       scene.forEach(function(element){
         console.log(element.t, element.position)
@@ -202,14 +238,14 @@ export default {
         o.p = element.position
         self[element.t+'s'].push(o)
       })
+      setTimeout(function () {
+        self.restoreSavedConnections()
+      }, 1000)
     }
 
-
+    window.loadScene = loadScene
     window.sceneRecorder = require('./lib/scene-recorder.js')
 
-    setTimeout(function () {
-      self.restoreSavedConnections()
-    }, 1000)
   },
   methods : {
     indicate_change: function (evt) {

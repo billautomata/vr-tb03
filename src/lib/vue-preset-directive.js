@@ -93,9 +93,11 @@ Vue.directive('presets', {
   }
 })
 
+function filterBlacklist (o) { return (o !== 'p' && o !== 'indicator_boxes' && o !== 'scales' && o !== 'registryType' && o.slice(0, 1) !== '_') }
+
 function getPresetValuesFromVueInstance (vueInstanceData) {
   var r = {}
-  Object.keys(vueInstanceData).filter(function (o) { return (o !== 'indicator_boxes' && o !== 'scales' && o !== 'registryType' && o.slice(0, 1) !== '_') }).forEach(function (p) {
+  Object.keys(vueInstanceData).filter(filterBlacklist).forEach(function (p) {
     r[p] = vueInstanceData[p]
   })
   return r
@@ -123,7 +125,7 @@ function savePreset (data) {
   } else {
     var m = getPresets()
     var o = {}
-    Object.keys(data).filter(function (o) { return (o !== 'scales' && o !== 'registryType' && o.slice(0, 1) !== '_') }).forEach(function (p) {
+    Object.keys(data).filter(filterBlacklist).forEach(function (p) {
       // console.log('savePreset', p, data[p])
       o[p] = data[p]
     })
