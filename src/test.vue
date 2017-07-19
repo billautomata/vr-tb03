@@ -17,7 +17,7 @@
         <template v-for="(filter,index) in filters" v-bind:filter="filter" v-bind:index="index" >
           <a-entity :position="[filter.p.x, filter.p.y, filter.p.z].join(' ')">
             <filterf :name="index" :_preset="filter"
-              v-presets movable graphical-audio-output-config>
+              v-presets movable graphical-audio-output-config graphical-audio-input-config>
             </filterf>
           </a-entity>
         </template>
@@ -56,7 +56,20 @@
             </lfo>
           </a-entity>
         </template>
-
+        <template v-for="(duosynth,index) in duosynths" v-bind:duosynth="duosynth" v-bind:index="index" >
+          <a-entity :position="[duosynth.p.x, duosynth.p.y, duosynth.p.z].join(' ')">
+            <duosynth :name="index" :_preset="duosynth"
+              v-presets movable graphical-audio-output-config midi-input-channel-selector>
+            </duosynth>
+          </a-entity>
+        </template>
+        <template v-for="(sequencer,index) in sequencers" v-bind:sequencer="sequencer" v-bind:index="index" >
+          <a-entity :position="[sequencer.p.x, sequencer.p.y, sequencer.p.z].join(' ')">
+            <sequencer :name="index" :_preset="sequencer"
+              v-presets movable>
+            </sequencer>
+          </a-entity>
+        </template>
       </a-entity>
     </a-scene>
   </div>
@@ -70,6 +83,8 @@ import EQ3 from './components/EQ3.vue'
 import Gain from './components/Gain.vue'
 import Volume from './components/Volume.vue'
 import LFO from './components/LFO.vue'
+import DuoSynth from './components/DuoSynth.vue'
+import Sequencer from './components/Sequencer.vue'
 
 require('./lib/vue-preset-directive.js')
 
@@ -94,7 +109,9 @@ export default {
     'eq3': EQ3,
     'gain': Gain,
     'volume': Volume,
-    'lfo': LFO
+    'lfo': LFO,
+    'duosynth': DuoSynth,
+    'sequencer': Sequencer
   },
   data () {
     return {
@@ -104,12 +121,13 @@ export default {
       lfos: [],
       lfo_inputs: [],
       midi_channels: [],
-      DuoSynths: [],
+      duosynths: [],
       filters: [],
       analysers: [],
       eq3s: [],
       gains: [],
-      volumes: []
+      volumes: [],
+      sequencers: []
     }
   },
   beforeCreate () {
@@ -161,22 +179,37 @@ export default {
     window.synth_registry = self.synths
     window.lfo_registry = self.lfos
     window.lfo_inputs = self.lfo_inputs
-    window.DuoSynths = self.DuoSynths
 
-
-
+    window.duosynths = self.duosynths
     window.filters = self.filters
     window.analysers = self.analysers
     window.eq3s = self.eq3s
     window.gains = self.gains
     window.volumes = self.volumes
     window.lfos = self.lfos
+    window.sequencers = self.sequencers
 
     Tone.Transport.start()
-    require('./test.js')(self)
+
+    var scene
+    if(window.localStorage.getItem('scene') === null){
+      require('./test.js')(self)
+    } else {
+      scene = JSON.parse(window.localStorage.getItem('scene'))
+      scene.forEach(function(element){
+        console.log(element.t, element.position)
+        var o = element.presets
+        o.p = element.position
+        self[element.t+'s'].push(o)
+      })
+    }
+
+
+    window.sceneRecorder = require('./lib/scene-recorder.js')
+
     setTimeout(function () {
       self.restoreSavedConnections()
-    }, 300)
+    }, 1000)
   },
   methods : {
     indicate_change: function (evt) {

@@ -1,5 +1,5 @@
 <template>
-  <a-entity id='DuoSynth'>
+  <a-entity id='duosynth'>
     <a-box width='2' height='2' depth='0.1' color='#bada55' position='1 -1 0'></a-box>
     <a-text value='DuoSynth' position='2 -0.11 0.05' rotation='0 0 0' align='right'></a-text>
     <a-entity rotation='0 0 -90'>
@@ -38,8 +38,8 @@ var d3 = require('d3')
 var crapuid = require('../crapuid.js')
 import {EventBus} from '../event-bus.js'
 export default {
-  name: 'DuoSynth',
-  props: [ '_synth', 'index' ],
+  name: 'duosynth',
+  props: [ '_preset', 'index' ],
   data () {
     return {
       registryType: 'DuoSynth',
@@ -74,21 +74,22 @@ export default {
     console.log('DuoSynth mounted')
     var self = this
     var synth = new Tone.DuoSynth()
+    self.$el.synth = synth
     console.log('duosynth loadpreset', this.loadPreset)
     console.log('duosynth', synth.voice0)
-    console.log('duosynth', this._synth)
-    synth.name = [ 'DuoSynth', crapuid() ].join('_')  // TODO: get the name from the attribute
-    self.$nextTick(function () {
-      if(self._synth !== undefined){
-        // how do I load the preset values from the prop if there is no slider doing the automatic update?
-        console.log('there is a prop, running load preset with the prop information')
-        console.log(self)
-        self.loadPreset(self, self._synth)
-      }
-      self.$el.object3D.userData.synth = synth
-      EventBus.$emit('new-synth', synth)
-      EventBus.$emit('new-lfo-input', { name: synth.name, synth: synth, field: 'harmonicity' })
-    })
+    console.log('duosynth', this._preset)
+    synth.name = [ 'DuoSynth', self.$el.getAttribute('name') ].join('_')  // TODO: get the name from the attribute
+    if(self._preset !== undefined){
+      // how do I load the preset values from the prop if there is no slider doing the automatic update?
+      console.log('there is a prop, running load preset with the prop information')
+      console.log(self)
+      self.loadPreset(self, self._preset)
+    }
+    // self.$nextTick(function () {
+    //   self.$el.object3D.userData.synth = synth
+    //   EventBus.$emit('new-synth', synth)
+    //   EventBus.$emit('new-lfo-input', { name: synth.name, synth: synth, field: 'harmonicity' })
+    // })
   },
   methods: {
     slideSet: function (field, event) {
@@ -107,7 +108,7 @@ export default {
         this[f0][f1][f2] = this.scales[field](event.detail.value)
       }
       // set the synth data
-      this.$el.object3D.userData.synth.set(field, this.scales[field](event.detail.value))
+      this.$el.synth.set(field, this.scales[field](event.detail.value))
     }
   }
 }

@@ -95,7 +95,7 @@ Vue.directive('presets', {
 
 function getPresetValuesFromVueInstance (vueInstanceData) {
   var r = {}
-  Object.keys(vueInstanceData).filter(function (o) { return (o !== 'scales' && o !== 'registryType' && o.slice(0, 1) !== '_') }).forEach(function (p) {
+  Object.keys(vueInstanceData).filter(function (o) { return (o !== 'indicator_boxes' && o !== 'scales' && o !== 'registryType' && o.slice(0, 1) !== '_') }).forEach(function (p) {
     r[p] = vueInstanceData[p]
   })
   return r

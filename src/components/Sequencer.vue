@@ -1,5 +1,5 @@
 <template>
-  <a-entity id='Sequencer'>
+  <a-entity id='sequencer'>
     <a-entity position='1 -0.375 0'>
       <a-entity geometry='primitive: box; width: 2.0; height: 1.0; depth: 0.1;' material="color: #00F;" position='0 0 -0.05'></a-entity>
       <!-- steps -->
@@ -40,7 +40,8 @@ import { EventBus } from '../event-bus.js';
 var transposeScale = d3.scaleQuantile().domain([ 0.0, 1.0 ]).range(d3.range(-12, 13))
 
 export default {
-  name: 'Sequencer',
+  name: 'sequencer',
+  props: [ '_preset', 'index' ],
   data () {
     return {
       registryType: 'step-sequencer',
@@ -96,7 +97,8 @@ export default {
     var self = this
 
     self.$el.addEventListener('load-preset', self.loadPreset)
-    self._output_channel = self.$el.getAttribute('midi-output-channel')
+    // self._output_channel = self.$el.getAttribute('midi-output-channel')
+    self._output_channel = 1
 
     // setup the tick of the sequencer
     Tone.Transport.scheduleRepeat(function(time){
@@ -110,6 +112,7 @@ export default {
         }
       })
       if(self.steps[self.current_step].rest === false){
+        // console.log('ok', self._output_channel)
         EventBus.$emit(['channel-',self._output_channel].join(''), { type: 'mono', note: self.steps[self.current_step].note + self.transpose, time: time })
       }
     }, "16n");

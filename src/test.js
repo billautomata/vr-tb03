@@ -52,33 +52,41 @@ module.exports = function (vueInstance) {
     p: { x: -3, y: 1.1, z: 0 }
   })
 
-  // test tone
-  vueInstance.$nextTick(function () {
-    var osc = new Tone.Oscillator()
-    osc.set('frequency', 120)
-    osc.set('type', 'square')
-    osc.set('volume', -10)
-    console.log('osc', document.querySelector('a-entity#filter'))
-    osc.connect(document.querySelector('a-entity#filter').synth)
-    osc.start()
-    // read meter
-    var meter = new Tone.Meter('level')
-    meter.receive('test-out')
-
-    window.meter = meter
-
-    document.querySelector('a-entity#analyser').synth.connect(meter)
-
-    // save presets
-    // document.querySelector('a-entity#filter').getAttribute('name')
-    // document.querySelector('a-entity#filter').__vue__.getPresetValuesFromVueInstance()
-    // document.querySelector('a-entity#filter').object3D.position
-
-    // run tests
-    // test('audio-input-channel-connector works, audio-output-channel-selector works', function (t) {
-    //   t.plan(1)
-    //   console.log('meter get value', meter.get('value'))
-    //   t.notEqual(meter.get('value').value, 0.0)
-    // })
+  window.duosynths.push({
+    p: { x: -5.1, y: 1.1, z: 0 }
   })
+
+  window.sequencers.push({
+    p: { x: -5.1, y: -2, z: 0 }
+  })
+
+  // test tone
+  // vueInstance.$nextTick(function () {
+  //   var osc = new Tone.Oscillator()
+  //   osc.set('frequency', 120)
+  //   osc.set('type', 'square')
+  //   osc.set('volume', -10)
+  //   console.log('osc', document.querySelector('a-entity#filter'))
+  //   osc.connect(document.querySelector('a-entity#filter').synth)
+  //   osc.start()
+  //   // read meter
+  //   var meter = new Tone.Meter('level')
+  //   meter.receive('test-out')
+  //
+  //   window.meter = meter
+  //
+  //   document.querySelector('a-entity#analyser').synth.connect(meter)
+  //
+  //   // save presets
+  //   // document.querySelector('a-entity#filter').getAttribute('name')
+  //   // document.querySelector('a-entity#filter').__vue__.getPresetValuesFromVueInstance()
+  //   // document.querySelector('a-entity#filter').object3D.position
+  //
+  //   // run tests
+  //   // test('audio-input-channel-connector works, audio-output-channel-selector works', function (t) {
+  //   //   t.plan(1)
+  //   //   console.log('meter get value', meter.get('value'))
+  //   //   t.notEqual(meter.get('value').value, 0.0)
+  //   // })
+  // })
 }

@@ -13,13 +13,18 @@
 ## refactor to use presets and vue lists
 * [x] Filter
 * [x] Analyser
-* [x] EQ3 with Gain
+* [x] EQ3 with Volume
 * [x] Gain
 * [x] Master Outputs
 * [x] LFO
-* [ ] DuoSynth
-* [ ] Sequencer
-* [ ] when complete tackle the registry cache
+* [x] DuoSynth
+  * [ ] handle midi input channel
+* [x] Sequencer
+
+# registry cache
+* [x] record scene by grabbing the preset and position of the elements
+* [x] store scene in cache
+* [x] load scene from cache if found
 
 ## `graphical-audio-input-config`
 * [x] create graphics for the input channels on the side of the object
