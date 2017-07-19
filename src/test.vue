@@ -49,12 +49,15 @@
             </volume>
           </a-entity>
         </template>
+        <template v-for="(lfo,index) in lfos" v-bind:lfo="lfo" v-bind:index="index" >
+          <a-entity :position="[lfo.p.x, lfo.p.y, lfo.p.z].join(' ')">
+            <lfo :name="index" :_preset="lfo"
+              v-presets movable lfo-output-selector>
+            </lfo>
+          </a-entity>
+        </template>
 
       </a-entity>
-
-      <!-- <a-entity position='2 0 0'>
-        <mixer name='primary'></mixer>
-      </a-entity> -->
     </a-scene>
   </div>
 </template>
@@ -62,19 +65,17 @@
 <script>
 import { EventBus } from './event-bus.js'
 import Filter from './components/Filter.vue'
-import Mixer from './components/Mixer.vue'
 import Analyser from './components/Analyser.vue'
 import EQ3 from './components/EQ3.vue'
 import Gain from './components/Gain.vue'
 import Volume from './components/Volume.vue'
+import LFO from './components/LFO.vue'
 
 require('./lib/vue-preset-directive.js')
 
 require('./lib/slider-component.js')
 require('./lib/button-component.js')
 require('./lib/level-indicator-component.js')
-// require('./lib/audio-output-channel-selector.js')
-// require('./lib/audio-input-channel-connector.js')
 require('./lib/midi-input-channel-selector.js')
 require('./lib/lfo-output-selector.js')
 require('./lib/analyser-display-component.js')
@@ -89,11 +90,11 @@ export default {
   name: 'app',
   components: {
     'filterf': Filter,
-    'mixer': Mixer,
     'analyser': Analyser,
     'eq3': EQ3,
     'gain': Gain,
-    'volume': Volume
+    'volume': Volume,
+    'lfo': LFO
   },
   data () {
     return {
@@ -104,7 +105,6 @@ export default {
       lfo_inputs: [],
       midi_channels: [],
       DuoSynths: [],
-      mixers: [],
       filters: [],
       analysers: [],
       eq3s: [],
@@ -137,7 +137,7 @@ export default {
     })
     EventBus.$on('new-lfo', function (event) {
       console.log('new lfo')
-      self.lfos.push(event)
+      // self.lfos.push(event)
       console.log(event.name)
     })
     EventBus.$on('new-lfo-input', function (event) {
@@ -170,6 +170,7 @@ export default {
     window.eq3s = self.eq3s
     window.gains = self.gains
     window.volumes = self.volumes
+    window.lfos = self.lfos
 
     Tone.Transport.start()
     require('./test.js')(self)

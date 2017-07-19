@@ -56,11 +56,11 @@ AFRAME.registerComponent('lfo-output-selector', {
             o.addEventListener('click', function () {
               console.log('channel clicked')
               console.log(c.channel_name)
-              // self.el.object3D.userData.synth.disconnect()
+              // self.el.synth.disconnect()
               if (c.field.indexOf('.') === -1) {
-                self.el.object3D.userData.synth.connect(c.synth[c.field])
+                self.el.synth.connect(c.synth[c.field])
               } else {
-                self.el.object3D.userData.synth.connect(c.synth[c.field.split('.')[0]][c.field.split('.')[1]])
+                self.el.synth.connect(c.synth[c.field.split('.')[0]][c.field.split('.')[1]])
               }
             })
           })

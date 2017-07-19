@@ -16,6 +16,7 @@
 * [x] EQ3 with Gain
 * [x] Gain
 * [x] Master Outputs
+* [x] LFO
 * [ ] DuoSynth
 * [ ] Sequencer
 * [ ] when complete tackle the registry cache

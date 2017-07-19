@@ -30,6 +30,7 @@ window.d3 = d3
 import {EventBus} from '../event-bus.js'
 export default {
   name: 'lfo',
+  props: [ '_preset', 'index' ],
   data () {
     return {
       registryType: 'lfo',
@@ -50,40 +51,45 @@ export default {
   mounted () {
     console.log('lfo mounted')
     var self = this
-    var synth = new Tone.LFO(this.frequency, this.min, this.max)
+    var synth = new Tone.LFO()
+    self.$el.synth = synth
     synth.type = 'sine'
+    if(self._preset !== undefined){
+      // how do I load the preset values from the prop if there is no slider doing the automatic update?
+      console.log('there is a prop, running load preset with the prop information')
+      console.log(self)
+      self.loadPreset(self, self._preset)
+    }    
     // synth.start()
     var indicator = new Tone.Meter('frequency')
     synth.connect(indicator)
-    synth.name = [ 'lfo', Number(Math.random()).toString(16).split('.')[1] ].join('_')
+    synth.name = [ 'lfo', self.$el.getAttribute('name') ].join('_')
     self.$nextTick(function () {
-      self.$el.object3D.userData.synth = synth
       self.$el.querySelector('#indicator').object3D.userData.indicator = indicator
-      EventBus.$emit('new-lfo', synth)
     })
   },
   methods: {
     slideSet: function (field, event) {
       this[field] = this.scales[field](event.detail.value)
-      this.$el.object3D.userData.synth.set(field, this.scales[field](event.detail.value))
+      this.$el.synth.set(field, this.scales[field](event.detail.value))
     },
     setAmplitude: function (event) {
       this.amplitude = this.scales['amplitude'](event.detail.value)
       // console.log('setting amplitude', this.amplitude)
-      this.$el.object3D.userData.synth.set('amplitude', this.scales['amplitude'](event.detail.value))
+      this.$el.synth.set('amplitude', this.scales['amplitude'](event.detail.value))
     },
     resetLFO: function () {
       console.log('reset lfo')
-      this.$el.object3D.userData.synth.disconnect()
-      this.$el.object3D.userData.synth.connect(this.$el.querySelector('#indicator').object3D.userData.indicator)
+      this.$el.synth.disconnect()
+      this.$el.synth.connect(this.$el.querySelector('#indicator').object3D.userData.indicator)
     },
     toggleStart: function () {
       var self = this
       this._started = !this._started
       if(this._started === true){
-        self.$el.object3D.userData.synth.start()
+        self.$el.synth.start()
       } else {
-        self.$el.object3D.userData.synth.stop()
+        self.$el.synth.stop()
       }
     }
   }

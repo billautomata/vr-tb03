@@ -51,7 +51,7 @@ export default {
       self.loadPreset(self, self._preset)
     }
     // EventBus.$emit('new-synth', synth)          // add me to the list of things
-    // EventBus.$emit('new-lfo-input', { name: synth.name, synth: synth, field: 'frequency' })
+    EventBus.$emit('new-lfo-input', { name: synth.name, synth: synth, field: 'frequency' })
   },
   methods: {
     slideSet: function (field, event) {

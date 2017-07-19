@@ -1,15 +1,15 @@
 /* eslint-env browser */
-var test = require('tape')
+// var test = require('tape')
 module.exports = function (vueInstance) {
   var Tone = window.Tone
   console.log('test.js loaded')
-  var testFilter = {
+
+  window.filters.push({
     frequency: 7777,
     Q: 10,
     type: 'lowpass',
     p: { x: 2, y: 0, z: 0 }
-  }
-  window.filters.push(testFilter)
+  })
 
   window.analysers.push({
     type: 'fft',
@@ -29,7 +29,7 @@ module.exports = function (vueInstance) {
     high: 0,
     volume: 1,
     lowFrequency: 200,
-    highFrequency: 2500,    
+    highFrequency: 2500,
     p: { x: 0, y: 0, z: 0 }
   })
 
@@ -44,9 +44,16 @@ module.exports = function (vueInstance) {
     p: { x: 0, y: 1.1, z: 0 }
   })
 
+  window.lfos.push({
+    min: -100,
+    max: 100,
+    amplitude: 1,
+    frequency: '16n',
+    p: { x: -3, y: 1.1, z: 0 }
+  })
 
   // test tone
-  vueInstance.$nextTick(function (){
+  vueInstance.$nextTick(function () {
     var osc = new Tone.Oscillator()
     osc.set('frequency', 120)
     osc.set('type', 'square')
