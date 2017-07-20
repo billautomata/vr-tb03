@@ -27,64 +27,46 @@
       <a-entity position="-4 0 2">
          <a-entity camera look-controls-enabled='false' mouse-cursor wasd-controls></a-entity>
       </a-entity>
+      <a-entity v-for="(filter,index) in filters" v-bind:filter="filter" v-bind:index="index" >
+        <filterf :name="index" :_preset="filter" :_p="filter.p"
+          v-presets movable graphical-audio-output-config graphical-audio-input-config>
+        </filterf>
+      </a-entity>
+      <a-entity v-for="(analyser,index) in analysers" v-bind:analyser="analyser" v-bind:index="index" >
+        <analyser :name="index" :_preset="analyser" :_p="analyser.p"
+          v-presets movable graphical-audio-input-config analyser-display>
+        </analyser>
+      </a-entity>
+      <a-entity v-for="(eq3,index) in eq3s" v-bind:eq3="eq3" v-bind:index="index" >
+        <eq3 :name="index" :_preset="eq3" :_p="eq3.p"
+          v-presets movable graphical-audio-input-config graphical-audio-output-config>
+        </eq3>
+      </a-entity>
+      <a-entity v-for="(gain,index) in gains" v-bind:gain="gain" v-bind:index="index" >
+        <gain :name="index" :_preset="gain" :_p="gain.p"
+          v-presets movable graphical-audio-input-config graphical-audio-output-config>
+        </gain>
+      </a-entity>
+      <a-entity v-for="(volume,index) in volumes" v-bind:volume="volume" v-bind:index="index" >
+        <volume :name="index" :_preset="volume" :_p="volume.p"
+          v-presets movable graphical-audio-input-config>
+        </volume>
+      </a-entity>
+      <a-entity v-for="(lfo,index) in lfos" v-bind:lfo="lfo" v-bind:index="index" >
+        <lfo :name="index" :_preset="lfo" :_p="lfo.p"
+          v-presets movable lfo-output-selector>
+        </lfo>
+      </a-entity>
+      <a-entity v-for="(duosynth,index) in duosynths" v-bind:duosynth="duosynth" v-bind:index="index" >
+        <duosynth :name="index" :_preset="duosynth" :_p="duosynth.p"
+          v-presets movable graphical-audio-output-config midi-input-channel-selector>
+        </duosynth>
+      </a-entity>
 
-      <a-entity position='0 0 0'>
-        <template v-for="(filter,index) in filters" v-bind:filter="filter" v-bind:index="index" >
-          <a-entity :position="[filter.p.x, filter.p.y, filter.p.z].join(' ')">
-            <filterf :name="index" :_preset="filter"
-              v-presets movable graphical-audio-output-config graphical-audio-input-config>
-            </filterf>
-          </a-entity>
-        </template>
-        <template v-for="(anaylser,index) in analysers" v-bind:anaylser="anaylser" v-bind:index="index" >
-          <a-entity :position="[anaylser.p.x, anaylser.p.y, anaylser.p.z].join(' ')">
-            <analyser :name="index" :_preset="anaylser"
-              v-presets movable graphical-audio-input-config analyser-display>
-            </analyser>
-          </a-entity>
-        </template>
-        <template v-for="(eq3,index) in eq3s" v-bind:eq3="eq3" v-bind:index="index" >
-          <a-entity :position="[eq3.p.x, eq3.p.y, eq3.p.z].join(' ')">
-            <eq3 :name="index" :_preset="eq3"
-              v-presets movable graphical-audio-input-config graphical-audio-output-config>
-            </eq3>
-          </a-entity>
-        </template>
-        <template v-for="(gain,index) in gains" v-bind:gain="gain" v-bind:index="index" >
-          <a-entity :position="[gain.p.x, gain.p.y, gain.p.z].join(' ')">
-            <gain :name="index" :_preset="gain"
-              v-presets movable graphical-audio-input-config graphical-audio-output-config>
-            </gain>
-          </a-entity>
-        </template>
-        <template v-for="(volume,index) in volumes" v-bind:volume="volume" v-bind:index="index" >
-          <a-entity :position="[volume.p.x, volume.p.y, volume.p.z].join(' ')">
-            <volume :name="index" :_preset="volume"
-              v-presets movable graphical-audio-input-config>
-            </volume>
-          </a-entity>
-        </template>
-        <template v-for="(lfo,index) in lfos" v-bind:lfo="lfo" v-bind:index="index" >
-          <a-entity :position="[lfo.p.x, lfo.p.y, lfo.p.z].join(' ')">
-            <lfo :name="index" :_preset="lfo"
-              v-presets movable lfo-output-selector>
-            </lfo>
-          </a-entity>
-        </template>
-        <template v-for="(duosynth,index) in duosynths" v-bind:duosynth="duosynth" v-bind:index="index" >
-          <a-entity :position="[duosynth.p.x, duosynth.p.y, duosynth.p.z].join(' ')">
-            <duosynth :name="index" :_preset="duosynth"
-              v-presets movable graphical-audio-output-config midi-input-channel-selector>
-            </duosynth>
-          </a-entity>
-        </template>
-        <template v-for="(sequencer,index) in sequencers" v-bind:sequencer="sequencer" v-bind:index="index" >
-          <a-entity :position="[sequencer.p.x, sequencer.p.y, sequencer.p.z].join(' ')">
-            <sequencer :name="index" :_preset="sequencer"
-              v-presets movable>
-            </sequencer>
-          </a-entity>
-        </template>
+      <a-entity v-for="(sequencer,index) in sequencers" v-bind:sequencer="sequencer" v-bind:index="index">
+        <sequencer :name="index" :_preset="sequencer" :_p="sequencer.p"
+          v-presets movable>
+        </sequencer>
       </a-entity>
     </a-scene>
   </div>
@@ -146,8 +128,13 @@ export default {
       sequencers: []
     }
   },
-  beforeCreate () {
+  created () {
     var self = this
+    EventBus.$on('spawn', function (event) {
+      console.log('spawning', event.elementType)
+      self[event.elementType+'s'].push(JSON.parse(JSON.stringify(event.settings)))
+    })
+
     EventBus.$on('element-updated', function (event) {
       // from the sliders, send to the server
       window.socket.emit('update', event)
@@ -239,19 +226,19 @@ export default {
 
     var self = this
     window.ok = this
-    window.channels = self.audio_channels
-    window.synth_registry = self.synths
-    window.lfo_registry = self.lfos
-    window.lfo_inputs = self.lfo_inputs
-
-    window.duosynths = self.duosynths
-    window.filters = self.filters
-    window.analysers = self.analysers
-    window.eq3s = self.eq3s
-    window.gains = self.gains
-    window.volumes = self.volumes
-    window.lfos = self.lfos
-    window.sequencers = self.sequencers
+    // window.channels = self.audio_channels
+    // window.synth_registry = self.synths
+    // window.lfo_registry = self.lfos
+    // window.lfo_inputs = self.lfo_inputs
+    //
+    // window.duosynths = self.duosynths
+    // window.filters = self.filters
+    // window.analysers = self.analysers
+    // window.eq3s = self.eq3s
+    // window.gains = self.gains
+    // window.volumes = self.volumes
+    // window.lfos = self.lfos
+    // window.sequencers = self.sequencers
 
     Tone.Transport.start()
 

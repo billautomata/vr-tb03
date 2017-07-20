@@ -15,7 +15,7 @@ var d3 = require('d3')
 import {EventBus} from '../event-bus.js'
 export default {
   name: 'gain',
-  props: [ '_preset', 'index' ],
+  props: [ '_preset', 'index', '_p' ],
   data () {
     return {
       registryType: 'gain',
@@ -29,6 +29,8 @@ export default {
   mounted () {
     console.log('Gain mounted')
     var self = this
+    self.$el._p = this._p
+    Object.freeze(this._p)
     var synth = new Tone.Gain()
     self.$el.synth = synth
     synth.name = [ 'gain', self.$el.getAttribute('name') ].join('_')

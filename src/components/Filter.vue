@@ -32,7 +32,7 @@ export default {
       scales: {}
     }
   },
-  props: [ '_preset', 'index' ],
+  props: [ '_preset', 'index', '_p' ],
   created () {
     this.scales['frequency'] = d3.scaleLinear().domain([0.0,1.0]).range([100.0,10000.0])
     this.scales['Q'] = d3.scaleLinear().domain([0.0,1.0]).range([0.0,20.0])
@@ -43,6 +43,8 @@ export default {
   mounted () {
     console.log('filter mounted')
     var self = this
+    self.$el._p = this._p
+    Object.freeze(this._p)
     var synth = new Tone.Filter()
     synth.network_on = true
     self.$el.synth = synth
@@ -60,7 +62,7 @@ export default {
     slideSet: function (field, event) {
       this[field] = this.scales[field](event.detail.value)
       var self = this
-      console.log('slide set', field, this[field], event.detail.value, self.$el.synth.network_on)      
+      console.log('slide set', field, this[field], event.detail.value, self.$el.synth.network_on)
       if(self.$el.synth.network_on === true){
         console.log('emitting element update')
         EventBus.$emit('element-updated', {

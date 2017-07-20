@@ -24,7 +24,7 @@ var d3 = require('d3')
 import {EventBus} from '../event-bus.js'
 export default {
   name: 'eq3',
-  props: [ '_preset', 'index' ],
+  props: [ '_preset', 'index', '_p' ],
   data () {
     return {
       registryType: 'eq3',
@@ -47,6 +47,8 @@ export default {
   mounted () {
     console.log('EQ3 mounted')
     var self = this
+    self.$el._p = this._p
+    Object.freeze(this._p)
     var synth = new Tone.EQ3()
     self.$el.synth = synth
     synth.name = [ 'eq3', self.$el.getAttribute('name') ].join('_')

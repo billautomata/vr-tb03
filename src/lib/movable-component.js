@@ -1,6 +1,6 @@
 function __t (o) { return [ o.object3D.getWorldPosition().x, o.object3D.getWorldPosition().y, o.object3D.getWorldPosition().z ].join(' ') }
 function __t2 (o) { return [ o.object3D.getWorldPosition().x + 1, o.object3D.getWorldPosition().y - 0.5, o.object3D.getWorldPosition().z ].join(' ') }
-
+import {EventBus} from '../event-bus.js'
 window.AFRAME.registerComponent('movable', {
   schema: {
     channel: {
@@ -10,13 +10,14 @@ window.AFRAME.registerComponent('movable', {
   },
   init: function () {
     var self = this
-    console.log('loaded movable controller')
+    self.el.object3D.position.set(self.el._p.x, self.el._p.y, self.el._p.z)
+    console.log('loaded movable controller', self.el.getAttribute('id'), self.el.getAttribute('name'))
     var mover = document.createElement('a-box')
     mover.setAttribute('click-drag', true)
     mover.setAttribute('depth', 0.1)
     mover.setAttribute('height', 0.1)
     mover.setAttribute('width', 0.1)
-    mover.setAttribute('position', '0 0 0')
+    mover.setAttribute('position', [self.el._p.x, self.el._p.y, self.el._p.z].join(' '))
     mover.setAttribute('color', 'black')
     self.el.parentEl.appendChild(mover)
     mover.addEventListener('dragmove', function (event) {

@@ -30,7 +30,7 @@ window.d3 = d3
 import {EventBus} from '../event-bus.js'
 export default {
   name: 'lfo',
-  props: [ '_preset', 'index' ],
+  props: [ '_preset', 'index', '_p' ],
   data () {
     return {
       registryType: 'lfo',
@@ -51,6 +51,8 @@ export default {
   mounted () {
     console.log('lfo mounted')
     var self = this
+    self.$el._p = this._p
+    Object.freeze(this._p)
     var synth = new Tone.LFO()
     self.$el.synth = synth
     synth.type = 'sine'
@@ -59,7 +61,7 @@ export default {
       console.log('there is a prop, running load preset with the prop information')
       console.log(self)
       self.loadPreset(self, self._preset)
-    }    
+    }
     // synth.start()
     var indicator = new Tone.Meter('frequency')
     synth.connect(indicator)

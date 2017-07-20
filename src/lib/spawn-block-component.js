@@ -1,3 +1,5 @@
+import {EventBus} from '../event-bus.js'
+
 AFRAME.registerComponent('spawn-block', {
   init: function () {
     var self = this
@@ -12,6 +14,7 @@ AFRAME.registerComponent('spawn-block', {
       m.setAttribute('height', 0.33)
       m.setAttribute('position', [ -1.0, (i * 0.5) - (types.length * 0.25), 0 ].join(' '))
       m.addEventListener('click', function (event) {
+        console.log('spawn click event', t)
         event.preventDefault()
         event.stopPropagation()
         // console.log('spawning', t, m.object3D.getWorldPosition())
@@ -19,7 +22,7 @@ AFRAME.registerComponent('spawn-block', {
         var p = m.object3D.getWorldPosition()
         o.p = { x: p.x - 1.0, y: p.y, z: p.z }
         console.log('spawning', t, JSON.stringify(o))
-        window[t + 's'].push(JSON.parse(JSON.stringify(o)))
+        EventBus.$emit('spawn', { elementType: t, settings: JSON.parse(JSON.stringify(o)) })
       })
       var text = document.createElement('a-text')
       text.setAttribute('value', t)
@@ -33,7 +36,3 @@ AFRAME.registerComponent('spawn-block', {
     return
   }
 });
-
-var config = {
-
-}

@@ -39,7 +39,7 @@ var crapuid = require('../crapuid.js')
 import {EventBus} from '../event-bus.js'
 export default {
   name: 'duosynth',
-  props: [ '_preset', 'index' ],
+  props: [ '_preset', 'index', '_p' ],
   data () {
     return {
       registryType: 'DuoSynth',
@@ -73,6 +73,8 @@ export default {
   mounted () {
     console.log('DuoSynth mounted')
     var self = this
+    self.$el._p = this._p
+    Object.freeze(this._p)
     var synth = new Tone.DuoSynth()
     self.$el.synth = synth
     synth.name = [ 'DuoSynth', self.$el.getAttribute('name') ].join('_')  // TODO: get the name from the attribute

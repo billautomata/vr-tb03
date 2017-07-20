@@ -15,7 +15,7 @@ var d3 = require('d3')
 import {EventBus} from '../event-bus.js'
 export default {
   name: 'volume',
-  props: [ '_preset', 'index' ],
+  props: [ '_preset', 'index', '_p' ],
   data () {
     return {
       registryType: 'volume',
@@ -29,6 +29,8 @@ export default {
   mounted () {
     console.log('volume mounted')
     var self = this
+    self.$el._p = this._p
+    Object.freeze(this._p)
     var synth = new Tone.Volume()
     synth.toMaster()
     self.$el.synth = synth

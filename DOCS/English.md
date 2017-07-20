@@ -43,6 +43,8 @@
 # disabled things to help with refactoring
 * [x] the current step on the step sequencer needs to be reactivated now that the slider settings aren't transmitted in the update
 
-
-## spawn block
-Click the block
+# weird bugs found
+* [ ] the movable component doesn't set the p value of the vue instance data which causes the positions to reset to their original spawn position when new things are added because vue reads the unudpated p value and thinks things are busted
+  * [NO] remove vue based position management of the node, assign a position prop and emit an event to set the object3d of the element
+  * [ ] vue can't handle this shit, it keeps remounting the elements when adding a new one
+  * [ ] figure out how the reactivity is happening

@@ -17,7 +17,7 @@ var crapuid = require('../crapuid.js')
 import {EventBus} from '../event-bus.js'
 export default {
   name: 'analyser',
-  props: [ '_preset', 'index' ],
+  props: [ '_preset', 'index', '_p' ],
   data () {
     return {
       type: 'fft',
@@ -33,13 +33,16 @@ export default {
   mounted () {
     console.log('analyser mounted', this.indicator_boxes, this.size)
     var self = this
-    this.scales['pos_x'] = d3.scaleLinear().domain([0,this.size]).range([0.0,0.9])
-    this.scales['pos_y'] = d3.scaleLinear().domain([0,255]).range([-0.6,0.0])
-    // window.m = self
+    Object.freeze(this._p)
+    self.$el._p = this._p
     self.$el.indicator_boxes = []
+    self.indicator_boxes = self.$el.indicator_boxes
     d3.range(0,this.size).forEach(function(b,i){
-      self.indicator_boxes.push({ v: 0 })
+      self.$el.indicator_boxes.push({ v: 0 })
     })
+    var synth = new Tone.Analyser(this.type, this.size)
+    self.$el.synth = synth
+    synth.name = [ 'analyser', self.$el.getAttribute('name') ].join('_')
     if(self._preset !== undefined){
       // how do I load the preset values from the prop if there is no slider doing the automatic update?
       console.log('there is a prop, running load preset with the prop information')
@@ -49,10 +52,6 @@ export default {
     if(this.type === 'waveform'){
       this.size = 1024
     }
-    var synth = new Tone.Analyser(this.type, this.size)
-    self.$el.synth = synth
-    self.$el.indicator_boxes = self.indicator_boxes
-    synth.name = [ 'analyser', self.$el.getAttribute('name') ].join('_')
   },
   methods: {
     slideSet: function (field, event) {

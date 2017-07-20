@@ -34,7 +34,6 @@
 
 <script>
 var d3 = require('d3')
-window.d3 = d3
 import { EventBus } from '../event-bus.js';
 
 var transposeScale = d3.scaleQuantile().domain([ 0.0, 1.0 ]).range(d3.range(-12, 13))
@@ -43,7 +42,7 @@ var current_step = 0
 
 export default {
   name: 'sequencer',
-  props: [ '_preset', 'index' ],
+  props: [ '_preset', 'index', '_p' ],
   data () {
     return {
       registryType: 'step-sequencer',
@@ -107,6 +106,8 @@ export default {
     var self = this
 
     self.$el.addEventListener('load-preset', self.loadPreset)
+    self.$el._p = this._p
+    Object.freeze(this._p)
     // self._output_channel = self.$el.getAttribute('midi-output-channel')
     self._output_channel = 1
 
