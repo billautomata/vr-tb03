@@ -75,14 +75,11 @@ export default {
     var self = this
     var synth = new Tone.DuoSynth()
     self.$el.synth = synth
-    console.log('duosynth loadpreset', this.loadPreset)
-    console.log('duosynth', synth.voice0)
-    console.log('duosynth', this._preset)
     synth.name = [ 'DuoSynth', self.$el.getAttribute('name') ].join('_')  // TODO: get the name from the attribute
     if(self._preset !== undefined){
       // how do I load the preset values from the prop if there is no slider doing the automatic update?
       console.log('there is a prop, running load preset with the prop information')
-      console.log(self)
+      // console.log(self)
       self.loadPreset(self, self._preset)
     }
     // self.$nextTick(function () {

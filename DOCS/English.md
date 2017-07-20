@@ -40,7 +40,9 @@
   * [x] re-create the connections on load
 * [x] draw a line from the source to the connected, have movable know about it, append the a-lines with a class you can select, then query the list of audio connections for the names of the entities to update the targets of the lines with on drag
 
-
-
 # disabled things to help with refactoring
 * [x] the current step on the step sequencer needs to be reactivated now that the slider settings aren't transmitted in the update
+
+
+## spawn block
+Click the block

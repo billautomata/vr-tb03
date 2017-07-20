@@ -8,6 +8,9 @@
       <a-sky color="#3366FF"></a-sky>
 
       <a-entity position='0 0 -2'>
+        <a-box color='#3F3' position='-4 0 0' spawn-block>
+          <a-text value="Spawn Block" align="center" position='0 1 0'></a-text>
+        </a-box>
         <a-box color='yellow' position='-1 0 0' v-on:click='saveSceneToDisk'>
           <a-text value="Save To Disk" align="center" position='0 1 0'></a-text>
         </a-box>
@@ -17,12 +20,11 @@
         <a-box color='green' position='4 0 0' v-on:click='broadcastConfig'>
           <a-text value="Broadcast Config" align="center" position='0 1 0'></a-text>
         </a-box>
-
       </a-entity>
 
       <a-entity id='lines'></a-entity>
 
-      <a-entity position="1 0 3">
+      <a-entity position="-4 0 2">
          <a-entity camera look-controls-enabled='false' mouse-cursor wasd-controls></a-entity>
       </a-entity>
 
@@ -111,6 +113,7 @@ require('./lib/vue-preset-directive.js')
 require('./lib/movable-component.js')
 
 require('./lib/graphical-audio-input-config.js')
+require('./lib/spawn-block-component.js')
 
 console.warn = function(){}
 
@@ -193,12 +196,12 @@ export default {
   mounted() {
     window.socket = io.connect(window.location.href)
     window.socket.network_timeout = {}
-    window.socket.on('echo', function (data) {
+    // window.socket.on('echo', function (data) {
       // console.log(data)
       // setTimeout(function () {
       //   socket.emit('echo', { v: Date.now() })
       // },1000)
-    })
+    // })
     window.socket.on('new-scene', function (data) {
       console.log('got new scene event', data)
       if(window.socket.id === data.from){
@@ -254,11 +257,10 @@ export default {
 
     var scene
     if(window.localStorage.getItem('scene') === null){
-      require('./test.js')(self)
+      // require('./test.js')(self)
     } else {
       // loadScene()
     }
-
   },
   methods : {
     broadcastConfig: function () {

@@ -1,5 +1,6 @@
 module.exports = function sceneRecorder () {
-  var types = ['filter', 'analyser', 'eq3', 'gain', 'volume', 'lfo', 'duosynth', 'sequencer']
+  var types = require('../scene_configuration_defaults.js').types
+  // var types = ['filter', 'analyser', 'eq3', 'gain', 'volume', 'lfo', 'duosynth', 'sequencer']
   var sceneElements = []
   types.forEach(function (t) {
     var m = document.querySelectorAll('a-entity#'+t)
