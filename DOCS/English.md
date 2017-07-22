@@ -24,15 +24,19 @@
 ## new types of registries and synths
 * [ ] sequencer pattern store
 * [ ] drum machine / sampler
+* [x] custom synth design pattern example
+* [ ] custom sequencer where you can tune scales to different interval distance for each of the 12 tones
+  * [ ] Tone.Frequency(60, 'midi').toFrequency() + offset[60 % 12]
+
 
 # registry cache
 * [x] record scene by grabbing the preset and position of the elements
 * [x] store scene in cache
 * [x] load scene from cache if found
-* [ ] CreatorNode
+* [ ] Spawn Block
 * [x] save scene node
 * [x] load scene node
-* [ ] remove element
+* [ ] remove element aframe component
 
 ## `graphical-audio-input-config`
 * [x] create graphics for the input channels on the side of the object

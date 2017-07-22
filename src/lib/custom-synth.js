@@ -24,6 +24,15 @@ module.exports = function (Tone) {
 		 *  @type {Tone.OmniOscillator}
 		 */
     this.oscillator = new Tone.OmniOscillator(options.oscillator)
+    this.oscillator2 = new Tone.OmniOscillator(options.oscillator2)
+
+    this.lfo_osc = new Tone.LFO({
+      min: -100,
+      max: 100,
+      frequency: '16n'
+    })
+    this.lfo_osc.start()
+    this.lfo_osc.connect(this.oscillator2.detune)
 
 		/**
 		 *  The frequency control.
@@ -47,8 +56,13 @@ module.exports = function (Tone) {
 
 		// connect the oscillators to the output
     this.oscillator.chain(this.envelope, this.output)
+    this.oscillator2.chain(this.envelope, this.output)
+
+
+
 		// start the oscillators
     this.oscillator.start()
+    this.oscillator2.start()
     this._readOnly(['oscillator', 'frequency', 'detune', 'envelope'])
   }
 
@@ -62,6 +76,10 @@ module.exports = function (Tone) {
   Tone.CustomSynth.defaults = {
     'oscillator': {
       'type': 'square'
+    },
+    'oscillator2': {
+      'type': 'square',
+      'detune': -550
     },
     'envelope': {
       'attack': 0.005,

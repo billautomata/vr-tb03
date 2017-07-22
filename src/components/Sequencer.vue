@@ -13,7 +13,7 @@
             <a-box color='#000' position='0 0.25 0' scale='0.08 0.08 0.008'></a-box>
             <a-text :value='step.note' rotation='0 0 0' color='#FFF' position='0 0.25 0.01' scale='0.2 0.2 0.2' align='center'></a-text>
           </a-entity>
-          <a-sphere :id='indicator-light' position='0 -0.33 0' scale='0.05 0.05 0.05' :color='step.active ? "#0F0" : "#F00"' radius='0.5'></a-sphere>
+          <a-sphere :id='"indicator-light-"+index' class='indicator-lights' position='0 -0.33 0' scale='0.05 0.05 0.05' color="#F00" radius='0.5'></a-sphere>
         </a-entity>
       </a-entity>
       <!-- transpose slider -->
@@ -38,7 +38,7 @@ import { EventBus } from '../event-bus.js';
 
 var transposeScale = d3.scaleQuantile().domain([ 0.0, 1.0 ]).range(d3.range(-12, 13))
 
-var current_step = 0
+
 
 export default {
   name: 'sequencer',
@@ -57,7 +57,6 @@ export default {
   },
   created () {
     var self = this
-    current_step = 0
     for(var i = 0; i < self.n_steps; i++){
       self.steps.push({
         note: 0,
@@ -101,12 +100,17 @@ export default {
       this.transpose = o.transpose
     }
   },
+  beforeMount () {
+  },
   mounted () {
     console.log('sequencer mounted')
     var self = this
 
+    self.$el.currentStep = 0
+
     self.$el.addEventListener('load-preset', self.loadPreset)
     self.$el._p = this._p
+
     Object.freeze(this._p)
     // self._output_channel = self.$el.getAttribute('midi-output-channel')
     self._output_channel = 1
@@ -118,22 +122,33 @@ export default {
       self.loadPreset(self, self._preset)
     }
 
-    // setup the tick of the sequencer
-    Tone.Transport.scheduleRepeat(function(time){
-      current_step += 1
-      current_step = current_step % self.n_steps
-      self.steps.forEach(function(s,i){
-        if(current_step === i){
-          // s.active = true
-        } else {
-          // s.active = false
+    self.$nextTick(function () {
+      self.$el.indicatorLights = self.$el.querySelectorAll('a-sphere.indicator-lights')
+      // setup the tick of the sequencer
+      Tone.Transport.scheduleRepeat(function(time){
+        self.steps.forEach(function(s,i){
+          if(self.$el.currentStep === i){
+            // s.active = true
+          } else {
+            // s.active = false
+          }
+        })
+        if(self.steps[self.$el.currentStep].rest === false){
+          // console.log('ok', self._output_channel)
+          EventBus.$emit(['channel-',self._output_channel].join(''), { type: 'mono', note: self.steps[self.$el.currentStep].note + self.transpose, time: time })
         }
-      })
-      if(self.steps[current_step].rest === false){
-        // console.log('ok', self._output_channel)
-        EventBus.$emit(['channel-',self._output_channel].join(''), { type: 'mono', note: self.steps[current_step].note + self.transpose, time: time })
-      }
-    }, "16n");
+        try{
+          self.$el.indicatorLights[self.$el.currentStep].setAttribute('color', '#F0F')
+          self.$el.currentStep += 1
+          self.$el.currentStep = self.$el.currentStep % self.n_steps
+          self.$el.indicatorLights[self.$el.currentStep].setAttribute('color', '#0F0')
+        } catch(e) {
+
+        }
+      }, "16n");
+    })
+
+
   }
 }
 </script>
