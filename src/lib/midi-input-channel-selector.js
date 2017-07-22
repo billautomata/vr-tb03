@@ -17,11 +17,15 @@ window.AFRAME.registerComponent('midi-input-channel-selector', {
       c = '1'
     }
     EventBus.$on(['channel-', c].join(''), function (evt) {
-      // console.log('evt', evt)
+      console.log('evt', evt)
       if (evt.type === 'poly') {
         self.el.synth.triggerAttackRelease(evt.notes.map(function (o) { return window.Tone.Frequency(o, 'midi') }), '16n', evt.time)
-      } else {
+      } else if (evt.type === 'midi') {
         self.el.synth.triggerAttackRelease(window.Tone.Frequency(evt.note, 'midi'), '16n', evt.time)
+      } else if (evt.type === 'frequency') {
+        self.el.synth.triggerAttackRelease(evt.note, '16n', evt.time)
+      } else if (evt.type === 'poly-frequency') {
+
       }
     })
   },

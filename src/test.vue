@@ -68,6 +68,13 @@
           v-presets movable>
         </sequencer>
       </a-entity>
+
+      <a-entity v-for="(scalesequencer,index) in scalesequencers" v-bind:scalesequencer="scalesequencer" v-bind:index="index">
+        <scalesequencer :name="index" :_preset="scalesequencer" :_p="scalesequencer.p"
+          v-presets movable>
+        </scalesequencer>
+      </a-entity>
+
     </a-scene>
   </div>
 </template>
@@ -82,6 +89,7 @@ import Volume from './components/Volume.vue'
 import LFO from './components/LFO.vue'
 import DuoSynth from './components/DuoSynth.vue'
 import Sequencer from './components/Sequencer.vue'
+import ScaleSequencer from './components/ScaleSequencer.vue'
 
 require('./lib/vue-preset-directive.js')
 
@@ -111,7 +119,8 @@ export default {
     'volume': Volume,
     'lfo': LFO,
     'duosynth': DuoSynth,
-    'sequencer': Sequencer
+    'sequencer': Sequencer,
+    'scalesequencer': ScaleSequencer
   },
   data () {
     return {
@@ -127,7 +136,8 @@ export default {
       eq3s: [],
       gains: [],
       volumes: [],
-      sequencers: []
+      sequencers: [],
+      scalesequencers: []
     }
   },
   created () {

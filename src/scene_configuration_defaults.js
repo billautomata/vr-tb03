@@ -1,4 +1,4 @@
-var types = ['filter', 'analyser', 'eq3', 'gain', 'volume', 'lfo', 'duosynth', 'sequencer']
+var types = ['filter', 'analyser', 'eq3', 'gain', 'volume', 'lfo', 'duosynth', 'sequencer', 'scalesequencer']
 
 var defaults = {}
 
@@ -55,6 +55,9 @@ defaults.duosynth = {
   }
 }
 defaults.sequencer = {
+  p: { x: 0, y: 0, z: 0 }
+}
+defaults.scalesequencer = {
   p: { x: 0, y: 0, z: 0 }
 }
 
