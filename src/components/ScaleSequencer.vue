@@ -122,7 +122,7 @@ export default {
       console.log('randomize pattern')
       this.steps.forEach(function (step) {
         step.note = Math.floor(Math.random() * 8.0)
-        step.rest = Math.random() < 0 ? true : false
+        step.rest = Math.random() < 0.5 ? true : false
       })
       this.offsetTunes.forEach(function(o,i){
         // o.v = 64.0
@@ -143,9 +143,9 @@ export default {
       // convert the scale interval value to a midi note value for a scale starting at zero
       // add the base value of 60
       var step = this.steps[this.$el.currentStep]
-      console.log('step', this.steps[this.$el.currentStep], this.$el.currentStep)
+      // console.log('step', this.steps[this.$el.currentStep], this.$el.currentStep)
       var midiNote = 60 + this.intervalToNote(step.note)
-      console.log('midi note', midiNote)
+      // console.log('midi note', midiNote)
       // add 12 or -12 based on octave up or down
       if(step.octave_up === true){
         midiNote += 12
@@ -158,7 +158,7 @@ export default {
       var freq = Tone.Frequency(midiNote, 'midi').toFrequency()
       // add the interval tune value
       freq += this.offsetTunes[step.note].v
-      console.log('step', this.steps[this.$el.currentStep], this.$el.currentStep, freq, step.note, this.offsetTunes[step.note].v)
+      // console.log('step', this.steps[this.$el.currentStep], this.$el.currentStep, freq, step.note, this.offsetTunes[step.note].v)
       // return the interval tune value as a frequency
       return freq
     }

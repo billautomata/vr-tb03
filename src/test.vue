@@ -105,7 +105,7 @@ require('./lib/movable-component.js')
 require('./lib/graphical-audio-input-config.js')
 require('./lib/spawn-block-component.js')
 
-window.Tone.CustomSynth = require('./lib/custom-synth.js')(Tone)
+window.Tone.CustomSynth = require('./lib/custom-synths/custom-synth.js')(Tone)
 
 console.warn = function(){}
 
