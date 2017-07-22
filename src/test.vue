@@ -97,6 +97,8 @@ require('./lib/movable-component.js')
 require('./lib/graphical-audio-input-config.js')
 require('./lib/spawn-block-component.js')
 
+window.Tone.CustomSynth = require('./lib/custom-synth.js')(Tone)
+
 console.warn = function(){}
 
 export default {
@@ -137,7 +139,7 @@ export default {
 
     EventBus.$on('element-updated', function (event) {
       // from the sliders, send to the server
-      window.socket.emit('update', event)
+      self.socket.emit('update', event)
     })
 
     EventBus.$on('audio-connection', function (event) {
@@ -181,27 +183,29 @@ export default {
     });
   },
   mounted() {
-    window.socket = io.connect(window.location.href)
-    window.socket.network_timeout = {}
-    // window.socket.on('echo', function (data) {
+    var self = this
+    self.socket = io.connect(window.location.href)
+    self.socket.network_timeout = {}
+    // self.socket.on('echo', function (data) {
       // console.log(data)
       // setTimeout(function () {
       //   socket.emit('echo', { v: Date.now() })
       // },1000)
     // })
-    window.socket.on('new-scene', function (data) {
-      console.log('got new scene event', data)
-      if(window.socket.id === data.from){
+    self.socket.on('new-scene', function (data) {
+
+      if(self.socket.id === data.from){
         return
       } else {
+        console.log('got new scene event', data)
         window.localStorage.setItem('scene', data.scene)
         window.localStorage.setItem('audio-connections', data.connections)
         window.location.reload()
       }
     })
-    window.socket.on('update-element', function (data) {
+    self.socket.on('update-element', function (data) {
       // new slider data
-      if(window.socket.id === data.from){
+      if(self.socket.id === data.from){
         return
       } else {
         console.log('got update element to update my settings', data)
@@ -215,8 +219,8 @@ export default {
           console.log('turning network OFF for', element.synth)
           element.synth.network_on = false
           element.__vue__.loadPreset(element.__vue__, data.preset)
-          clearTimeout(socket.network_timeout)
-          window.socket.network_timeout = setTimeout(function (){
+          clearTimeout(self.socket.network_timeout)
+          self.socket.network_timeout = setTimeout(function (){
             console.log('turning network ON for', element.synth)
             element.synth.network_on = true
           },1000)
@@ -224,7 +228,6 @@ export default {
       }
     })
 
-    var self = this
     window.ok = this
     // window.channels = self.audio_channels
     // window.synth_registry = self.synths
@@ -246,18 +249,22 @@ export default {
     if(window.localStorage.getItem('scene') === null){
       // require('./test.js')(self)
     } else {
-      // loadScene()
+      this.loadScene()
     }
   },
   methods : {
     broadcastConfig: function () {
+      var self = this
       this.saveSceneToDisk()
       var o = {
         scene: window.localStorage.getItem('scene'),
         connections: window.localStorage.getItem('audio-connections')
       }
+      if(o.connections === null){
+        o.connections = []
+      }
       console.log('sending this to the server', o)
-      window.socket.emit('scene-to-server', o)
+      self.socket.emit('scene_to_server', o)
     },
     loadScene: function () {
       var self = this

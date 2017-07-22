@@ -21,6 +21,10 @@
   * [ ] handle midi input channel
 * [x] Sequencer
 
+## new types of registries and synths
+* [ ] sequencer pattern store
+* [ ] drum machine / sampler
+
 # registry cache
 * [x] record scene by grabbing the preset and position of the elements
 * [x] store scene in cache
@@ -28,6 +32,7 @@
 * [ ] CreatorNode
 * [x] save scene node
 * [x] load scene node
+* [ ] remove element
 
 ## `graphical-audio-input-config`
 * [x] create graphics for the input channels on the side of the object
@@ -44,7 +49,5 @@
 * [x] the current step on the step sequencer needs to be reactivated now that the slider settings aren't transmitted in the update
 
 # weird bugs found
-* [ ] the movable component doesn't set the p value of the vue instance data which causes the positions to reset to their original spawn position when new things are added because vue reads the unudpated p value and thinks things are busted
-  * [NO] remove vue based position management of the node, assign a position prop and emit an event to set the object3d of the element
-  * [ ] vue can't handle this shit, it keeps remounting the elements when adding a new one
-  * [ ] figure out how the reactivity is happening
+* [ ] save scene needs to handle the connections
+* [ ] when a primary broadcasts the configuration to secondary entities, the initialization routine transmits the knob settings, that's unnecessary, turn on the network transmission with a component

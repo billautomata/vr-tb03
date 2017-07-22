@@ -19,9 +19,9 @@ io.on('connection', function (socket) {
     console.log(socket.id, 'update data', data)
     io.emit('update-element', data)
   })
-  socket.on('scene-to-server', function (data) {
-    data.from = socket.id
+  socket.on('scene_to_server', function (data) {
     console.log('scene sent to server, sending out')
+    data.from = socket.id
     io.emit('new-scene', data)
   })
 })
