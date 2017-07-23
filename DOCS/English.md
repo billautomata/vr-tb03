@@ -10,7 +10,7 @@
 * more
 
 ## new stuff to make
-* [ ] sequencer pattern store robot
+* [ ] sequencer pattern store robot buddy
 * [ ] song mode, can spawn and load step sequencer patterns and chain the patterns calling loadPreset with the next sequence when the pattern number is at (n_steps-1)
 * [ ] drum machine / sampler
 * [ ] midi input channel component

@@ -75,6 +75,13 @@
         </scalesequencer>
       </a-entity>
 
+      <a-entity v-for="(multisampler,index) in multisamplers" v-bind:multisampler="multisampler" v-bind:index="index">
+        <multisampler :name="index" :_preset="multisampler" :_p="multisampler.p"
+          v-presets movable>
+        </multisampler>
+      </a-entity>
+
+
     </a-scene>
   </div>
 </template>
@@ -90,6 +97,7 @@ import LFO from './components/LFO.vue'
 import DuoSynth from './components/DuoSynth.vue'
 import Sequencer from './components/Sequencer.vue'
 import ScaleSequencer from './components/ScaleSequencer.vue'
+import MultiSampler from './components/MultiSampler.vue'
 
 require('./lib/vue-preset-directive.js')
 
@@ -120,7 +128,8 @@ export default {
     'lfo': LFO,
     'duosynth': DuoSynth,
     'sequencer': Sequencer,
-    'scalesequencer': ScaleSequencer
+    'scalesequencer': ScaleSequencer,
+    'multisampler': MultiSampler
   },
   data () {
     return {
@@ -137,7 +146,8 @@ export default {
       gains: [],
       volumes: [],
       sequencers: [],
-      scalesequencers: []
+      scalesequencers: [],
+      multisamplers: []
     }
   },
   created () {
@@ -258,6 +268,9 @@ export default {
     var scene
     if(window.localStorage.getItem('scene') === null){
       // require('./test.js')(self)
+      self.multisamplers.push({
+        p: { x: -4, y: 0, z: 0 }
+      })
     } else {
       this.loadScene()
     }
