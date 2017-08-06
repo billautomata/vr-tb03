@@ -47,18 +47,10 @@ export default {
     self.synths.forEach(function(s) { s.toMaster() })
     self.$el._p = this._p
     self.$nextTick(function () {
-
-      // self.$el.indicatorLights = self.$el.querySelectorAll('a-sphere.indicator-lights')
-      // setup the tick of the sequencer
       Tone.Transport.scheduleRepeat(function(time){
-        console.log(self.$el.currentStep)
         self.samplers.forEach(function(sampler, _i){
-          // console.log(sampler, self.$el.currentStep)
-          // return
           if(sampler.steps[self.$el.currentStep].rest === false){
-            // console.log('ok', self._output_channel)
             self.synths[_i].triggerAttackRelease(0, "8n")
-            // EventBus.$emit(['channel-',self._output_channel].join(''), { type: 'midi', note: self.steps[self.$el.currentStep].note + self.transpose, time: time })
           }
         })
         if(self.randomMode === true){
@@ -67,7 +59,6 @@ export default {
           self.$el.currentStep += 1
           self.$el.currentStep = self.$el.currentStep % 16
         }
-
       }, "16n");
     })
 

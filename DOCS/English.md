@@ -13,11 +13,12 @@
 * [ ] sequencer pattern store robot buddy
 * [ ] song mode, can spawn and load step sequencer patterns and chain the patterns calling loadPreset with the next sequence when the pattern number is at (n_steps-1)
 * [ ] drum machine / sampler
+  * [ ] make the audio connectors components aware of the multiple outputs of the multisampler
 * [ ] midi input channel component
 * [ ] Remove Element component
 * [ ] Network Transmit Block
 * [x] custom synth design pattern example
-  * [ ] use it in a module
+  * [ ] use it in a vue component
 
 # weird bugs found
 * [ ] save scene needs to handle the connections
